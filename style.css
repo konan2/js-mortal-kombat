@@ -1,0 +1,229 @@
+/* Eric Meyer's CSS Reset */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/* End of Eric Meyer's CSS Reset */
+
+html {
+	height: 100%;
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+	display: block;
+}
+body {
+	font: 12px/18px Arial, sans-serif;
+	width: 100%;
+	height: 100%;
+}
+.page-wrapper {
+	width: 1000px;
+	margin: 0 auto;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+}
+
+
+/* Header
+-----------------------------------------------------------------------------*/
+.header {
+	height: 150px;
+	background: #FFE680;
+}
+
+
+/* Middle
+-----------------------------------------------------------------------------*/
+.content {
+	padding: 0 0 100px;
+}
+
+
+
+
+/* Footer
+-----------------------------------------------------------------------------*/
+.footer {
+	width: 1000px;
+	margin: -100px auto 0;
+	height: 100px;
+	background: #BFF08E;
+	position: relative;
+}
+
+*{
+	box-sizing: border-box;
+}
+
+html, body{
+	min-height: 100%;
+	height: 100%;
+}
+
+body{
+	margin: 0;
+}
+
+#life-levels{
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	top: 10px;
+	display: inline-block;
+}
+
+.blood-level{
+	float: left;
+	height: 10px;
+	width: 200px;
+	border: 1px solid #000;
+	margin: 5px;
+	background-color: red;
+}
+
+.blood-status{
+	height: 100%;
+	background-color: #44d044;
+	width: 100%;
+	transition: width .4s ease;
+}
+
+.wrapper{
+	position: relative;
+	height: 400px;
+}
+
+.hero{
+	position: absolute;
+	bottom: 0;
+	left: 300px;
+	width: 80px;
+	overflow: hidden;
+	height: 138px;
+	/*border: 1px solid #ddd;*/
+}
+
+.wasted{
+	background-color: #ccc6c6;
+}
+
+.hero_1{
+	margin-left: -150px;
+}
+
+.hero_2{
+	margin-right: -150px;
+}
+
+.hero-controls{
+	position: absolute;
+	right: 20px;
+	top: 20px;
+}
+
+button{
+	cursor: pointer;
+	margin: 0 5px;
+}
+
+.flipped{
+	-moz-transform: scaleX(-1);
+	-o-transform: scaleX(-1);
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
+	filter: FlipH;
+	-ms-filter: "FlipH";
+}
+
+.flipped-back{
+	-moz-transform: scaleX(1);
+	-o-transform: scaleX(1);
+	-webkit-transform: scaleX(1);
+	transform: scaleX(1);
+	filter: FlipH;
+	-ms-filter: "FlipH";
+}
+
+
+.hero_1{
+	background-image: url(sprites/a1.gif);
+	background-repeat: no-repeat;
+}
+
+.hero_1.move-forward{
+	background-image: url(sprites/a111.gif);
+	background-repeat: no-repeat;
+}
+
+.hero_1.move-back{
+	background-image: url(sprites/a11.gif);
+	background-repeat: no-repeat;
+}
+
+.hero_1.move-down{
+	/*animation: play 1s steps(3) 1;*/
+	/*background: url(sprites/spritesheet.png) left center no-repeat;*/
+/*	background: url('sprites/spritesheet.png') left bottom no-repeat;
+	animation: play .2s steps(3) 1;
+	animation-fill-mode: backwards;*/
+	background: url('sprites/spritesheet.png') left center no-repeat;
+	background-position: -193px 18px;
+	/*animation: play .2s steps(3) 1;*/
+}
+
+/*@keyframes play {
+	100% { background-position: -387px; }
+}*/
+
+/*.hero_2{
+	background-image: url(sprites/a2.gif);
+	background-repeat: no-repeat;
+}*/
+
+/*@keyframes play {
+		100% { background-position: -278px;}
+}*/
+
+@keyframes play {
+	100% { background-position: -278px; }
+}
