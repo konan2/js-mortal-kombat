@@ -59,23 +59,9 @@ function resetFunc(){
 
 // Movement
 
-// get pos
 
-// function getPosX(el) {
-//     for (var lx=0;
-//          el != null;
-//          lx += el.offsetLeft, el = el.offsetParent);
-//     return lx;
-// }
 
-// function getPosY(el) {
-//     for (var ly=0;
-//          el != null;
-//          ly += el.offsetTop, el = el.offsetParent);
-//     return ly;
-// }
-var intervalId =  null;
-var nowPressedKey = null;
+
 function moveLeft(){
   heroOne.style.left = parseInt(heroOne.style.left) - 1 + 'px';
 }
@@ -83,6 +69,51 @@ function moveLeft(){
 function moveRight(){
   heroOne.style.left = parseInt(heroOne.style.left) + 1 + 'px';
 }
+
+function moveTop(){
+  console.log("top pressed");
+  jump();
+  
+}
+function jump(){
+  var finishFn = function(){
+    heroOne.classList.remove("move-top"); 
+  }
+  toTop(function(){
+    toBottom(finishFn);
+  });
+}
+
+
+function toTop(callbackFn){
+  heroOne.classList.add("move-top"); 
+  setTimeout(function() {
+    heroOne.style.bottom = parseInt(heroOne.style.bottom) + 5 + 'px';
+
+    if (parseInt(heroOne.style.bottom) > 100){
+      callbackFn();
+    } else {
+      toTop(callbackFn);
+    }
+  }, 10);
+}
+
+function toBottom(callbackFn){
+  setTimeout(function() {
+    heroOne.style.bottom = parseInt(heroOne.style.bottom) - 5 + 'px';
+
+    if (parseInt(heroOne.style.bottom) > 0){
+      toBottom(callbackFn);
+    } else {
+      callbackFn();
+    }
+   
+  }, 10);
+}
+
+
+var intervalId =  null;
+var nowPressedKey = null;
 
 
 function checkKey(event) {
@@ -95,23 +126,23 @@ function checkKey(event) {
     switch (event.keyCode) {
       case 37:
         if(!intervalId){
-         intervalId = setInterval(moveLeft, 1);
+         intervalId = setInterval(moveLeft);
          heroOne.classList.add("move-back"); 
         }
-        
+
         break;
       case 39:
         if(!intervalId){
-         intervalId = setInterval(moveRight, 1);
+         intervalId = setInterval(moveRight);
          heroOne.classList.add("move-forward"); 
         }
         
         break;
         case 38:
-        if(!intervalId){
-         intervalId = setInterval(moveRight, 1);
-         heroOne.classList.add("move-forward"); 
-        }
+       
+         moveTop();
+         heroOne.classList.add("move-top");
+        
         
         break;
         case 40:

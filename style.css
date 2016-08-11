@@ -141,6 +141,7 @@ body{
 	overflow: hidden;
 	height: 138px;
 	/*border: 1px solid #ddd;*/
+	
 }
 
 .wasted{
@@ -200,30 +201,13 @@ button{
 	background-repeat: no-repeat;
 }
 
+
 .hero_1.move-down{
-	/*animation: play 1s steps(3) 1;*/
-	/*background: url(sprites/spritesheet.png) left center no-repeat;*/
-/*	background: url('sprites/spritesheet.png') left bottom no-repeat;
-	animation: play .2s steps(3) 1;
-	animation-fill-mode: backwards;*/
 	background: url('sprites/spritesheet.png') left center no-repeat;
 	background-position: -193px 18px;
-	/*animation: play .2s steps(3) 1;*/
 }
 
-/*@keyframes play {
-	100% { background-position: -387px; }
-}*/
-
-/*.hero_2{
-	background-image: url(sprites/a2.gif);
-	background-repeat: no-repeat;
-}*/
-
-/*@keyframes play {
-		100% { background-position: -278px;}
-}*/
-
-@keyframes play {
-	100% { background-position: -278px; }
+.hero_1.move-top{
+	background: url('sprites/jump.png') left center no-repeat;
 }
+
