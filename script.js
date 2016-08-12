@@ -15,6 +15,7 @@ wastedText.classList.add("wasted-text")
 wastedText.innerHTML = 'Wasted';
 
 
+
 document.querySelector("#hero1-kicks").addEventListener("click", heroOneDamage);
 document.querySelector("#hero2-kicks").addEventListener("click", heroTwoDamage);
 
@@ -70,19 +71,17 @@ function moveRight(){
   heroOne.style.left = parseInt(heroOne.style.left) + 1 + 'px';
 }
 
-function moveTop(){
-  console.log("top pressed");
-  jump();
-  
-}
+
 function jump(){
-  var finishFn = function(){
+
+  var jumpEnd = function(){
     heroOne.classList.remove("move-top"); 
   }
   toTop(function(){
-    toBottom(finishFn);
+    toBottom(jumpEnd);
   });
 }
+
 
 
 function toTop(callbackFn){
@@ -116,11 +115,17 @@ var intervalId =  null;
 var nowPressedKey = null;
 
 
+
+
+
 function checkKey(event) {
-    var event = window.event ? window.event : e;
-    //console.log(event.keyCode);
-    if(nowPressedKey !== event.keyCode) {
+ 
+    if(event.keyCode !== null) {
       onKeyUp();
+    }
+
+    if(nowPressedKey !== event.keyCode){
+      console.log(nowPressedKey, event.keyCode);
     }
 
     switch (event.keyCode) {
@@ -140,7 +145,7 @@ function checkKey(event) {
         break;
         case 38:
        
-         moveTop();
+         jump();
          heroOne.classList.add("move-top");
         
         
@@ -152,14 +157,19 @@ function checkKey(event) {
         
         break;
       };
+
   };
 
 
 document.addEventListener("keydown", checkKey);
+
+
 function onKeyUp(){
   document.querySelector(".hero").classList.remove("move-back", "move-forward", "move-down", "move-up");
   clearInterval(intervalId);
-  nowPressedKey = null;
   intervalId = null;
 }
+
 document.addEventListener("keyup", onKeyUp);
+
+

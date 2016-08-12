@@ -56,11 +56,10 @@ body {
 	height: 100%;
 }
 .page-wrapper {
-	width: 1000px;
-	margin: 0 auto;
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
+	
 }
 
 
@@ -78,13 +77,46 @@ body {
 	padding: 0 0 100px;
 }
 
+.wrapper-sky{
+	z-index: -1;
+	background: url(img/p_bg.png) no-repeat top center;
+	background-size: 100% 86%;
+}
+
+.wrapper-decor-1{
+	z-index: -1;
+	background: url(img/p_4.png) no-repeat left 100%;
+}
+
+.wrapper-decor-2{
+	z-index: -1;
+	background: url(img/p_3.png) no-repeat right 90%;
+}
 
 
+.level-wrapper{
+	padding-bottom: 13px;
+	background: url(img/p_1.gif) no-repeat bottom center,
+							url(img/p_2.gif) no-repeat center 297px;
+}
+
+.wrapper{
+	position: relative;
+	height: 400px;
+	width: 1004px;
+	margin: 0 auto;
+}
+
+.wrapper-decor-1, .wrapper-decor-2, .wrapper-sky{
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
 
 /* Footer
 -----------------------------------------------------------------------------*/
 .footer {
-	width: 1000px;
+	width: 960px;
 	margin: -100px auto 0;
 	height: 100px;
 	background: #BFF08E;
@@ -128,16 +160,11 @@ body{
 	transition: width .4s ease;
 }
 
-.wrapper{
-	position: relative;
-	height: 400px;
-}
-
 .hero{
 	position: absolute;
 	bottom: 0;
 	left: 300px;
-	width: 80px;
+	width: 100px;
 	overflow: hidden;
 	height: 138px;
 	/*border: 1px solid #ddd;*/
@@ -191,6 +218,11 @@ button{
 	background-repeat: no-repeat;
 }
 
+.hero_2{
+	background-image: url(sprites/a2.gif);
+	background-repeat: no-repeat;
+}
+
 .hero_1.move-forward{
 	background-image: url(sprites/a111.gif);
 	background-repeat: no-repeat;
@@ -201,13 +233,43 @@ button{
 	background-repeat: no-repeat;
 }
 
-
 .hero_1.move-down{
-	background: url('sprites/spritesheet.png') left center no-repeat;
-	background-position: -193px 18px;
+	background: url('sprites/spritesheet.png') no-repeat;
+	animation: movedown .1s steps(2) forwards;
+}
+
+@keyframes movedown {
+	 from { background-position:  0px 20px; }
+		 to { background-position: -215px 20px; }
 }
 
 .hero_1.move-top{
-	background: url('sprites/jump.png') left center no-repeat;
+	background: url('sprites/spritesheet_jump.png') no-repeat;
+	animation: movetop .3s steps(2) forwards;
+	animation-direction: alternate;
 }
 
+@keyframes movetop {
+	 from { background-position:  0px 0; }
+		 to { background-position: -210px 0; }
+}
+
+.hero_1.move-top.move-forward{
+	background: url('sprites/spritesheet_jump_to.png') no-repeat;
+	animation: movetopforward .45s steps(8) forwards;
+}
+
+@keyframes movetopforward {
+	 from { background-position:  0px 0; }
+		 to { background-position: -900px 0; }
+}
+
+.hero_1.move-top.move-back{
+	background: url('sprites/spritesheet_jump_to.png');
+	animation: movetopback .45s steps(8) forwards;
+}
+
+@keyframes movetopback {
+	 from { background-position:  0px 0; }
+		 to { background-position: 900px 0; }
+}
