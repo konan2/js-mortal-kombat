@@ -162,8 +162,6 @@ body{
 
 .hero{
 	position: absolute;
-	bottom: 0;
-	left: 300px;
 	width: 100px;
 	overflow: hidden;
 	height: 138px;
@@ -176,11 +174,11 @@ body{
 }
 
 .hero_1{
-	margin-left: -150px;
+
 }
 
 .hero_2{
-	margin-right: -150px;
+	
 }
 
 .hero-controls{
@@ -218,10 +216,10 @@ button{
 	background-repeat: no-repeat;
 }
 
-.hero_2{
+/*.hero_2{
 	background-image: url(sprites/a2.gif);
 	background-repeat: no-repeat;
-}
+}*/
 
 .hero_1.move-forward{
 	background-image: url(sprites/a111.gif);
@@ -250,8 +248,8 @@ button{
 }
 
 @keyframes movetop {
-	 from { background-position:  0px 0; }
-		 to { background-position: -210px 0; }
+	 from { background-position:  0px 0px; }
+		 to { background-position: -210px 0px; }
 }
 
 .hero_1.move-top.move-forward{
