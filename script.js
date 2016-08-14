@@ -181,7 +181,9 @@ var keys = {
   movetop: false,
   moveright: false,
   movebottom: false,
-  moveleft: false
+  moveleft: false,
+  handkick: false,
+  footkick: false
 };
 
 var intervalId =  null;
@@ -190,6 +192,7 @@ var heroOnePosX;
 var heroOnePosY;
 
 function funkKeyDown(event){
+  console.log(event.keyCode);
   if(event.keyCode === 38){
     keys.movetop = true;
   }
@@ -201,6 +204,12 @@ function funkKeyDown(event){
   }
   if(event.keyCode === 37){
     keys.moveleft = true;
+  }
+  if(event.keyCode === 65){
+    keys.handkick = true;
+  }
+  if(event.keyCode === 83){
+    keys.footkick = true;
   }
   useKeys();
 }
@@ -222,15 +231,23 @@ function funkKeyUp(event){
     keys.moveleft = false;
     onKeyUp();
   }
+  if(event.keyCode === 65){
+    keys.handkick = false;
+    onKeyUp();
+  }
+  if(event.keyCode === 83){
+    keys.footkick = false;
+    onKeyUp();
+  }
   useKeys();
 }
 
 
 
 
+
 function useKeys(){
-  
-  //console.log(heroOnePosX, heroOnePosY);
+
   if(keys.moveleft){
     if(!intervalId){
      intervalId = setInterval(moveLeft);
@@ -249,8 +266,33 @@ function useKeys(){
     }
   }
   if(keys.movetop){
-     jump();
+    jump();
+  }
+  if(keys.handkick){
+    handkick();
+    clearInterval(intervalId);
+  }
+  if(keys.footkick){
+    footkick();
+    clearInterval(intervalId);
+  }
+    // stop move while kicking
 
+  if(keys.moveleft && keys.footkick){
+    clearInterval(intervalId);
+    footkick();
+  }
+  if(keys.moveright && keys.footkick){
+    clearInterval(intervalId);
+    footkick();
+  }
+  if(keys.moveleft && keys.handkick){
+    clearInterval(intervalId);
+    handkick();
+  }
+  if(keys.moveright && keys.handkick){
+    clearInterval(intervalId);
+    handkick();
   }
 }
 
@@ -272,7 +314,6 @@ function moveRight(){
 }
 
 function moveBottom(){
-  //heroOne.style.left = parseInt(heroOne.style.left) + 1 + 'px';
   heroOne.classList.add("move-down");
 }
 
@@ -319,11 +360,27 @@ function toBottom(callbackFn){
   }, 10);
 }
 
+// kicks
+
+function handkick(){
+  heroOne.classList.add("hand-kick");
+}
+
+function footkick(){
+  heroOne.classList.add("foot-kick");
+}
+
+
+
+
+
+
+
 
 function onKeyUp(){
   clearInterval(intervalId);
   intervalId = null;
-  document.querySelector(".hero").classList.remove("move-back", "move-forward", "move-down", "move-up");
+  document.querySelector(".hero").classList.remove("move-back", "move-forward", "move-down", "move-up", "hand-kick", "foot-kick");
 }
 
 

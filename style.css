@@ -97,7 +97,7 @@ body {
 .level-wrapper{
 	padding-bottom: 13px;
 	background: url(img/p_1.gif) no-repeat bottom center,
-							url(img/p_2.gif) no-repeat center 297px;
+			    url(img/p_2.gif) no-repeat center 297px;
 }
 
 .wrapper{
@@ -162,7 +162,7 @@ body{
 
 .hero{
 	position: absolute;
-	width: 100px;
+	width: 150px;
 	overflow: hidden;
 	height: 138px;
 	/*border: 1px solid #ddd;*/
@@ -213,6 +213,7 @@ button{
 
 .hero_1{
 	background-image: url(sprites/a1.gif);
+	background-position: center;
 	background-repeat: no-repeat;
 }
 
@@ -232,42 +233,62 @@ button{
 }
 
 .hero_1.move-down{
-	background: url('sprites/spritesheet.png') no-repeat;
+	background: url('sprites/spritesheet_seat.png') no-repeat;
 	animation: movedown .1s steps(2) forwards;
 }
 
 @keyframes movedown {
-	 from { background-position:  0px 20px; }
-		 to { background-position: -215px 20px; }
+	from { background-position:  0px 7px; }
+	to { background-position: -300px 7px; }
 }
 
 .hero_1.move-top{
 	background: url('sprites/spritesheet_jump.png') no-repeat;
 	animation: movetop .3s steps(2) forwards;
-	animation-direction: alternate;
 }
 
 @keyframes movetop {
-	 from { background-position:  0px 0px; }
-		 to { background-position: -210px 0px; }
+	from { background-position:  0px 0px; }
+	to { background-position: -300px 0px; }
 }
 
 .hero_1.move-top.move-forward{
-	background: url('sprites/spritesheet_jump_to.png') no-repeat;
-	animation: movetopforward .45s steps(8) forwards;
+background: url('sprites/spritesheet_jump_to.png') no-repeat;
+animation: movetopforward .45s steps(7) forwards;
 }
 
 @keyframes movetopforward {
-	 from { background-position:  0px 0; }
-		 to { background-position: -900px 0; }
+	from { background-position:  0px 0; }
+	to { background-position: -1050px 0; }
 }
 
 .hero_1.move-top.move-back{
 	background: url('sprites/spritesheet_jump_to.png');
-	animation: movetopback .45s steps(8) forwards;
+	animation: movetopback .45s steps(7) forwards;
 }
 
 @keyframes movetopback {
-	 from { background-position:  0px 0; }
-		 to { background-position: 900px 0; }
+	from { background-position:  0px 0; }
+	to { background-position: 1050px 0; }
+}
+
+.hero_1.hand-kick{
+	background: url('sprites/spritesheet_hand-kick.png') repeat-x;
+	animation: handkick .45s steps(4) infinite;
+}
+
+@keyframes handkick {
+	from { background-position:  0px 5px; }
+	to { background-position: -600px 5px; }
+}
+
+.hero_1.foot-kick{
+	background: url('sprites/spritesheet_kick_foot.png') repeat-x;
+	animation: footkick .45s steps(7) forwards infinite;
+	animation-direction: alternate;
+}
+
+@keyframes footkick {
+	from { background-position:  0 0; }
+	to { background-position: -1050px 0; }
 }
