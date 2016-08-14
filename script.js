@@ -10,6 +10,10 @@ var health = 100;
 var HeroOneHealth = health;
 var HeroTwoHealth = health;
 
+var levelWrapper = document.querySelector(".wrapper");
+var levelWidth = levelWrapper.offsetWidth;
+
+
 var wastedText = document.createElement('span');
 wastedText.classList.add("wasted-text")
 wastedText.innerHTML = 'Wasted';
@@ -181,7 +185,7 @@ var keys = {
 };
 
 var intervalId =  null;
-
+var jumpNow = false;
 var heroOnePosX;
 var heroOnePosY;
 
@@ -225,7 +229,7 @@ function funkKeyUp(event){
 
 
 function useKeys(){
-  getPosition(heroOne);
+  
   //console.log(heroOnePosX, heroOnePosY);
   if(keys.moveleft){
     if(!intervalId){
@@ -246,6 +250,7 @@ function useKeys(){
   }
   if(keys.movetop){
      jump();
+
   }
 }
 
@@ -253,14 +258,17 @@ function useKeys(){
 
 
 function moveLeft(){
-  console.log(heroOnePosX);
+  getPosition(heroOne);
   if(heroOnePosX >= 0){
     heroOne.style.left = parseInt(heroOne.style.left) - 1 + 'px';
   }
 }
 
 function moveRight(){
-  heroOne.style.left = parseInt(heroOne.style.left) + 1 + 'px';
+  getPosition(heroOne);
+  if(heroOnePosX <= levelWidth - heroOne.offsetWidth){
+    heroOne.style.left = parseInt(heroOne.style.left) + 1 + 'px';
+  }
 }
 
 function moveBottom(){
@@ -269,19 +277,29 @@ function moveBottom(){
 }
 
 function jump(){
-  var jumpEnd = function(){
-    heroOne.classList.remove("move-top"); 
+  getPosition(heroOne);
+    if (!jumpNow) {
+      toTop(function(){
+        toBottom(jumpEnd);
+      });
+      jumpNow = true;
+      if(keys.movetop){
+      setTimeout(function() {
+        jumpNow = false;
+      }, 500);
+    }
   }
-  toTop(function(){
-    toBottom(jumpEnd);
-  });
 }
+
+var jumpEnd = function(){
+  heroOne.classList.remove("move-top");
+}
+
 
 function toTop(callbackFn){
   heroOne.classList.add("move-top");
   setTimeout(function() {
     heroOne.style.bottom = parseInt(heroOne.style.bottom) + 5 + 'px';
-
     if (parseInt(heroOne.style.bottom) > 100){
       callbackFn();
     } else {
@@ -300,10 +318,6 @@ function toBottom(callbackFn){
     }
   }, 10);
 }
-
-
-
-
 
 
 function onKeyUp(){
