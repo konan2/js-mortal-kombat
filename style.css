@@ -97,7 +97,7 @@ body {
 .level-wrapper{
 	padding-bottom: 13px;
 	background: url(img/p_1.gif) no-repeat bottom center,
-			    url(img/p_2.gif) no-repeat center 297px;
+					url(img/p_2.gif) no-repeat center 297px;
 }
 
 .wrapper{
@@ -212,7 +212,7 @@ button{
 
 
 .hero_1{
-	background-image: url(sprites/a1.gif);
+	background-image: url(sprites/cyrax-stay.gif);
 	background-position: center;
 	background-repeat: no-repeat;
 }
@@ -223,12 +223,17 @@ button{
 }*/
 
 .hero_1.move-forward{
-	background-image: url(sprites/a111.gif);
+	background-image: url(sprites/cyrax-move-forward.gif);
 	background-repeat: no-repeat;
 }
 
 .hero_1.move-back{
-	background-image: url(sprites/a11.gif);
+	background-image: url(sprites/cyrax-move-backward.gif);
+	background-repeat: no-repeat;
+}
+
+.hero_1.move-run{
+	background-image: url(sprites/cyrax-running.gif);
 	background-repeat: no-repeat;
 }
 
@@ -284,11 +289,11 @@ animation: movetopforward .45s steps(7) forwards;
 
 .hero_1.foot-kick{
 	background: url('sprites/spritesheet_kick_foot.png') repeat-x;
-	animation: footkick .45s steps(7) forwards infinite;
+	animation: footkick .31s steps(6) forwards infinite;
 	animation-direction: alternate;
 }
 
 @keyframes footkick {
 	from { background-position:  0 0; }
-	to { background-position: -1050px 0; }
+	to { background-position: -900px 0; }
 }

@@ -66,130 +66,32 @@ function resetFunc(){
 
 
 
-
-
-
-
-// var intervalId =  null;
-// var nowPressedKey = null;
-
-
-// var moveTopTest = 0;
-// var moveRightTest = 0;
-// var moveLeftTest = 0;
-// var moveBottomTest = 0;
-
-
-//function checkKey(event) {
- 
-    // if(event.keyCode !== null) {
-    //   onKeyUp();
-    // }
-   // console.log("moveTop: " + moveTopTest, "moveRight: " + moveRightTest, "moveBottom: " + moveBottomTest, "moveLeft: " + moveLeftTest);
-    //if(nowPressedKey !== event.keyCode){
-      //console.log(event.keyCode);
-    //}
-    // if(moveTopTest === 1 && moveRightTest === 1){
-    // intervalId = null;
-    // intervalId = setInterval(moveRight);
-    // console.log("111");
-//}
-
-  //   switch (event.keyCode) {
-  //     case 37:
-  //       if(!intervalId){
-  //        intervalId = setInterval(moveLeft);
-  //        heroOne.classList.add("move-back"); 
-  //       }
-  //       moveLeftTest = 1;
-  //       break;
-  //     case 39:
-  //       if(!intervalId){
-  //        intervalId = setInterval(moveRight);
-  //        heroOne.classList.add("move-forward"); 
-  //       }
-  //       moveRightTest = 1;
-  //       break;
-  //     case 38:
-  //       jump();
-  //       heroOne.classList.add("move-top");
-  //       moveTopTest = 1;
-  //       break;
-  //     case 40:
-  //       if(!intervalId){
-  //        heroOne.classList.add("move-down"); 
-  //       }
-  //       moveBottomTest = 1;
-  //       break;
-  //     };
-
-  // };
-
-// function checkKeyTop(event){
-//   if(event.keyCode === 38){
-//     console.log("top")
-//   }
-// }
-
-// function checkKeyRight(event){
-//   if(event.keyCode === 39){
-//     console.log("right")
-//   }
-// }
-
-// function checkKeyBottom(event){
-//   if(event.keyCode === 40){
-//     console.log("bottom")
-//   }
-// }
-
-// function checkKeyLeft(event){
-//   if(event.keyCode === 37){
-//     console.log("Left")
-//   }
-// }
-
-// function checkKeyTopLeft(event){
-//   if(event.keyCode === 38 && event.keyCode === 37){
-//     console.log("Top Left")
-//   }
-// }
-
-// function test(){
-//   var map = []; // Or you could call it "key"
-//   onkeydown = onkeyup = function(e){
-//     e = e || event; // to deal with IE
-//     map[e.keyCode] = e.type == 'keydown';
-//     /*insert conditional here*/
-//     console.log(map);
-//     if(map[39]){
-//       //heroOne.classList.add("move-forward"); 
-//       moveRight();
-//     }
-//     else{
-//       //heroOne.classList.remove("move-forward");
-//     }
-
-//     if(map[38] === true && map[39] === true){ // CTRL+SHIFT+A
-//       console.log('Top right');
-//     }
-//   }
-// }
-
-
 var keys = {
   movetop: false,
   moveright: false,
   movebottom: false,
   moveleft: false,
   handkick: false,
-  footkick: false
+  footkick: false,
+  moverun: false
 };
 
 var intervalId =  null;
 var jumpNow = false;
+var nowKickPressed = false;
 var heroOnePosX;
 var heroOnePosY;
+
+// audio
+
+insertAudio('foot_kick');
+insertAudio('hand_kick');
+insertAudio('syborg_run');
+insertAudio('stage_music_loop');
+
+//playAudio('stage_music_loop', "loop");
+
+///
 
 function funkKeyDown(event){
   console.log(event.keyCode);
@@ -210,6 +112,9 @@ function funkKeyDown(event){
   }
   if(event.keyCode === 83){
     keys.footkick = true;
+  }
+  if(event.keyCode === 81){
+    keys.moverun = true;
   }
   useKeys();
 }
@@ -234,9 +139,15 @@ function funkKeyUp(event){
   if(event.keyCode === 65){
     keys.handkick = false;
     onKeyUp();
+    nowKickPressed = false;
   }
   if(event.keyCode === 83){
     keys.footkick = false;
+    onKeyUp();
+    nowKickPressed = false;
+  }
+  if(event.keyCode === 81){
+    keys.moverun = false;
     onKeyUp();
   }
   useKeys();
@@ -294,9 +205,15 @@ function useKeys(){
     clearInterval(intervalId);
     handkick();
   }
+  // run
+  if(keys.moverun){
+    if(!intervalId){
+     playAudio('syborg_run');
+     intervalId = setInterval(moveRun);
+     heroOne.classList.add("move-run");
+    }
+  }
 }
-
-
 
 
 function moveLeft(){
@@ -316,6 +233,36 @@ function moveRight(){
 function moveBottom(){
   heroOne.classList.add("move-down");
 }
+
+function moveRun(){
+  getPosition(heroOne);
+  if(heroOnePosX <= levelWidth - heroOne.offsetWidth){
+    heroOne.style.left = parseInt(heroOne.style.left) + 2 + 'px';
+  }
+}
+
+/// sounds
+
+function insertAudio(trackname){
+  var audioSection = document.getElementById("audio-section");
+  var audioRun = "<audio id=" + trackname + " src='audio/" + trackname + ".mp3' type='audio/mp3'></audio>";
+  audioSection.innerHTML = audioSection.innerHTML + audioRun;
+}
+
+function playAudio(trackname, loop){
+  document.getElementById(trackname).play();
+  if(loop){
+    document.getElementById(trackname).setAttribute("loop", "");
+  }
+}
+
+function stopAudio(trackname){
+  document.getElementById(trackname).pause();
+  document.getElementById(trackname).currentTime = 0;
+}
+
+
+//// end sounds
 
 function jump(){
   getPosition(heroOne);
@@ -341,7 +288,7 @@ function toTop(callbackFn){
   heroOne.classList.add("move-top");
   setTimeout(function() {
     heroOne.style.bottom = parseInt(heroOne.style.bottom) + 5 + 'px';
-    if (parseInt(heroOne.style.bottom) > 100){
+    if (parseInt(heroOne.style.bottom) > 115){
       callbackFn();
     } else {
       toTop(callbackFn);
@@ -354,7 +301,8 @@ function toBottom(callbackFn){
     heroOne.style.bottom = parseInt(heroOne.style.bottom) - 5 + 'px';
     if (parseInt(heroOne.style.bottom) > 0){
       toBottom(callbackFn);
-    } else {
+    } 
+    else {
       callbackFn();
     }
   }, 10);
@@ -362,25 +310,42 @@ function toBottom(callbackFn){
 
 // kicks
 
-function handkick(){
-  heroOne.classList.add("hand-kick");
+function handkick(callbackFn){
+  if(!nowKickPressed){
+    playAudio('hand_kick');
+    heroOne.classList.add("hand-kick");
+    setTimeout(function() {
+      stopAudio('hand_kick');
+      heroOne.classList.remove("hand-kick");
+      nowKickPressed = true;
+      //handkick(callbackFn);
+    },250);
+  }
 }
 
-function footkick(){
-  heroOne.classList.add("foot-kick");
+function footkick(callbackFn){
+  if(!nowKickPressed){
+    playAudio('foot_kick');
+    heroOne.classList.add("foot-kick");
+    setTimeout(function() {
+      stopAudio('foot_kick');
+      heroOne.classList.remove("foot-kick");
+      nowKickPressed = true;
+      //footkick(callbackFn);
+    },350);
+  }
 }
 
 
 
 
-
-
+//////////////////////////////////////////////////
 
 
 function onKeyUp(){
   clearInterval(intervalId);
   intervalId = null;
-  document.querySelector(".hero").classList.remove("move-back", "move-forward", "move-down", "move-up", "hand-kick", "foot-kick");
+  document.querySelector(".hero").classList.remove("move-back", "move-forward", "move-down", "move-up", "hand-kick", "foot-kick", "move-run");
 }
 
 
@@ -396,80 +361,18 @@ function getPosition(el) {
 }
 
 // deal with the page getting resized or scrolled
-window.addEventListener("scroll", updatePosition, false);
-window.addEventListener("resize", updatePosition, false);
+// window.addEventListener("scroll", updatePosition, false);
+// window.addEventListener("resize", updatePosition, false);
  
-function updatePosition() {
-  // add your code to update the position when your browser
-  // is resized or scrolled
-}
+// function updatePosition() {
+//   // add your code to update the position when your browser
+//   // is resized or scrolled
+// }
 
 
 
 document.addEventListener("keydown", funkKeyDown);
 document.addEventListener("keyup", funkKeyUp);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// document.addEventListener("keydown", checkKeyTop);
-// document.addEventListener("keydown", checkKeyRight);
-// document.addEventListener("keydown", checkKeyBottom);
-// document.addEventListener("keydown", checkKeyLeft);
-
-// document.addEventListener("keydown", checkKeyTopLeft);
-
-
-// function onKeyUp(){
-// console.log("moveTop: " + moveTopTest, "moveRight: " + moveRightTest, "moveBottom: " + moveBottomTest, "moveLeft: " + moveLeftTest);
-
-// clearInterval(intervalId);
-// intervalId = null;
-
-//   document.querySelector(".hero").classList.remove("move-back", "move-forward", "move-down", "move-up");
-
-// }
-
-//document.addEventListener("keyup", onKeyUp);
 
 
