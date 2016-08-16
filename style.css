@@ -165,21 +165,14 @@ body{
 	width: 150px;
 	overflow: hidden;
 	height: 138px;
-	/*border: 1px solid #ddd;*/
-	
+	border: 1px solid #ddd;
 }
 
 .wasted{
 	background-color: #ccc6c6;
 }
 
-.hero_1{
 
-}
-
-.hero_2{
-	
-}
 
 .hero-controls{
 	position: absolute;
@@ -217,10 +210,11 @@ button{
 	background-repeat: no-repeat;
 }
 
-/*.hero_2{
-	background-image: url(sprites/a2.gif);
+.hero_2{
+	background-image: url(sprites/kabal-stay.gif);
+	background-position: center;
 	background-repeat: no-repeat;
-}*/
+}
 
 .hero_1.move-forward{
 	background-image: url(sprites/cyrax-move-forward.gif);
@@ -247,6 +241,26 @@ button{
 	to { background-position: -300px 7px; }
 }
 
+.hero_1.block{
+	background: url('sprites/spritesheet_block.png') no-repeat;
+	animation: blockstay .1s steps(2) forwards;
+}
+
+@keyframes blockstay {
+	from { background-position:  0px -3px; }
+	to { background-position: -300px -3px; }
+}
+
+.hero_1.move-down.block{
+	background: url('sprites/spritesheet_block_seat.png') no-repeat;
+	animation: blockseat .1s steps(2) forwards;
+}
+
+@keyframes blockseat {
+	from { background-position:  0px 0; }
+	to { background-position: -300px 0; }
+}
+
 .hero_1.move-top{
 	background: url('sprites/spritesheet_jump.png') no-repeat;
 	animation: movetop .3s steps(2) forwards;
@@ -257,15 +271,50 @@ button{
 	to { background-position: -300px 0px; }
 }
 
+.hero_1.move-top.foot-kick{
+	background: url('sprites/spriteshee_jump_kick_foot.png') no-repeat;
+	animation: movetopfootkick .3s steps(3) forwards infinite;
+	animation-direction: alternate;
+}
+
+@keyframes movetopfootkick {
+	from { background-position:  0px 0px; }
+	to { background-position: -450px 0px; }
+}
+
+.hero_1.move-top.hand-kick{
+	background: url('sprites/spriteshee_jump_kick_hand_forward.png') no-repeat;
+	animation: movetophandkick .3s steps(3) forwards infinite;
+	animation-direction: alternate;
+}
+
+@keyframes movetophandkick {
+	from { background-position:  0px 0px; }
+	to { background-position: -450px 0px; }
+}
+
 .hero_1.move-top.move-forward{
-background: url('sprites/spritesheet_jump_to.png') no-repeat;
-animation: movetopforward .45s steps(7) forwards;
+	background: url('sprites/spritesheet_jump_to.png') no-repeat;
+	animation: movetopforward .45s steps(7) forwards;
 }
 
 @keyframes movetopforward {
 	from { background-position:  0px 0; }
 	to { background-position: -1050px 0; }
 }
+
+.hero_1.move-top.move-forward.hand-kick{
+	background: url('sprites/cyrax-jump-kick-hand.png') no-repeat;
+	background-position: center 0;
+	animation: none;
+}
+
+.hero_1.move-top.move-forward.foot-kick{
+	background: url('sprites/cyrax-jump-kick-foot.png') no-repeat;
+	background-position: center 0;
+	animation: none;
+}
+
 
 .hero_1.move-top.move-back{
 	background: url('sprites/spritesheet_jump_to.png');
@@ -296,4 +345,26 @@ animation: movetopforward .45s steps(7) forwards;
 @keyframes footkick {
 	from { background-position:  0 0; }
 	to { background-position: -900px 0; }
+}
+
+.hero_1.move-down.hand-kick{
+	background: url('sprites/spritesheet_kick-hand_seat.png') repeat-x;
+	animation: movedownhandkick .25s steps(3) forwards infinite;
+	animation-direction: alternate;
+}
+
+@keyframes movedownhandkick {
+	from { background-position:  0 0; }
+	to { background-position: -450px 0; }
+}
+
+.hero_1.move-down.foot-kick{
+	background: url('sprites/spritesheet_kick-foot_seat.png') repeat-x;
+	animation: movedownfootkick .25s steps(3) forwards infinite;
+	animation-direction: alternate;
+}
+
+@keyframes movedownfootkick {
+	from { background-position:  0 0; }
+	to { background-position: -450px 0; }
 }
