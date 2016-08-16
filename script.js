@@ -92,7 +92,7 @@ insertAudio('syborg_run');
 insertAudio('stage_music_loop');
 insertAudio('jump_end');
 
-//playAudio('stage_music_loop', "loop");
+playAudio('stage_music_loop', "loop");
 
 ///
 
@@ -249,33 +249,18 @@ function useKeys(player){
 // Movement
 
 function moveBackFunc(player){
-  getPosition(player);
+ 
   if(keys.playerPosX >= 0){
     player.style.left = parseInt(player.style.left) - 1 + 'px';
-    // if(keys.playerPosX > playerTwoPosX && keys.playerPosX < playerTwoPosX + 130 && keys.playerPosY > 200){
-    //   player.style.borderColor = "red";
-    //   clearInterval(intervalId);
-    // }
-    // else{
-    //   player.style.borderColor = "#ddd";
-    // }
   }
 }
 
-var playerTwoPosX = 301 - 68;
-var playerTwoPosY = 158;
+
 
 function moveForwardFunc(player){
-  getPosition(player);
+
   if(keys.playerPosX <= levelWidth - player.offsetWidth){
     player.style.left = parseInt(player.style.left) + 1 + 'px';
-    if(keys.playerPosX > playerTwoPosX && keys.playerPosX < playerTwoPosX + 130 && keys.playerPosY > 138){
-      player.style.borderColor = "red";
-      clearInterval(intervalId);
-    }
-    else{
-      player.style.borderColor = "#ddd";
-    }
   }
 }
 
@@ -288,7 +273,7 @@ function blockFunc(player){
 }
 
 function moveRunFunc(player){
-  getPosition(player);
+ 
   if(keys.playerPosX <= levelWidth - player.offsetWidth){
     player.style.left = parseInt(player.style.left) + 2 + 'px';
   }
@@ -296,7 +281,14 @@ function moveRunFunc(player){
 
 
 function jump(player){
-  getPosition(player);
+  
+  
+  // if(keys.playerPosY > 262){
+  //   player.style.borderColor = "green";
+  // }
+  // else{
+  //   player.style.borderColor = "#ddd";
+  // }
   if (!jumpNow) {
     toTop(function(){
       toBottom(function(){
@@ -316,6 +308,7 @@ function jump(player){
     setTimeout(function() {
       player.style.bottom = parseInt(player.style.bottom) + 5 + 'px';
       if (parseInt(player.style.bottom) > 115){
+        
         callbackFn();
       } else {
         toTop(callbackFn);
@@ -399,6 +392,29 @@ function getPosition(player) {
   //console.log(keys.playerPosX, keys.playerPosY);
   //checkCoords();
 }
+
+var playerTwoPosX = 301 - 68;
+var playerTwoPosY = 158;
+
+var getPosInterval = setInterval(function(){
+    getPosition(heroOne);
+    if(keys.playerPosY < 200){
+       heroOne.style.borderColor = "red";
+    }
+    else{
+      heroOne.style.borderColor = "#ddd";
+    }
+});
+
+var getPosInterval2 = setInterval(function(){
+    getPosition(heroOne);
+    if(keys.playerPosX < playerTwoPosX){
+       heroOne.style.borderColor = "green";
+    }
+    else{
+      heroOne.style.borderColor = "#ddd";
+    }
+});
 
 
 
