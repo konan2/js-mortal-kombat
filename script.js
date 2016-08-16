@@ -84,7 +84,6 @@ var keys = {
 var intervalId =  null;
 var jumpNow = false;
 
-
 // audio
 
 insertAudio('foot_kick');
@@ -98,7 +97,7 @@ insertAudio('jump_end');
 ///
 
 function funkKeyDown(event){
-  console.log(event.keyCode);
+  //console.log(event.keyCode);
   if(event.keyCode === 38){
     keys.movetop = true;
   }
@@ -163,6 +162,7 @@ function funkKeyUp(event){
 }
 
 function useKeys(player){
+  
   if(keys.moveBack){
     if(!intervalId){
      intervalId = setInterval(function(){
@@ -181,7 +181,9 @@ function useKeys(player){
   }
   if(keys.movebottom){
     if(!intervalId){
-      moveBottomFunc(player);
+      intervalId = setInterval(function(){
+        moveBottomFunc(player);
+      });
     }
   }
   if(keys.block){
@@ -244,19 +246,36 @@ function useKeys(player){
 }
 
 
-
+// Movement
 
 function moveBackFunc(player){
   getPosition(player);
   if(keys.playerPosX >= 0){
     player.style.left = parseInt(player.style.left) - 1 + 'px';
+    // if(keys.playerPosX > playerTwoPosX && keys.playerPosX < playerTwoPosX + 130 && keys.playerPosY > 200){
+    //   player.style.borderColor = "red";
+    //   clearInterval(intervalId);
+    // }
+    // else{
+    //   player.style.borderColor = "#ddd";
+    // }
   }
 }
+
+var playerTwoPosX = 301 - 68;
+var playerTwoPosY = 158;
 
 function moveForwardFunc(player){
   getPosition(player);
   if(keys.playerPosX <= levelWidth - player.offsetWidth){
     player.style.left = parseInt(player.style.left) + 1 + 'px';
+    if(keys.playerPosX > playerTwoPosX && keys.playerPosX < playerTwoPosX + 130 && keys.playerPosY > 138){
+      player.style.borderColor = "red";
+      clearInterval(intervalId);
+    }
+    else{
+      player.style.borderColor = "#ddd";
+    }
   }
 }
 
@@ -369,6 +388,7 @@ function onKeyUp(){
 ///// Get the positions
 
 
+
 function getPosition(player) {
   keys.playerPosX = 0;
   keys.playerPosY = 0;
@@ -376,18 +396,36 @@ function getPosition(player) {
   keys.playerPosY += (player.offsetTop - player.scrollTop + player.clientTop);
   var coords = "x:" + keys.playerPosX + " y:" + keys.playerPosY;
   player.innerHTML =  coords;
+  //console.log(keys.playerPosX, keys.playerPosY);
+  //checkCoords();
 }
+
+
+
+  // function checkCoords(){
+  //   if(keys.playerPosX === playerTwoPosX){
+  //     console.log("BINGO");
+      
+  //     keys.moveForward = false;
+  //   }
+  // }
+
+
+// function detectColision(){
+//   console.log("x: " + keys.playerPosX + " y: " + keys.playerPosY);
+// }
+
+// detectColision();
 
 /////////////////////////////////////////////////
 
 // collisions
 
-function collision(){
-  console.log(keys.playerPosX, keys.playerPosY);
+// function collision(){
+//   console.log(keys.playerPosX, keys.playerPosY);
+// }
 
-}
-
-collision();
+// collision();
 
 
 document.addEventListener("keydown", funkKeyDown);
