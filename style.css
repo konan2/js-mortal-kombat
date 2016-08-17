@@ -295,12 +295,22 @@ button{
 
 .hero_1.move-top.move-forward{
 	background: url('sprites/spritesheet_jump_to.png') no-repeat;
-	animation: movetopforward .45s steps(7) forwards;
+	animation: movetopforward .4s steps(7) forwards infinite;
 }
 
 @keyframes movetopforward {
 	from { background-position:  0px 0; }
 	to { background-position: -1050px 0; }
+}
+
+.hero_1.move-top.move-back{
+	background: url('sprites/spritesheet_jump_to.png');
+	animation: movetopback .4s steps(7) forwards infinite;
+}
+
+@keyframes movetopback {
+	from { background-position:  0px 0; }
+	to { background-position: 1050px 0; }
 }
 
 .hero_1.move-top.move-forward.hand-kick{
@@ -315,16 +325,6 @@ button{
 	animation: none;
 }
 
-
-.hero_1.move-top.move-back{
-	background: url('sprites/spritesheet_jump_to.png');
-	animation: movetopback .45s steps(7) forwards;
-}
-
-@keyframes movetopback {
-	from { background-position:  0px 0; }
-	to { background-position: 1050px 0; }
-}
 
 .hero_1.hand-kick{
 	background: url('sprites/spritesheet_hand-kick.png') repeat-x;
