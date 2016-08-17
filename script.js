@@ -86,7 +86,6 @@ var keys = {
 
 var moveInterval = null;
 
-//var jumpNow = false;
 
 // audio
 
@@ -99,7 +98,7 @@ insertAudio('jump_end');
 //playAudio('stage_music_loop', "loop");
 
 
-function funkKeyDown(event){
+function funcKeyDown(event){
   keys.keyPressedHandkick = true;
   keys.keyPressedFootkick = true;
 
@@ -111,7 +110,7 @@ function funkKeyDown(event){
   if(event.keyCode === 38){
     jump(player);
   }
-  if(event.keyCode === 39 && !keys.block && !keys.moverun){
+  if(event.keyCode === 39 && !keys.block && !keys.moverun && !keys.moveBottom){
     clearInterval(moveInterval);
     player.classList.add("move-forward");
     moveInterval = setInterval(function(){
@@ -121,7 +120,7 @@ function funkKeyDown(event){
   if(event.keyCode === 40){
     moveBottomFunc(player);
   }
-  if(event.keyCode === 37 && !keys.block && !keys.moverun){
+  if(event.keyCode === 37 && !keys.block && !keys.moverun && !keys.moveBottom){
     clearInterval(moveInterval);
     player.classList.add("move-back");
     moveInterval = setInterval(function(){
@@ -147,11 +146,11 @@ function funkKeyDown(event){
   }
 }
 
-function funkKeyUp(event){
+function funcKeyUp(event){
    keys.keyPressedHandkick = false;
    keys.keyPressedFootkick = false;
    clearInterval(moveInterval);
-   document.querySelector(".hero").classList.remove("move-back", "move-forward", "move-down", "move-up", "hand-kick", "foot-kick", "move-run");
+   document.querySelector(".hero").classList.remove("move-back", "move-forward", "move-up", "hand-kick", "foot-kick", "move-run");
 
   if(event.keyCode === 38){
     keys.moveTop = false;
@@ -161,6 +160,7 @@ function funkKeyUp(event){
   }
   if(event.keyCode === 40){
     keys.moveBottom = false;
+    document.querySelector(".hero").classList.remove("move-down");
   }
   if(event.keyCode === 37){
     keys.moveBack = false;
@@ -204,6 +204,7 @@ function handKickFunc(player){
 }
 
 function footKickFunc(player){
+  
   player.classList.add("foot-kick");
   playAudio('foot_kick');
   setTimeout(function(){
@@ -351,6 +352,6 @@ function stopAudio(trackname){
 
 //////////////////////////////////////////////////
 
-document.addEventListener("keydown", funkKeyDown);
-document.addEventListener("keyup", funkKeyUp);
+document.addEventListener("keydown", funcKeyDown);
+document.addEventListener("keyup", funcKeyUp);
 

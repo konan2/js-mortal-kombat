@@ -81,6 +81,7 @@ body {
 	z-index: -1;
 	background: url(img/blue-sky.jpg) no-repeat top center;
 	background-size: 100% 86%;
+	overflow: hidden;
 }
 
 .wrapper-decor-1{
@@ -313,13 +314,13 @@ button{
 	to { background-position: 1050px 0; }
 }
 
-.hero_1.move-top.move-forward.hand-kick{
+.hero_1.move-top.move-forward.hand-kick, .hero_1.move-top.move-back.hand-kick{
 	background: url('sprites/cyrax-jump-kick-hand.png') no-repeat;
 	background-position: center 0;
 	animation: none;
 }
 
-.hero_1.move-top.move-forward.foot-kick{
+.hero_1.move-top.move-forward.foot-kick, .hero_1.move-top.move-back.foot-kick{
 	background: url('sprites/cyrax-jump-kick-foot.png') no-repeat;
 	background-position: center 0;
 	animation: none;
