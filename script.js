@@ -431,33 +431,18 @@ var getPosInterval = setInterval(function(){
 
 function playerPositionFix(){
   var playerPosDiff = keys.playerPosX - playerTwoPosX;
-  //console.log("posX: " + keys.playerPosX + " playerPosDiff: " + playerPosDiff);
-  //if(keys.playerPosX > playerTwoPosX - playerWidth && keys.playerPosY === playerHeight ){
-    //if (Math.abs(playerPosDiff) < playerWidth/2 && keys.moveTop && keys.playerPosY < playerHeight / 2){
-    if(keys.playerPosX > playerTwoPosX - playerWidth && keys.playerPosY === playerHeight ){
-      if (playerPosDiff > 0 ){
-        keys.playerPosX += playerWidth / 2;
-        playerTwoPosX -= playerWidth / 2;
-      } else {
-        keys.playerPosX -= playerWidth / 2;
-        playerTwoPosX += playerWidth / 2;
-      }
-      console.log('move lorem ipsum');
-      heroOne.style.left = keys.playerPosX + 'px';
-      heroTwo.style.left = playerTwoPosX + 'px';
-      
+  if(keys.playerPosX > playerTwoPosX - playerWidth && keys.playerPosX < playerTwoPosX + playerWidth && keys.playerPosY > playerHeight - 10){
+    if (playerPosDiff > 0 ){
+      keys.playerPosX += 10;
+      playerTwoPosX -= 10;
+    } 
+    else {
+      keys.playerPosX -= 10;
+      playerTwoPosX += 10;
     }
-    
-    // if(playerPosDiff > 0){
-    //   console.log("playerPosDiff > 0")
-    //   heroOne.style.left = parseInt(heroOne.style.left) + playerPosDiff + 'px';
-    //   console.log(keys.playerPosX);
-    // }
-    // if(playerPosDiff < 0){
-    //   console.log("playerPosDiff < 0")
-    //   heroOne.style.left = parseInt(heroOne.style.left) + playerPosDiff + 'px';
-    // }
-  //}
+    heroOne.style.left = keys.playerPosX + 'px';
+    heroTwo.style.left = playerTwoPosX + 'px';
+  }
 }
 
 
