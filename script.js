@@ -81,10 +81,17 @@ var keys = {
   playerheight: 138,
   keyPressedHandkick: false,
   keyPressedFootkick: false,
+  keyPressedJump: false,
   footKickEnd: true,
-  handKickEnd: true
+  handKickEnd: true,
+  jumpEnd: true
 };
 
+
+var playerTwoPosX = 500;
+var playerTwoPosY = 262;
+var playerWidth = 72;
+var playerHeight = 262;
 
 var moveForwardInterval = null;
 var moveBackInterval = null;
@@ -102,22 +109,15 @@ insertAudio('jump_end');
 
 
 function funcKeyDown(event){
-  
-  
-
   var player;
   if(event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40 || event.keyCode === 37 || event.keyCode === 65 || event.keyCode === 83 || event.keyCode === 81 || event.keyCode === 87){
     player = heroOne;
   }
 
-  // jump
-  // if(event.keyCode === 38 && !keys.block){
-  //   jump(player);
-  // }
-
-
-
-
+  if(event.keyCode === 38 && !keys.block){
+    keys.keyPressedJump = true;
+    jump(player);
+  }
 
   // Move forward
   if(event.keyCode === 39 && !keys.block && !keys.moverun && !keys.moveBottom && !keys.handkick && !keys.footkick){
@@ -139,6 +139,8 @@ function funcKeyDown(event){
 
 // Move bottom
   if(event.keyCode === 40){
+    clearInterval(moveForwardInterval);
+    clearInterval(moveBackInterval);
     moveBottomFunc(player);
   }
 
@@ -158,6 +160,7 @@ function funcKeyDown(event){
   if(event.keyCode === 81 && !keys.block){
     clearInterval(moveForwardInterval);
     clearInterval(moveBackInterval);
+    keys.moverun = true;
     player.classList.add("move-run");
     moveForwardInterval = setInterval(function(){
       moveRunFunc(player);
@@ -170,32 +173,6 @@ function funcKeyDown(event){
     clearInterval(moveBackInterval);
     blockFunc(player);
   }
-
-/////////////////
-
-
-
-  if(event.keyCode === 39){
-    keys.moveForward = true;
-  }
-
-  if(event.keyCode === 38){
-    keys.moveTop = true;
-  }
-
-  if(event.keyCode === 37){
-    keys.moveBack = true;
-  }
-
-  if(keys.moveTop && keys.moveForward){
-    jumpForward(heroOne);
-  }
-
-  if(keys.moveTop && keys.moveBack){
-    jumpBack(heroOne);
-  }
-
-  console.log(keys.moveBack, keys.moveTop, keys.moveForward);
 }
 
 function funcKeyUp(event){
@@ -205,6 +182,7 @@ function funcKeyUp(event){
   }
   if(event.keyCode === 38){
     keys.moveTop = false;
+    keys.keyPressedJump = false;
     player.classList.remove("move-up");
   }
   if(event.keyCode === 39){
@@ -232,6 +210,7 @@ function funcKeyUp(event){
   if(event.keyCode === 81){
     keys.moverun = false;
     player.classList.remove("move-run");
+    clearInterval(moveForwardInterval);
   }
   if(event.keyCode === 87){
     keys.block = false;
@@ -247,32 +226,16 @@ function funcKeyUp(event){
       });
     }
   }
-
-  if(event.keyCode === 39){
-    keys.moveForward = false;
-  }
-
-  if(event.keyCode === 38){
-    keys.moveTop = false;
-  }
-
-  if(event.keyCode === 37){
-    keys.moveBack = false;
-  }
 }
-
-
-
-
 
 
 // Kicks
 
 function handKickFunc(player){
-  if(keys.moveForward){
+  if(!keys.moveTop && keys.moveForward || keys.jumpEnd && keys.moveTop && keys.moveForward ){
     clearInterval(moveForwardInterval);
   }
-  if(keys.moveBack){
+  if(!keys.moveTop && keys.moveBack || keys.jumpEnd && keys.moveTop && keys.moveBack){
     clearInterval(moveBackInterval);
   }
   if(keys.footKickEnd){
@@ -284,7 +247,7 @@ function handKickFunc(player){
       if(keys.moveForward){
          clearInterval(moveForwardInterval);
          moveForwardInterval = setInterval(function(){
-          moveForwardFunc(player)
+           moveForwardFunc(player)
         });
       }
       if(keys.moveBack){
@@ -308,10 +271,10 @@ function handKickFunc(player){
 }
 
 function footKickFunc(player){
-  if(keys.moveForward){
+  if(!keys.moveTop && keys.moveForward || keys.jumpEnd && keys.moveTop && keys.moveForward){
     clearInterval(moveForwardInterval);
   }
-  if(keys.moveBack){
+  if(!keys.moveTop && keys.moveBack || keys.jumpEnd && keys.moveTop && keys.moveBack){
     clearInterval(moveBackInterval);
   }
   if(keys.handKickEnd){
@@ -346,52 +309,18 @@ function footKickFunc(player){
   }
 }
 
-
-// Movement
-
-function moveBackFunc(player){
-  if(keys.playerPosX >= 0){
-    keys.moveBack = true;
-    player.style.left = parseInt(player.style.left) - 1 + 'px';
-  }
-}
-
-function moveForwardFunc(player){
-  if(keys.playerPosX <= levelWidth - player.offsetWidth){
-    keys.moveForward = true;
-    player.style.left = parseInt(player.style.left) + 1 + 'px';
-  }
-}
-
-function moveBottomFunc(player){
-  keys.moveBottom = true;
-  player.classList.add("move-down");
-}
-
-function blockFunc(player){
-  keys.block = true;
-  player.classList.add("block");
-}
-
-function moveRunFunc(player){
-  if(keys.playerPosX <= levelWidth - player.offsetWidth){
-    keys.moverun = true;
-    playAudio('syborg_run');
-    player.style.left = parseInt(player.style.left) + 2 + 'px';
-  }
-}
-
+// jump
 
 function jump(player){
-  if (!keys.moveTop) {
+  if (!keys.moveTop && keys.jumpEnd) {
     keys.moveTop = true;
+    keys.jumpEnd = false;
     toTop(function(){
       toBottom(function(){
         jumpEnd(player);
       });
     });
   }
-
   function toTop(callbackFn){
     player.classList.add("move-top");
     setTimeout(function() {
@@ -419,108 +348,56 @@ function jump(player){
     player.classList.remove("move-top");
     playAudio('jump_end');
     keys.moveTop = false;
-  }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function jumpForward(player){
-    toTopForward(function(){
-      toBottomForward(function(){
-        jumpEndForward(player);
-      });
-    });
-  
-
-  function toTopForward(callbackFn){
-    player.classList.add("jump-forward");
-    setTimeout(function() {
-      player.style.bottom = parseInt(player.style.bottom) + 5 + 'px';
-      player.style.left = parseInt(player.style.left) + 2 + 'px';
-      if (parseInt(player.style.bottom) > 150){
-        callbackFn();
-      } 
-      else {
-        toTopForward(callbackFn);
+    keys.jumpEnd = true;
+    if(keys.keyPressedJump){
+        keys.moveTop = true;
       }
-    }, 10);
-  }
-  function toBottomForward(callbackFn){
-    setTimeout(function() {
-      player.style.bottom = parseInt(player.style.bottom) - 5 + 'px';
-      player.style.left = parseInt(player.style.left) + 2 + 'px';
-      if (parseInt(player.style.bottom) > 0){
-        toBottomForward(callbackFn);
-      } 
-      else {
-        callbackFn();
-      }
-    }, 10);
-  }
-  function jumpEndForward(player){
-    player.classList.remove("jump-forward");
-    playAudio('jump_end');
-    keys.moveTop = false;
+    else{
+      keys.moveTop = false;
+    }
   }
 }
 
 
 
 
+// Movement
 
-function jumpBack(player){
-
-    toTopBack(function(){
-      toBottomBack(function(){
-        jumpEndBack(player);
-      });
-    });
-  
-
-  function toTopBack(callbackFn){
-    player.classList.add("jump-back");
-    setTimeout(function() {
-      player.style.bottom = parseInt(player.style.bottom) + 5 + 'px';
-      player.style.left = parseInt(player.style.left) - 2 + 'px';
-      if (parseInt(player.style.bottom) > 150){
-        callbackFn();
-      } 
-      else {
-        toTopBack(callbackFn);
-      }
-    }, 10);
-  }
-  function toBottomBack(callbackFn){
-    setTimeout(function() {
-      player.style.bottom = parseInt(player.style.bottom) - 5 + 'px';
-      player.style.left = parseInt(player.style.left) - 2 + 'px';
-      if (parseInt(player.style.bottom) > 0){
-        toBottomBack(callbackFn);
-      } 
-      else {
-        callbackFn();
-      }
-    }, 10);
-  }
-  function jumpEndBack(player){
-    player.classList.remove("jump-back");
-    playAudio('jump_end');
-    keys.moveTop = false;
+function moveBackFunc(player){
+  if(keys.playerPosX >= 0){
+    if(keys.playerPosY < playerHeight || keys.playerPosX < playerTwoPosX + playerWidth || keys.playerPosX > playerTwoPosX + playerWidth){
+      keys.moveBack = true;
+      player.style.left = parseInt(player.style.left) - 1 + 'px';
+    }
   }
 }
+
+function moveForwardFunc(player){
+  if(keys.playerPosX <= levelWidth - player.offsetWidth){
+    if(keys.playerPosY < playerHeight || keys.playerPosX < playerTwoPosX - playerWidth || keys.playerPosX > playerTwoPosX - playerWidth){//
+      keys.moveForward = true;
+      player.style.left = parseInt(player.style.left) + 1 + 'px';
+    }
+  }
+}
+
+function moveBottomFunc(player){
+  keys.moveBottom = true;
+  player.classList.add("move-down");
+}
+
+function blockFunc(player){
+  keys.block = true;
+  player.classList.add("block");
+}
+
+function moveRunFunc(player){
+  if(keys.playerPosX <= levelWidth - player.offsetWidth){
+    playAudio('syborg_run');
+    player.style.left = parseInt(player.style.left) + 2 + 'px';
+  }
+}
+
 
 ///// Get the positions
 
@@ -531,24 +408,57 @@ function getPosition(player) {
   keys.playerPosY += (player.offsetTop - player.scrollTop + player.clientTop);
   var coords = "x:" + keys.playerPosX + " y:" + keys.playerPosY;
   player.innerHTML =  coords;
+
+  if(keys.playerPosX > playerTwoPosX){
+    heroOne.classList.add("flipped");
+    heroTwo.classList.remove("flipped");
+  }
+  else{
+    heroOne.classList.remove("flipped");
+    heroTwo.classList.add("flipped");
+  }
+  playerPositionFix();
 }
 
-var playerTwoPosX = 301 - 68;
-var playerTwoPosY = 158;
+
+
 
 var getPosInterval = setInterval(function(){
     getPosition(heroOne);
 });
 
-var getPosInterval2 = setInterval(function(){
-    getPosition(heroOne);
-    if(keys.playerPosX > playerTwoPosX){
-       heroOne.style.borderColor = "green";
+
+
+function playerPositionFix(){
+  var playerPosDiff = keys.playerPosX - playerTwoPosX;
+  //console.log("posX: " + keys.playerPosX + " playerPosDiff: " + playerPosDiff);
+  //if(keys.playerPosX > playerTwoPosX - playerWidth && keys.playerPosY === playerHeight ){
+    //if (Math.abs(playerPosDiff) < playerWidth/2 && keys.moveTop && keys.playerPosY < playerHeight / 2){
+    if(keys.playerPosX > playerTwoPosX - playerWidth && keys.playerPosY === playerHeight ){
+      if (playerPosDiff > 0 ){
+        keys.playerPosX += playerWidth / 2;
+        playerTwoPosX -= playerWidth / 2;
+      } else {
+        keys.playerPosX -= playerWidth / 2;
+        playerTwoPosX += playerWidth / 2;
+      }
+      console.log('move lorem ipsum');
+      heroOne.style.left = keys.playerPosX + 'px';
+      heroTwo.style.left = playerTwoPosX + 'px';
+      
     }
-    if(keys.playerPosX < playerTwoPosX || keys.playerPosX > playerTwoPosX + 68 * 2){
-      heroOne.style.borderColor = "#ddd";
-    }
-});
+    
+    // if(playerPosDiff > 0){
+    //   console.log("playerPosDiff > 0")
+    //   heroOne.style.left = parseInt(heroOne.style.left) + playerPosDiff + 'px';
+    //   console.log(keys.playerPosX);
+    // }
+    // if(playerPosDiff < 0){
+    //   console.log("playerPosDiff < 0")
+    //   heroOne.style.left = parseInt(heroOne.style.left) + playerPosDiff + 'px';
+    // }
+  //}
+}
 
 
 
