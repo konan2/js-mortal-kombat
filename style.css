@@ -189,7 +189,7 @@ button{
 	margin: 0 5px;
 }
 
-.flipped{
+[flipped]{
 	-moz-transform: scaleX(-1);
 	-o-transform: scaleX(-1);
 	-webkit-transform: scaleX(-1);
@@ -198,14 +198,6 @@ button{
 	-ms-filter: "FlipH";
 }
 
-.flipped-back{
-	-moz-transform: scaleX(1);
-	-o-transform: scaleX(1);
-	-webkit-transform: scaleX(1);
-	transform: scaleX(1);
-	filter: FlipH;
-	-ms-filter: "FlipH";
-}
 
 
 .hero_1{
@@ -220,14 +212,16 @@ button{
 	background-repeat: no-repeat;
 }
 
-.hero_1.move-forward{
+.hero_1.move-forward, .hero_1.move-back[flipped]{
 	background-image: url(sprites/cyrax-move-forward.gif);
 	background-repeat: no-repeat;
+	animation: none;
 }
 
-.hero_1.move-back{
+.hero_1.move-back, .hero_1.move-forward[flipped]{
 	background-image: url(sprites/cyrax-move-backward.gif);
 	background-repeat: no-repeat;
+	animation: none;
 }
 
 .hero_1.move-run{
@@ -265,7 +259,7 @@ button{
 	to { background-position: -300px 0; }
 }
 
-.hero_1.move-top{
+.hero_1.move-top, .hero_1.move-top.move-forward, .hero_1.move-top.move-back {
 	background: url('sprites/spritesheet_jump.png') no-repeat;
 	animation: movetop .3s steps(2) forwards;
 }
@@ -297,17 +291,17 @@ button{
 	to { background-position: -450px 0px; }
 }
 
-.hero_1.jump-forward{
+/*.hero_1.jump-forward{
 	background: url('sprites/spritesheet_jump_to.png') no-repeat;
 	animation: movetopforward .4s steps(7) forwards infinite;
-}
+}*/
 
-@keyframes movetopforward {
+/*@keyframes movetopforward {
 	from { background-position:  0px 0; }
 	to { background-position: -1050px 0; }
-}
+}*/
 
-.hero_1.jump-back{
+/*.hero_1.jump-back{
 	background: url('sprites/spritesheet_jump_to.png');
 	animation: movetopback .4s steps(7) forwards infinite;
 }
@@ -315,7 +309,7 @@ button{
 @keyframes movetopback {
 	from { background-position:  0px 0; }
 	to { background-position: 1050px 0; }
-}
+}*/
 
 .hero_1.move-top.move-forward.hand-kick, .hero_1.move-top.move-back.hand-kick{
 	background: url('sprites/cyrax-jump-kick-hand.png') no-repeat;
@@ -330,7 +324,7 @@ button{
 }
 
 
-.hero_1.hand-kick{
+.hero_1.hand-kick, .hero_1.hand-kick[flipped]{
 	background: url('sprites/spritesheet_hand-kick.png') repeat-x;
 	animation: handkick .45s steps(4) infinite;
 }
@@ -340,7 +334,7 @@ button{
 	to { background-position: -600px 5px; }
 }
 
-.hero_1.foot-kick{
+.hero_1.foot-kick, .hero_1.foot-kick[flipped]{
 	background: url('sprites/spritesheet_kick_foot.png') repeat-x;
 	animation: footkick .31s steps(6) forwards infinite;
 	animation-direction: alternate;
@@ -352,9 +346,9 @@ button{
 }
 
 .hero_1.move-down.hand-kick{
-	background: url('sprites/spritesheet_kick-hand_seat.png') repeat-x;
+	background: url('sprites/spritesheet_kick-hand_seat.png') no-repeat;
 	animation: movedownhandkick .25s steps(3) forwards infinite;
-	animation-direction: alternate;
+	
 }
 
 @keyframes movedownhandkick {
@@ -363,9 +357,9 @@ button{
 }
 
 .hero_1.move-down.foot-kick{
-	background: url('sprites/spritesheet_kick-foot_seat.png') repeat-x;
+	background: url('sprites/spritesheet_kick-foot_seat.png') no-repeat;
 	animation: movedownfootkick .25s steps(3) forwards infinite;
-	animation-direction: alternate;
+	
 }
 
 @keyframes movedownfootkick {
