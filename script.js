@@ -1,7 +1,7 @@
 
 var bodyBlock = document.querySelector(".wrapper");
-var playerOne = document.getElementById("hero1");
-var playerTwo = document.getElementById("hero2");
+//var playerOne = document.getElementById("hero1");
+//var playerTwo = document.getElementById("hero2");
 
 var resetBtn = document.getElementById("reset");
 var bloodStatus = document.querySelector(".blood-status");
@@ -10,8 +10,7 @@ var health = 100;
 var playerOneHealth = health;
 var playerTwoHealth = health;
 
-var levelWrapper = document.querySelector(".wrapper");
-var levelWidth = levelWrapper.offsetWidth;
+
 
 
 var wastedText = document.createElement('span');
@@ -67,6 +66,8 @@ function resetFunc(){
 
 
 var playerOneData = {
+  playerSelector: document.getElementById("hero1"),
+  opponent: playerTwoData,
   moveTop: false,
   moveForward: false,
   moveBottom: false,
@@ -89,6 +90,8 @@ var playerOneData = {
 
 
 var playerTwoData = {
+  playerSelector: document.getElementById("hero2"),
+  opponent: playerOneData,
   moveTop: false,
   moveForward: false,
   moveBottom: false,
@@ -109,13 +112,19 @@ var playerTwoData = {
   jumpEnd: true
 };
 
+var player;
 
 var playerWidth = 72;
 var playerHeight = 262;
 
 var moveForwardInterval = null;
 var moveBackInterval = null;
+var moveRunInterval = null;
 var getPosInterval = null;
+
+
+var levelWrapper = document.querySelector(".wrapper");
+var levelWidth = levelWrapper.offsetWidth;
 
 // audio
 
@@ -129,60 +138,62 @@ insertAudio('jump_end');
 
 
 function funcKeyDown(event){
-  var player;
   if(event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40 || event.keyCode === 37 || event.keyCode === 65 || event.keyCode === 83 || event.keyCode === 81 || event.keyCode === 87){
-    player = playerOne;
+    player = playerOneData;
   }
+    
+  checkPlayerSide();
 
-  if(event.keyCode === 38 && !playerOneData.block){
-    playerOneData.keyPressedJump = true;
+
+  // jump
+  if(event.keyCode === 38 && !player.block && !player.moverun){
+    player.keyPressedJump = true;
     jump(player);
   }
 
   // Move forward
-  if(event.keyCode === 39 && !playerOneData.block && !playerOneData.moverun && !playerOneData.moveBottom && !playerOneData.handkick && !playerOneData.footkick){
+  if(event.keyCode === 39 && !player.block && !player.moverun && !player.moveBottom && !player.handkick && !player.footkick){
     clearInterval(moveForwardInterval);
-    player.classList.add("move-forward");
+    player.playerSelector.classList.add("move-forward");
     moveForwardInterval = setInterval(function(){
       moveForwardFunc(player);
     });
   }
 
-  // Moveback
-  if(event.keyCode === 37 && !playerOneData.block && !playerOneData.moverun && !playerOneData.moveBottom && !playerOneData.handkick && !playerOneData.footkick){
+  // Move back
+  if(event.keyCode === 37 && !player.block && !player.moverun && !player.moveBottom && !player.handkick && !player.footkick){
     clearInterval(moveBackInterval);
-    player.classList.add("move-back");
+    player.playerSelector.classList.add("move-back");
     moveBackInterval = setInterval(function(){
       moveBackFunc(player);
     });
   }
 
-// Move bottom
+  // Move bottom
   if(event.keyCode === 40){
     clearInterval(moveForwardInterval);
     clearInterval(moveBackInterval);
     moveBottomFunc(player);
   }
 
-  // Handkick
-  if(event.keyCode === 65 && !playerOneData.handkick && playerOneData.handKickEnd && !playerOneData.footkick){
-    playerOneData.keyPressedHandkick = true;
+  // Hand kick
+  if(event.keyCode === 65 && !player.handkick && player.handKickEnd && !player.footkick){
+    player.keyPressedHandkick = true;
     handKickFunc(player);
   }
 
-  // Footkick
-  if(event.keyCode === 83 && !playerOneData.footkick && playerOneData.footKickEnd && !playerOneData.handkick){
-    playerOneData.keyPressedFootkick = true;
+  // Foot kick
+  if(event.keyCode === 83 && !player.footkick && player.footKickEnd && !player.handkick){
+    player.keyPressedFootkick = true;
     footKickFunc(player);
   }
 
   // Run
-  if(event.keyCode === 81 && !playerOneData.block){
-    clearInterval(moveForwardInterval);
-    clearInterval(moveBackInterval);
-    playerOneData.moverun = true;
-    player.classList.add("move-run");
-    moveForwardInterval = setInterval(function(){
+  if(event.keyCode === 81 && !player.block && !player.moveTop && player.jumpEnd && !player.moveForward && !player.moveBack){
+    clearInterval(moveRunInterval);
+    player.moverun = true;
+    player.playerSelector.classList.add("move-run");
+    moveRunInterval = setInterval(function(){
       moveRunFunc(player);
     });
   }
@@ -191,56 +202,74 @@ function funcKeyDown(event){
   if(event.keyCode === 87){
     clearInterval(moveForwardInterval);
     clearInterval(moveBackInterval);
+    clearInterval(moveRunInterval);
     blockFunc(player);
   }
 }
 
 function funcKeyUp(event){
-  var player;
   if(event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40 || event.keyCode === 37 || event.keyCode === 65 || event.keyCode === 83 || event.keyCode === 81 || event.keyCode === 87){
-    player = playerOne;
+    player = playerOneData;
   }
+
+  checkPlayerSide();
+
+  // jump
   if(event.keyCode === 38){
-    playerOneData.moveTop = false;
-    playerOneData.keyPressedJump = false;
-    player.classList.remove("move-up");
+    player.moveTop = false;
+    player.keyPressedJump = false;
+    player.playerSelector.classList.remove("move-up");
   }
+
+  // Move forward
   if(event.keyCode === 39){
-    playerOneData.moveForward = false;
-    player.classList.remove("move-forward");
+    player.moveForward = false;
+    player.playerSelector.classList.remove("move-forward");
     clearInterval(moveForwardInterval);
   }
-  if(event.keyCode === 40){
-    playerOneData.moveBottom = false;
-    player.classList.remove("move-down");
-  }
+
+  // Move back
   if(event.keyCode === 37){
-    playerOneData.moveBack = false;
-    player.classList.remove("move-back");
+    player.moveBack = false;
+    player.playerSelector.classList.remove("move-back");
     clearInterval(moveBackInterval);
   }
+
+  // Move bottom
+  if(event.keyCode === 40){
+    player.moveBottom = false;
+    player.playerSelector.classList.remove("move-down");
+  }
+
+  // Hand kick
   if(event.keyCode === 65){
-    playerOneData.keyPressedHandkick = false;
-    playerOneData.handkick = false;
+    player.keyPressedHandkick = false;
+    player.handkick = false;
   }
+
+  // Foot kick
   if(event.keyCode === 83){
-    playerOneData.keyPressedFootkick = false;
-    playerOneData.footkick = false;
+    player.keyPressedFootkick = false;
+    player.footkick = false;
   }
+
+  // Run
   if(event.keyCode === 81){
-    playerOneData.moverun = false;
-    player.classList.remove("move-run");
-    clearInterval(moveForwardInterval);
+    player.moverun = false;
+    player.playerSelector.classList.remove("move-run");
+    clearInterval(moveRunInterval);
   }
+
+  // Block
   if(event.keyCode === 87){
-    playerOneData.block = false;
-    player.classList.remove("block");
-    if(playerOneData.moveForward){
+    player.block = false;
+    player.playerSelector.classList.remove("block");
+    if(player.moveForward){
          moveForwardInterval = setInterval(function(){
           moveForwardFunc(player)
         });
       }
-    if(playerOneData.moveBack){
+    if(player.moveBack){
        moveBackInterval = setInterval(function(){
         moveBackFunc(player)
       });
@@ -252,78 +281,78 @@ function funcKeyUp(event){
 // Kicks
 
 function handKickFunc(player){
-  if(!playerOneData.moveTop && playerOneData.moveForward || playerOneData.jumpEnd && playerOneData.moveTop && playerOneData.moveForward ){
+  if(!player.moveTop && player.moveForward || player.jumpEnd && player.moveTop && player.moveForward ){
     clearInterval(moveForwardInterval);
   }
-  if(!playerOneData.moveTop && playerOneData.moveBack || playerOneData.jumpEnd && playerOneData.moveTop && playerOneData.moveBack){
+  if(!player.moveTop && player.moveBack || player.jumpEnd && player.moveTop && player.moveBack){
     clearInterval(moveBackInterval);
   }
-  if(playerOneData.footKickEnd){
-    playerOneData.handkick = true;
-    player.classList.add("hand-kick");
+  if(player.footKickEnd){
+    player.handkick = true;
+    player.playerSelector.classList.add("hand-kick");
     playAudio('hand_kick');
-    playerOneData.handKickEnd = false;
+    player.handKickEnd = false;
     setTimeout(function(){
-      if(playerOneData.moveForward){
+      if(player.moveForward){
          clearInterval(moveForwardInterval);
          moveForwardInterval = setInterval(function(){
            moveForwardFunc(player)
         });
       }
-      if(playerOneData.moveBack){
+      if(player.moveBack){
          clearInterval(moveBackInterval);
          moveBackInterval = setInterval(function(){
           moveBackFunc(player);
         });
       }
-      playerOneData.handkick = false;
-      player.classList.remove("hand-kick");
+      player.handkick = false;
+      player.playerSelector.classList.remove("hand-kick");
       stopAudio('hand_kick');
-      playerOneData.handKickEnd = true;
-      if(playerOneData.keyPressedHandkick){
-        playerOneData.handkick = true;
+      player.handKickEnd = true;
+      if(player.keyPressedHandkick){
+        player.handkick = true;
       }
       else{
-        playerOneData.handkick = false;
+        player.handkick = false;
       }
     }, 300);
   }
 }
 
 function footKickFunc(player){
-  if(!playerOneData.moveTop && playerOneData.moveForward || playerOneData.jumpEnd && playerOneData.moveTop && playerOneData.moveForward){
+  if(!player.moveTop && player.moveForward || player.jumpEnd && player.moveTop && player.moveForward){
     clearInterval(moveForwardInterval);
   }
-  if(!playerOneData.moveTop && playerOneData.moveBack || playerOneData.jumpEnd && playerOneData.moveTop && playerOneData.moveBack){
+  if(!player.moveTop && player.moveBack || player.jumpEnd && player.moveTop && player.moveBack){
     clearInterval(moveBackInterval);
   }
-  if(playerOneData.handKickEnd){
-    playerOneData.footkick = true;
-    player.classList.add("foot-kick");
+  if(player.handKickEnd){
+    player.footkick = true;
+    player.playerSelector.classList.add("foot-kick");
     playAudio('foot_kick');
-    playerOneData.footKickEnd = false;
+    player.footKickEnd = false;
     setTimeout(function(){
-      if(playerOneData.moveForward){
+      if(player.moveForward){
          clearInterval(moveForwardInterval);
          moveForwardInterval = setInterval(function(){
           moveForwardFunc(player)
         });
       }
-      if(playerOneData.moveBack){
+      if(player.moveBack){
          clearInterval(moveBackInterval);
          moveBackInterval= setInterval(function(){
           moveBackFunc(player)
         });
       }
-      playerOneData.footkick = false;
-      player.classList.remove("foot-kick");
+      player.footkick = false;
+      player.playerSelector.classList.remove("foot-kick");
       stopAudio('foot_kick');
-      playerOneData.footKickEnd = true;
-      if(playerOneData.keyPressedFootkick){
-        playerOneData.footkick = true;
+      player.footKickEnd = true;
+      if(player.keyPressedFootkick){
+        player.footkick = true;
       }
       else{
-        playerOneData.footkick = false;
+        player.footkick = false;
       }
     }, 400);
   }
@@ -332,9 +361,9 @@ function footKickFunc(player){
 // jump
 
 function jump(player){
-  if (!playerOneData.moveTop && playerOneData.jumpEnd) {
-    playerOneData.moveTop = true;
-    playerOneData.jumpEnd = false;
+  if (!player.moveTop && player.jumpEnd) {
+    player.moveTop = true;
+    player.jumpEnd = false;
     toTop(function(){
       toBottom(function(){
         jumpEnd(player);
@@ -342,10 +371,10 @@ function jump(player){
     });
   }
   function toTop(callbackFn){
-    player.classList.add("move-top");
+    player.playerSelector.classList.add("move-top");
     setTimeout(function() {
-      player.style.bottom = parseInt(player.style.bottom) + 5 + 'px';
-      if (parseInt(player.style.bottom) > 150){
+      player.playerSelector.style.bottom = parseInt(player.playerSelector.style.bottom) + 5 + 'px';
+      if (parseInt(player.playerSelector.style.bottom) > 150){
         callbackFn();
       } 
       else {
@@ -355,8 +384,8 @@ function jump(player){
   }
   function toBottom(callbackFn){
     setTimeout(function() {
-      player.style.bottom = parseInt(player.style.bottom) - 5 + 'px';
-      if (parseInt(player.style.bottom) > 0){
+      player.playerSelector.style.bottom = parseInt(player.playerSelector.style.bottom) - 5 + 'px';
+      if (parseInt(player.playerSelector.style.bottom) > 0){
         toBottom(callbackFn);
       } 
       else {
@@ -365,15 +394,15 @@ function jump(player){
     }, 10);
   }
   function jumpEnd(player){
-    player.classList.remove("move-top");
+    player.playerSelector.classList.remove("move-top");
     playAudio('jump_end');
-    playerOneData.moveTop = false;
-    playerOneData.jumpEnd = true;
-    if(playerOneData.keyPressedJump){
-        playerOneData.moveTop = true;
+    player.moveTop = false;
+    player.jumpEnd = true;
+    if(player.keyPressedJump){
+        player.moveTop = true;
       }
     else{
-      playerOneData.moveTop = false;
+      player.moveTop = false;
     }
   }
 }
@@ -382,43 +411,43 @@ function jump(player){
 // Movement
 
 function moveBackFunc(player){
-  if(playerOneData.playerPosX >= 0){
-    if(playerOneData.playerPosY < playerHeight || playerOneData.playerPosX < playerTwoData.playerPosX + playerWidth || playerOneData.playerPosX > playerTwoData.playerPosX + playerWidth){
-      playerOneData.moveBack = true;
-      player.style.left = parseInt(player.style.left) - 1 + 'px';
+  if(player.playerPosX >= 0){
+    if(player.playerPosY < playerHeight || player.playerPosX < player2.playerPosX + playerWidth || player.playerPosX > player2.playerPosX + playerWidth || player.playerPosX === player2.playerPosX + playerWidth){
+      player.moveBack = true;
+      player.playerSelector.style.left = parseInt(player.playerSelector.style.left) - 1 + 'px';
     }
   }
 }
 
 function moveForwardFunc(player){
-  if(playerOneData.playerPosX <= levelWidth - player.offsetWidth){
-    if(playerOneData.playerPosY < playerHeight || playerOneData.playerPosX < playerTwoData.playerPosX - playerWidth || playerOneData.playerPosX > playerTwoData.playerPosX - playerWidth){
-      playerOneData.moveForward = true;
-      player.style.left = parseInt(player.style.left) + 1 + 'px';
+  if(player.playerPosX <= levelWidth - player.playerSelector.offsetWidth){
+    if(player.playerPosY < playerHeight || player.playerPosX < player2.playerPosX - playerWidth || player.playerPosX > player2.playerPosX - playerWidth || player.playerPosX === player2.playerPosX - playerWidth){
+      player.moveForward = true;
+      player.playerSelector.style.left = parseInt(player.playerSelector.style.left) + 1 + 'px';
     }
   }
 }
 
 function moveBottomFunc(player){
-  playerOneData.moveBottom = true;
-  player.classList.add("move-down");
+  player.moveBottom = true;
+  player.playerSelector.classList.add("move-down");
 }
 
 function blockFunc(player){
-  if(!playerOneData.moveTop){
-    playerOneData.block = true;
-    player.classList.add("block");
+  if(!player.moveTop){
+    player.block = true;
+    player.playerSelector.classList.add("block");
   }
 }
 
 function moveRunFunc(player){
-  if(playerOneData.playerPosX <= levelWidth - player.offsetWidth){
+  if(player.playerPosX <= levelWidth - player.playerSelector.offsetWidth && !(player.playerPosX === 0)){
     playAudio('syborg_run');
-    if(playerOneData.playerPosX > playerTwoData.playerPosX){
-      player.style.left = parseInt(player.style.left) - 2 + 'px';
+    if(player.playerPosX > player2.playerPosX){
+      player.playerSelector.style.left = parseInt(player.playerSelector.style.left) - 2 + 'px';
     }
     else{
-      player.style.left = parseInt(player.style.left) + 2 + 'px';
+      player.playerSelector.style.left = parseInt(player.playerSelector.style.left) + 2 + 'px';
     }
   }
 }
@@ -427,30 +456,13 @@ function moveRunFunc(player){
 ///// Get the positions
 
 function getPosition(player) {
-  playerOneData.playerPosX = 0;
-  playerOneData.playerPosY = 0;
-  playerOneData.playerPosX += (player.offsetLeft - player.scrollLeft + player.clientLeft);
-  playerOneData.playerPosY += (player.offsetTop - player.scrollTop + player.clientTop);
-  var coords = "x:" + playerOneData.playerPosX + " y:" + playerOneData.playerPosY;
-  player.innerHTML =  coords;
-
-  if(playerOneData.playerPosX > playerTwoData.playerPosX){
-    playerOne.setAttribute("flipped", "flipped");
-    playerTwo.removeAttribute("flipped", "flipped");
-  }
-  else{
-    playerOne.removeAttribute("flipped", "flipped");
-    playerTwo.setAttribute("flipped", "flipped");
-  }
-  playerPositionFix();
+  player.playerPosX = 0;
+  player.playerPosY = 0;
+  player.playerPosX += (player.playerSelector.offsetLeft - player.playerSelector.scrollLeft + player.playerSelector.clientLeft);
+  player.playerPosY += (player.playerSelector.offsetTop - player.playerSelector.scrollTop + player.playerSelector.clientTop);
+  var coords = "x:" + player.playerPosX + " y:" + player.playerPosY;
+  player.playerSelector.innerHTML =  coords;
 }
-
-
-
-
-getPosInterval = setInterval(function(){
-  getPosition(playerOne);
-});
 
 
 
@@ -458,28 +470,44 @@ function playerPositionFix(){
   var playerPosDiff = playerOneData.playerPosX - playerTwoData.playerPosX;
   if(playerOneData.playerPosX > playerTwoData.playerPosX - playerWidth && playerOneData.playerPosX < playerTwoData.playerPosX + playerWidth && playerOneData.playerPosY > playerHeight - 10){
     if (playerPosDiff > 0 ){
-      playerOneData.playerPosX += 10;
-      playerTwoData.playerPosX -= 10;
+      playerOneData.playerPosX += 5;
+      playerTwoData.playerPosX -= 5;
     } 
     else {
-      playerOneData.playerPosX -= 10;
-      playerTwoData.playerPosX += 10;
+      playerOneData.playerPosX -= 5;
+      playerTwoData.playerPosX += 5;
     }
-    playerOne.style.left = playerOneData.playerPosX + 'px';
-    playerTwo.style.left = playerTwoData.playerPosX + 'px';
+    // move opponent while push
+    playerOneData.playerSelector.style.left = playerOneData.playerPosX + 'px';
+    playerTwoData.playerSelector.style.left = playerTwoData.playerPosX + 'px';
   }
-  //////////////// move opponent when moveTo
-  if(playerOneData.playerPosX === playerTwoData.playerPosX - playerWidth && playerOneData.moveForward && playerOneData.playerPosX < levelWidth - playerWidth){
-    playerOne.style.left = parseInt(playerOne.style.left) + 1 + 'px';
-    playerTwo.style.left = parseInt(playerTwo.style.left) + 1 + 'px';
+
+
+  /// Player direction
+  if(playerOneData.playerPosX > playerTwoData.playerPosX){
+    playerOneData.playerSelector.setAttribute("flipped", "flipped");
+    playerTwoData.playerSelector.removeAttribute("flipped", "flipped");
   }
-  if(playerOneData.playerPosX === playerTwoData.playerPosX + playerWidth && playerOneData.moveBack && playerTwoData.playerPosX >= 0){
-    playerOne.style.left = parseInt(playerOne.style.left) - 1 + 'px';
-    playerTwo.style.left = parseInt(playerTwo.style.left) - 1 + 'px';
+  else{
+    playerOneData.playerSelector.removeAttribute("flipped", "flipped");
+    playerTwoData.playerSelector.setAttribute("flipped", "flipped");
   }
 }
 
+function checkPlayerSide(){
+  if(player === playerOneData){
+    player2 = playerTwoData;
+  }
+else{
+    player2 = playerOneData;
+  }
+}
 
+getPosInterval = setInterval(function(){
+  getPosition(playerOneData);
+  getPosition(playerTwoData);
+  playerPositionFix();
+});
 
 //////////////////////////////////////////////////
 

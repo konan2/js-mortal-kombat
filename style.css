@@ -269,7 +269,7 @@ button{
 	to { background-position: -300px 0px; }
 }
 
-.hero_1.move-top.foot-kick{
+.hero_1.move-top.foot-kick, .hero_1.move-top.foot-kick[flipped]{
 	background: url('sprites/spriteshee_jump_kick_foot.png') no-repeat;
 	animation: movetopfootkick .3s steps(3) forwards infinite;
 	animation-direction: alternate;
@@ -280,7 +280,7 @@ button{
 	to { background-position: -450px 0px; }
 }
 
-.hero_1.move-top.hand-kick{
+.hero_1.move-top.hand-kick, .hero_1.move-top.hand-kick[flipped]{
 	background: url('sprites/spriteshee_jump_kick_hand_forward.png') no-repeat;
 	animation: movetophandkick .3s steps(3) forwards infinite;
 	animation-direction: alternate;
