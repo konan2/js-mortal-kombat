@@ -1,72 +1,71 @@
 
-var bodyBlock = document.querySelector(".wrapper");
-//var playerOne = document.getElementById("hero1");
-//var playerTwo = document.getElementById("hero2");
+// var bodyBlock = document.querySelector(".wrapper");
+// //var playerOne = document.getElementById("player1");
+// //var playerTwo = document.getElementById("player2");
 
-var resetBtn = document.getElementById("reset");
-var bloodStatus = document.querySelector(".blood-status");
-var health = 100;
+// var resetBtn = document.getElementById("reset");
+// var bloodStatus = document.querySelector(".blood-status");
+// var health = 100;
 
-var playerOneHealth = health;
-var playerTwoHealth = health;
-
-
-
-
-var wastedText = document.createElement('span');
-wastedText.classList.add("wasted-text")
-wastedText.innerHTML = 'Wasted';
+// var playerOneHealth = health;
+// var playerTwoHealth = health;
 
 
 
-document.querySelector("#hero1-kicks").addEventListener("click", playerOneDamage);
-document.querySelector("#hero2-kicks").addEventListener("click", playerTwoDamage);
 
-resetBtn.addEventListener("click", resetFunc);
+// var wastedText = document.createElement('span');
+// wastedText.classList.add("wasted-text")
+// wastedText.innerHTML = 'Wasted';
 
 
-function playerOneDamage(){
-  if(playerOneHealth>0){
-    playerOne.classList.toggle("kick");
-    playerOneHealth = playerOneHealth - 20;
-    document.querySelector("#hero1-level .blood-status").style.width =  playerOneHealth + "%";
-  }
-  if(playerOneHealth===0){
-    playerOne.classList.add("wasted");
-    bodyBlock.appendChild(wastedText);
-    while(playerOneHealth);
-    playerOneHealth = false;
-  }
-}
 
-function playerTwoDamage(){
-  if(playerTwoHealth>0){
-    playerTwo.classList.toggle("kick");
-    playerTwoHealth = playerTwoHealth - 20;
-    document.querySelector("#hero2-level .blood-status").style.width =  playerTwoHealth + "%";
-  }
-  if(playerTwoHealth===0){
-    playerTwo.classList.add("wasted");
-    bodyBlock.appendChild(wastedText);
-    while(playerTwoHealth);
-    playerTwoHealth = false;
-  }
-}
+// document.querySelector("#player1-kicks").addEventListener("click", playerOneDamage);
+// document.querySelector("#player2-kicks").addEventListener("click", playerTwoDamage);
 
-function resetFunc(){
-  document.querySelector("#hero1-level .blood-status").style.width =  health + "%";
-  document.querySelector("#hero2-level .blood-status").style.width =  health + "%";
-  playerOneHealth, playerTwoHealth = health;
-  document.querySelector(".wasted").classList.remove("wasted");
-  document.querySelector(".wasted-text").remove();
-}
+// resetBtn.addEventListener("click", resetFunc);
 
-// Movement
+
+// function playerOneDamage(){
+//   if(playerOneHealth>0){
+//     playerOne.classList.toggle("kick");
+//     playerOneHealth = playerOneHealth - 20;
+//     document.querySelector("#player1-level .blood-status").style.width =  playerOneHealth + "%";
+//   }
+//   if(playerOneHealth===0){
+//     playerOne.classList.add("wasted");
+//     bodyBlock.appendChild(wastedText);
+//     while(playerOneHealth);
+//     playerOneHealth = false;
+//   }
+// }
+
+// function playerTwoDamage(){
+//   if(playerTwoHealth>0){
+//     playerTwo.classList.toggle("kick");
+//     playerTwoHealth = playerTwoHealth - 20;
+//     document.querySelector("#player2-level .blood-status").style.width =  playerTwoHealth + "%";
+//   }
+//   if(playerTwoHealth===0){
+//     playerTwo.classList.add("wasted");
+//     bodyBlock.appendChild(wastedText);
+//     while(playerTwoHealth);
+//     playerTwoHealth = false;
+//   }
+// }
+
+// function resetFunc(){
+//   document.querySelector("#player1-level .blood-status").style.width =  health + "%";
+//   document.querySelector("#player2-level .blood-status").style.width =  health + "%";
+//   playerOneHealth, playerTwoHealth = health;
+//   document.querySelector(".wasted").classList.remove("wasted");
+//   document.querySelector(".wasted-text").remove();
+// }
 
 
 
 var playerOneData = {
-  playerSelector: document.getElementById("hero1"),
+  playerSelector: document.getElementById("player1"),
+  playerLifeSelector: document.getElementById("player1-level"),
   opponent: playerTwoData,
   moveTop: false,
   moveForward: false,
@@ -85,12 +84,14 @@ var playerOneData = {
   keyPressedJump: false,
   footKickEnd: true,
   handKickEnd: true,
-  jumpEnd: true
+  jumpEnd: true,
+  life: 100
 };
 
 
 var playerTwoData = {
-  playerSelector: document.getElementById("hero2"),
+  playerSelector: document.getElementById("player2"),
+  playerLifeSelector: document.getElementById("player2-level"),
   opponent: playerOneData,
   moveTop: false,
   moveForward: false,
@@ -109,7 +110,8 @@ var playerTwoData = {
   keyPressedJump: false,
   footKickEnd: true,
   handKickEnd: true,
-  jumpEnd: true
+  jumpEnd: true,
+  life: 100
 };
 
 var player;
@@ -122,6 +124,11 @@ var moveBackInterval = null;
 var moveRunInterval = null;
 var getPosInterval = null;
 
+var handKickDamage = 5;
+var footKickDamage = 10;
+
+
+var playerPosDiff;
 
 var levelWrapper = document.querySelector(".wrapper");
 var levelWidth = levelWrapper.offsetWidth;
@@ -316,6 +323,15 @@ function handKickFunc(player){
         player.handkick = false;
       }
     }, 300);
+
+    if(playerPosDiff > -85 && playerPosDiff < 85){
+      player2.life = player2.life - handKickDamage;
+      lifeCheck();
+      player2.playerSelector.classList.add("hand-damaged");
+      setTimeout(function(){
+        player2.playerSelector.classList.remove("hand-damaged");
+      }, 400);
+    }
   }
 }
 
@@ -355,6 +371,15 @@ function footKickFunc(player){
         player.footkick = false;
       }
     }, 400);
+    if(playerPosDiff > -85 && playerPosDiff < 85){
+      player2.life = player2.life - footKickDamage;
+      lifeCheck();
+      console.log(player2.life);
+      player2.playerSelector.classList.add("foot-damaged");
+      setTimeout(function(){
+        player2.playerSelector.classList.remove("foot-damaged");
+      }, 400);
+    }
   }
 }
 
@@ -373,7 +398,7 @@ function jump(player){
   function toTop(callbackFn){
     player.playerSelector.classList.add("move-top");
     setTimeout(function() {
-      player.playerSelector.style.bottom = parseInt(player.playerSelector.style.bottom) + 5 + 'px';
+      player.playerSelector.style.bottom = parseInt(player.playerSelector.style.bottom) + 6 + 'px';
       if (parseInt(player.playerSelector.style.bottom) > 150){
         callbackFn();
       } 
@@ -384,7 +409,7 @@ function jump(player){
   }
   function toBottom(callbackFn){
     setTimeout(function() {
-      player.playerSelector.style.bottom = parseInt(player.playerSelector.style.bottom) - 5 + 'px';
+      player.playerSelector.style.bottom = parseInt(player.playerSelector.style.bottom) - 6 + 'px';
       if (parseInt(player.playerSelector.style.bottom) > 0){
         toBottom(callbackFn);
       } 
@@ -398,6 +423,7 @@ function jump(player){
     playAudio('jump_end');
     player.moveTop = false;
     player.jumpEnd = true;
+    player.playerSelector.classList.remove("hand-kick", "foot-kick");
     if(player.keyPressedJump){
         player.moveTop = true;
       }
@@ -441,7 +467,7 @@ function blockFunc(player){
 }
 
 function moveRunFunc(player){
-  if(player.playerPosX <= levelWidth - player.playerSelector.offsetWidth && !(player.playerPosX === 0)){
+  if(player.playerPosX <= levelWidth){
     playAudio('syborg_run');
     if(player.playerPosX > player2.playerPosX){
       player.playerSelector.style.left = parseInt(player.playerSelector.style.left) - 2 + 'px';
@@ -467,7 +493,7 @@ function getPosition(player) {
 
 
 function playerPositionFix(){
-  var playerPosDiff = playerOneData.playerPosX - playerTwoData.playerPosX;
+  playerPosDiff = playerOneData.playerPosX - playerTwoData.playerPosX;
   if(playerOneData.playerPosX > playerTwoData.playerPosX - playerWidth && playerOneData.playerPosX < playerTwoData.playerPosX + playerWidth && playerOneData.playerPosY > playerHeight - 10){
     if (playerPosDiff > 0 ){
       playerOneData.playerPosX += 5;
@@ -499,9 +525,22 @@ function checkPlayerSide(){
     player2 = playerTwoData;
   }
 else{
+    player === playerTwoData
     player2 = playerOneData;
   }
 }
+
+// Life
+
+function lifeCheck(){
+  if(player2.life < 5){
+    player2.life = 0;
+  }
+  player2.playerLifeSelector.style.width = player2.life + "%";
+  console.log(player2.playerLifeSelector.style.width);
+}
+
+// Main interval
 
 getPosInterval = setInterval(function(){
   getPosition(playerOneData);
