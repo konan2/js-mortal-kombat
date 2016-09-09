@@ -270,13 +270,13 @@ button{
 
 
 
-.player_1{
+.player{
 	background-image: url(sprites/cyrax-stay.gif);
 	background-position: center;
 	background-repeat: no-repeat;
 }
 
-.player_2{
+/*.player_2{
 	background-image: url(sprites/kabal-stay.gif);
 	background-position: center;
 	background-repeat: no-repeat;
@@ -292,26 +292,26 @@ button{
 	background-image: url(sprites/kabal-foot-damaged.png);
 	background-position: center;
 	background-repeat: no-repeat;
-}
+}*/
 
-.player_1.move-forward, .player_1.move-back[flipped]{
+.player.move-forward, .player.move-back[flipped]{
 	background-image: url(sprites/cyrax-move-forward.gif);
 	background-repeat: no-repeat;
 	animation: none;
 }
 
-.player_1.move-back, .player_1.move-forward[flipped]{
+.player.move-back, .player.move-forward[flipped]{
 	background-image: url(sprites/cyrax-move-backward.gif);
 	background-repeat: no-repeat;
 	animation: none;
 }
 
-.player_1.move-run{
+.player.move-run{
 	background-image: url(sprites/cyrax-running.gif);
 	background-repeat: no-repeat;
 }
 
-.player_1.move-down{
+.player.move-down{
 	background: url('sprites/spritesheet_seat.png') no-repeat;
 	animation: movedown .1s steps(2) forwards;
 }
@@ -321,7 +321,7 @@ button{
 	to { background-position: -300px 7px; }
 }
 
-.player_1.block{
+.player.block{
 	background: url('sprites/spritesheet_block.png') no-repeat;
 	animation: blockstay .1s steps(2) forwards;
 }
@@ -331,7 +331,7 @@ button{
 	to { background-position: -300px -3px; }
 }
 
-.player_1.move-down.block{
+.player.move-down.block{
 	background: url('sprites/spritesheet_block_seat.png') no-repeat;
 	animation: blockseat .1s steps(2) forwards;
 }
@@ -341,7 +341,7 @@ button{
 	to { background-position: -300px 0; }
 }
 
-.player_1.move-top, .player_1.move-top.move-forward, .player_1.move-top.move-back {
+.player.move-top, .player.move-top.move-forward, .player.move-top.move-back {
 	background: url('sprites/spritesheet_jump.png') no-repeat;
 	animation: movetop .3s steps(2) forwards;
 }
@@ -351,29 +351,31 @@ button{
 	to { background-position: -300px 0px; }
 }
 
-.player_1.move-top.foot-kick, .player_1.move-top.foot-kick[flipped]{
-	background: url('sprites/spriteshee_jump_kick_foot.png') no-repeat;
-	animation: movetopfootkick .15s steps(3) forwards infinite;
-	animation-direction: alternate;
+.player.move-top.foot-kick, .player.move-top.foot-kick[flipped]{
+	background: url('sprites/cyrax-jump-top-kick-foot.png') no-repeat;
+/*	animation: movetopfootkick .15s steps(3) forwards infinite;
+	animation-direction: alternate;*/
+	animation: none;
 }
 
-@keyframes movetopfootkick {
+/*@keyframes movetopfootkick {
 	from { background-position:  0px 0px; }
 	to { background-position: -450px 0px; }
+}*/
+
+.player.move-top.hand-kick, .player.move-top.hand-kick[flipped]{
+	background: url('sprites/cyrax-jump-kick-hand.png') no-repeat;
+/*	animation: movetophandkick .3s steps(3) forwards infinite;
+	animation-direction: alternate;*/
+	animation: none;
 }
 
-.player_1.move-top.hand-kick, .player_1.move-top.hand-kick[flipped]{
-	background: url('sprites/spriteshee_jump_kick_hand_forward.png') no-repeat;
-	animation: movetophandkick .3s steps(3) forwards infinite;
-	animation-direction: alternate;
-}
-
-@keyframes movetophandkick {
+/*@keyframes movetophandkick {
 	from { background-position:  0px 0px; }
 	to { background-position: -450px 0px; }
-}
+}*/
 
-/*.player_1.jump-forward{
+/*.player.jump-forward{
 	background: url('sprites/spritesheet_jump_to.png') no-repeat;
 	animation: movetopforward .4s steps(7) forwards infinite;
 }*/
@@ -383,7 +385,7 @@ button{
 	to { background-position: -1050px 0; }
 }*/
 
-/*.player_1.jump-back{
+/*.player.jump-back{
 	background: url('sprites/spritesheet_jump_to.png');
 	animation: movetopback .4s steps(7) forwards infinite;
 }
@@ -393,20 +395,20 @@ button{
 	to { background-position: 1050px 0; }
 }*/
 
-.player_1.move-top.move-forward.hand-kick, .player_1.move-top.move-back.hand-kick{
+.player.move-top.move-forward.hand-kick, .player.move-top.move-back.hand-kick{
 	background: url('sprites/cyrax-jump-kick-hand.png') no-repeat;
 	background-position: center 0;
 	animation: none;
 }
 
-.player_1.move-top.move-forward.foot-kick, .player_1.move-top.move-back.foot-kick{
+.player.move-top.move-forward.foot-kick, .player.move-top.move-back.foot-kick{
 	background: url('sprites/cyrax-jump-kick-foot.png') no-repeat;
 	background-position: center 0;
 	animation: none;
 }
 
 
-.player_1.hand-kick, .player_1.hand-kick[flipped]{
+.player.hand-kick, .player.hand-kick[flipped]{
 	background: url('sprites/spritesheet_hand-kick.png') repeat-x;
 	animation: handkick .45s steps(4) infinite;
 }
@@ -416,7 +418,7 @@ button{
 	to { background-position: -600px 5px; }
 }
 
-.player_1.foot-kick, .player_1.foot-kick[flipped]{
+.player.foot-kick, .player.foot-kick[flipped]{
 	background: url('sprites/spritesheet_kick_foot.png') repeat-x;
 	animation: footkick .31s steps(6) forwards infinite;
 	animation-direction: alternate;
@@ -427,7 +429,7 @@ button{
 	to { background-position: -900px 0; }
 }
 
-.player_1.move-down.hand-kick{
+.player.move-down.hand-kick{
 	background: url('sprites/spritesheet_kick-hand_seat.png') no-repeat;
 	animation: movedownhandkick .25s steps(3) forwards infinite;
 	
@@ -438,7 +440,7 @@ button{
 	to { background-position: -450px 0; }
 }
 
-.player_1.move-down.foot-kick{
+.player.move-down.foot-kick{
 	background: url('sprites/spritesheet_kick-foot_seat.png') no-repeat;
 	animation: movedownfootkick .25s steps(3) forwards infinite;
 	
