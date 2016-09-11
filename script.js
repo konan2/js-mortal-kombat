@@ -120,9 +120,21 @@ var player2;
 var playerWidth = 72;
 var playerHeight = 262;
 
+
+
+
 var moveForwardInterval = null;
+
+
 var moveBackInterval = null;
+
+
 var moveRunInterval = null;
+
+
+
+
+
 var getPosInterval = null;
 
 var handKickDamage = 5;
@@ -143,6 +155,12 @@ insertAudio('desert_level_track');
 insertAudio('jump_end');
 
 //playAudio('desert_level_track', "loop");
+
+
+
+var playerControls = {
+  
+}
 
 
 function funcKeyDown(event){
@@ -337,8 +355,7 @@ function handKickFunc(player){
     }, 300);
 
     if(playerPosDiff > -85 && playerPosDiff < 85){
-      player2.life = player2.life - handKickDamage;
-      lifeCheck();
+      makeDamage(handKickDamage);
       if(!player.jumpEnd){
         player2.playerSelector.classList.add("hand-damaged");
         player2.isDamaged = true;
@@ -398,8 +415,7 @@ function footKickFunc(player){
       }
     }, 400);
     if(playerPosDiff > -85 && playerPosDiff < 85){
-      player2.life = player2.life - footKickDamage;
-      lifeCheck();
+      makeDamage(footKickDamage);
       if(!player.jumpEnd){
         player2.playerSelector.classList.add("foot-damaged");
         player2.isDamaged = true;
@@ -570,12 +586,14 @@ else{
 
 // Life
 
-function lifeCheck(){
-  if(player.life < 5){
-    player.life = 0;
+function makeDamage(damage){ 
+  player2.life = player2.life - damage;
+  if(player2.life < 5){
+    player2.life = 0;
   }
   player2.playerLifeSelector.style.width = player2.life + "%";
 }
+
 
 // Main interval
 
