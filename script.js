@@ -120,20 +120,11 @@ var player2;
 var playerWidth = 72;
 var playerHeight = 262;
 
-
-
-
 var moveForwardInterval = null;
-
 
 var moveBackInterval = null;
 
-
 var moveRunInterval = null;
-
-
-
-
 
 var getPosInterval = null;
 
@@ -156,33 +147,68 @@ insertAudio('jump_end');
 
 //playAudio('desert_level_track', "loop");
 
+// Keyboard controls
 
+var playerUsedCodes = [];
+var player2UsedCodes = [];
 
-var playerControls = {
-  
+var playerKeys = {
+  jump: 38,
+  forward: 39,
+  back: 37,
+  bottom: 40,
+  handkick: 65,
+  footkick: 83,
+  run: 81,
+  block: 87
+}
+
+var player2Keys = {
+  jump: 104,
+  forward: 102,
+  back: 100,
+  bottom: 98,
+  handkick: 103,
+  footkick: 105,
+  run: 97,
+  block: 99
 }
 
 
+// get player keys function
+
+function getPlayerKeys(playerKeys, player2Keys){
+  for(var i in playerKeys) {
+    playerUsedCodes.push(playerKeys[i]);
+  }
+  for(var j in player2Keys) {
+    player2UsedCodes.push(player2Keys[j]);
+  }
+}
+
+getPlayerKeys(playerKeys, player2Keys);
+
+
+///////////////////////////
+
 function funcKeyDown(event){
-  if(event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40 || event.keyCode === 37 || event.keyCode === 65 || event.keyCode === 83 || event.keyCode === 81 || event.keyCode === 87){
+  if(playerUsedCodes.includes(event.keyCode)){
     player = playerOneData;
+    player2 = playerTwoData;
   }
-  if(event.keyCode === 100 || event.keyCode === 104 || event.keyCode === 102 || event.keyCode === 98 || event.keyCode === 103 || event.keyCode === 105 || event.keyCode === 97 || event.keyCode === 99){
+  if(player2UsedCodes.includes(event.keyCode)){
     player = playerTwoData;
+    player2 = playerOneData;
   }
-
-
-  checkPlayerSide();
-
 
   // jump
-  if((event.keyCode === 38 || event.keyCode === 104) && !player.block && !player.moverun){
+  if((event.keyCode === playerKeys.jump || event.keyCode === player2Keys.jump) && !player.block && !player.moverun){
     player.keyPressedJump = true;
     jump(player);
   }
 
   // Move forward
-  if((event.keyCode === 39 || event.keyCode === 102) && !player.block && !player.moverun && !player.moveBottom && !player.handkick && !player.footkick){
+  if((event.keyCode === playerKeys.forward || event.keyCode === player2Keys.forward) && !player.block && !player.moverun && !player.moveBottom && !player.handkick && !player.footkick){
     clearInterval(moveForwardInterval);
     player.playerSelector.classList.add("move-forward");
     moveForwardInterval = setInterval(function(){
@@ -191,7 +217,7 @@ function funcKeyDown(event){
   }
 
   // Move back
-  if((event.keyCode === 37 || event.keyCode === 100) && !player.block && !player.moverun && !player.moveBottom && !player.handkick && !player.footkick){
+  if((event.keyCode === playerKeys.back || event.keyCode === player2Keys.back) && !player.block && !player.moverun && !player.moveBottom && !player.handkick && !player.footkick){
     clearInterval(moveBackInterval);
     player.playerSelector.classList.add("move-back");
     moveBackInterval = setInterval(function(){
@@ -200,26 +226,26 @@ function funcKeyDown(event){
   }
 
   // Move bottom
-  if(event.keyCode === 40 || event.keyCode === 98){
+  if(event.keyCode === playerKeys.bottom || event.keyCode === player2Keys.bottom){
     clearInterval(moveForwardInterval);
     clearInterval(moveBackInterval);
     moveBottomFunc(player);
   }
 
   // Hand kick
-  if((event.keyCode === 65 || event.keyCode === 103) && !player.handkick && player.handKickEnd && !player.footkick){
+  if((event.keyCode === playerKeys.handkick || event.keyCode === player2Keys.handkick) && !player.handkick && player.handKickEnd && !player.footkick){
     player.keyPressedHandkick = true;
     handKickFunc(player);
   }
 
   // Foot kick
-  if((event.keyCode === 83 || event.keyCode === 105) && !player.footkick && player.footKickEnd && !player.handkick){
+  if((event.keyCode === playerKeys.footkick || event.keyCode === player2Keys.footkick) && !player.footkick && player.footKickEnd && !player.handkick){
     player.keyPressedFootkick = true;
     footKickFunc(player);
   }
 
   // Run
-  if((event.keyCode === 81 || event.keyCode === 97) && !player.block && !player.moveTop && player.jumpEnd && !player.moveForward && !player.moveBack){
+  if((event.keyCode === playerKeys.run || event.keyCode === player2Keys.run) && !player.block && !player.moveTop && player.jumpEnd && !player.moveForward && !player.moveBack){
     clearInterval(moveRunInterval);
     player.moverun = true;
     player.playerSelector.classList.add("move-run");
@@ -229,7 +255,7 @@ function funcKeyDown(event){
   }
 
   // Block
-  if(event.keyCode === 87 || event.keyCode === 99){
+  if(event.keyCode === playerKeys.block || event.keyCode === player2Keys.block){
     clearInterval(moveForwardInterval);
     clearInterval(moveBackInterval);
     clearInterval(moveRunInterval);
@@ -241,64 +267,63 @@ function funcKeyDown(event){
 
 
 function funcKeyUp(event){
-  if(event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40 || event.keyCode === 37 || event.keyCode === 65 || event.keyCode === 83 || event.keyCode === 81 || event.keyCode === 87){
-    player = playerOneData;
-  }
-
-  if(event.keyCode === 100 || event.keyCode === 104 || event.keyCode === 102 || event.keyCode === 98 || event.keyCode === 103 || event.keyCode === 105 || event.keyCode === 97 || event.keyCode === 99){
-    player = playerTwoData;
-  }
-  
-  checkPlayerSide();
+  // if(playerUsedCodes.includes(event.keyCode)){
+  //   player = playerOneData;
+  //   player2 = playerTwoData;
+  // }
+  // if(player2UsedCodes.includes(event.keyCode)){
+  //   player = playerTwoData;
+  //   player2 = playerOneData;
+  // }
 
   // jump
-  if(event.keyCode === 38 || event.keyCode === 104){
+  if(event.keyCode === playerKeys.jump || event.keyCode === player2Keys.jump){
     player.moveTop = false;
     player.keyPressedJump = false;
     player.playerSelector.classList.remove("move-up");
   }
 
   // Move forward
-  if(event.keyCode === 39 || event.keyCode === 102){
+  if(event.keyCode === playerKeys.forward || event.keyCode === player2Keys.forward){
     player.moveForward = false;
     player.playerSelector.classList.remove("move-forward");
     clearInterval(moveForwardInterval);
   }
 
   // Move back
-  if(event.keyCode === 37 || event.keyCode === 100){
+  if(event.keyCode === playerKeys.back || event.keyCode === player2Keys.back){
     player.moveBack = false;
     player.playerSelector.classList.remove("move-back");
     clearInterval(moveBackInterval);
   }
 
   // Move bottom
-  if(event.keyCode === 40 || event.keyCode === 98){
+  if(event.keyCode === playerKeys.bottom || event.keyCode === player2Keys.bottom){
     player.moveBottom = false;
     player.playerSelector.classList.remove("move-down");
   }
 
   // Hand kick
-  if(event.keyCode === 65 || event.keyCode === 103){
+  if(event.keyCode === playerKeys.handkick || event.keyCode === player2Keys.handkick){
     player.keyPressedHandkick = false;
     player.handkick = false;
   }
 
   // Foot kick
-  if(event.keyCode === 83 || event.keyCode === 105){
+  if(event.keyCode === playerKeys.footkick || event.keyCode === player2Keys.footkick){
     player.keyPressedFootkick = false;
     player.footkick = false;
   }
 
   // Run
-  if(event.keyCode === 81 || event.keyCode === 97){
+  if(event.keyCode === playerKeys.run || event.keyCode === player2Keys.run){
     player.moverun = false;
     player.playerSelector.classList.remove("move-run");
     clearInterval(moveRunInterval);
   }
 
   // Block
-  if(event.keyCode === 87 || event.keyCode === 99){
+  if(event.keyCode === playerKeys.block || event.keyCode === player2Keys.block){
     player.block = false;
     player.playerSelector.classList.remove("block");
     if(player.moveForward){
@@ -313,6 +338,7 @@ function funcKeyUp(event){
     }
   }
 }
+
 
 
 // Kicks
@@ -571,16 +597,6 @@ function playerPositionFix(){
   else{
     playerOneData.playerSelector.removeAttribute("flipped", "flipped");
     playerTwoData.playerSelector.setAttribute("flipped", "flipped");
-  }
-}
-
-function checkPlayerSide(){
-  if(player === playerOneData){
-    player2 = playerTwoData;
-  }
-else{
-    player === playerTwoData
-    player2 = playerOneData;
   }
 }
 
