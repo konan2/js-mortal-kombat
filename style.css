@@ -276,23 +276,28 @@ button{
 	background-repeat: no-repeat;
 }
 
+.position-info{
+	padding: 8px;
+}
+
 /*.player_2{
 	background-image: url(sprites/kabal-stay.gif);
 	background-position: center;
 	background-repeat: no-repeat;
 }
+*/
 
-.player_2.hand-damaged{
-	background-image: url(sprites/kabal-hand-damaged.png);
-	background-position: center;
+.player.hand-damaged{
+	background-image: url(sprites/cyraxbeaten/cyrax-hand-damaged.png);
+	background-position: -5px -2px;
 	background-repeat: no-repeat;
 }
 
-.player_2.foot-damaged{
-	background-image: url(sprites/kabal-foot-damaged.png);
-	background-position: center;
+.player.foot-damaged{
+	background-image: url(sprites/cyraxbeaten/cyrax-foot-damaged.png);
+	background-position: -5px -2px;
 	background-repeat: no-repeat;
-}*/
+}
 
 .player.move-forward, .player.move-back[flipped]{
 	background-image: url(sprites/cyrax-move-forward.gif);
@@ -311,7 +316,7 @@ button{
 	background-repeat: no-repeat;
 }
 
-.player.move-down{
+.player.move-down, .player.move-down[flipped]{
 	background: url('sprites/spritesheet_seat.png') no-repeat;
 	animation: movedown .1s steps(2) forwards;
 }

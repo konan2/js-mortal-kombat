@@ -72,6 +72,7 @@ var footKickDamage = 10;
 
 
 var playerPosDiff;
+var playerPosDiffJump;
 
 var levelWrapper = document.querySelector(".wrapper");
 var levelWidth = levelWrapper.offsetWidth;
@@ -83,6 +84,8 @@ insertAudio('hand_kick');
 insertAudio('syborg_run');
 insertAudio('desert_level_track');
 insertAudio('jump_end');
+insertAudio('foot_damage');
+insertAudio('hand_damage');
 
 //playAudio('desert_level_track', "loop");
 
@@ -92,25 +95,25 @@ var playerUsedCodes = [];
 var player2UsedCodes = [];
 
 var playerKeys = {
+  jump: 87,
+  forward: 68,
+  back: 65,
+  bottom: 83,
+  handkick: 69,
+  footkick: 82,
+  run: 81,
+  block: 70
+}
+
+var player2Keys = {
   jump: 38,
   forward: 39,
   back: 37,
   bottom: 40,
-  handkick: 65,
-  footkick: 83,
-  run: 81,
-  block: 87
-}
-
-var player2Keys = {
-  jump: 104,
-  forward: 102,
-  back: 100,
-  bottom: 98,
   handkick: 103,
-  footkick: 105,
-  run: 97,
-  block: 99
+  footkick: 104,
+  run: 100,
+  block: 101
 }
 
 
@@ -196,15 +199,27 @@ function funcKeyDown(event){
   }
 
   // Hand kick
-  if((event.keyCode === playerKeys.handkick || event.keyCode === player2Keys.handkick) && !player.handkick && player.handKickEnd && !player.footkick){
-    player.keyPressedHandkick = true;
-    handKickFunc(player);
+  if(event.keyCode === playerKeys.handkick && !playerOneData.handkick && playerOneData.handKickEnd && !playerOneData.footkick){
+    playerOneData.keyPressedHandkick = true;
+    handKickFunc();
+  }
+
+  // Hand kick2
+  if(event.keyCode === player2Keys.handkick && !playerTwoData.handkick && playerTwoData.handKickEnd && !playerTwoData.footkick){
+    playerTwoData.keyPressedHandkick = true;
+    handKickFunc2();
   }
 
   // Foot kick
-  if((event.keyCode === playerKeys.footkick || event.keyCode === player2Keys.footkick) && !player.footkick && player.footKickEnd && !player.handkick){
-    player.keyPressedFootkick = true;
-    footKickFunc(player);
+  if(event.keyCode === playerKeys.footkick && !playerOneData.footkick && playerOneData.footKickEnd && !playerOneData.handkick){
+    playerOneData.keyPressedFootkick = true;
+    footKickFunc();
+  }
+
+  // Foot kick2
+  if(event.keyCode === player2Keys.footkick && !playerTwoData.footkick && playerTwoData.footKickEnd && !playerTwoData.handkick){
+    playerTwoData.keyPressedFootkick = true;
+    footKickFunc2();
   }
 
   // Run
@@ -299,15 +314,27 @@ function funcKeyUp(event){
   }
 
   // Hand kick
-  if(event.keyCode === playerKeys.handkick || event.keyCode === player2Keys.handkick){
-    player.keyPressedHandkick = false;
-    player.handkick = false;
+  if(event.keyCode === playerKeys.handkick){
+    playerOneData.keyPressedHandkick = false;
+    playerOneData.handkick = false;
+  }
+
+  // Hand kick2
+  if(event.keyCode === player2Keys.handkick){
+    playerTwoData.keyPressedHandkick = false;
+    playerTwoData.handkick = false;
   }
 
   // Foot kick
-  if(event.keyCode === playerKeys.footkick || event.keyCode === player2Keys.footkick){
-    player.keyPressedFootkick = false;
-    player.footkick = false;
+  if(event.keyCode === playerKeys.footkick){
+    playerOneData.keyPressedFootkick = false;
+    playerOneData.footkick = false;
+  }
+
+    // Foot kick
+  if(event.keyCode === player2Keys.footkick){
+    playerTwoData.keyPressedFootkick = false;
+    playerTwoData.footkick = false;
   }
 
   // Run
@@ -343,121 +370,252 @@ function funcKeyUp(event){
 
 // Kicks
 
-function handKickFunc(player){
-  if(!player.moveTop && player.moveForward || player.jumpEnd && player.moveTop && player.moveForward ){
-    clearInterval(player.moveForwardInterval);
+function handKickFunc(){
+  if(!playerOneData.moveTop && playerOneData.moveForward || playerOneData.jumpEnd && playerOneData.moveTop && playerOneData.moveForward ){
+    clearInterval(playerOneData.moveForwardInterval);
   }
-  if(!player.moveTop && player.moveBack || player.jumpEnd && player.moveTop && player.moveBack){
-    clearInterval(player.moveBackInterval);
+  if(!playerOneData.moveTop && playerOneData.moveBack || playerOneData.jumpEnd && playerOneData.moveTop && playerOneData.moveBack){
+    clearInterval(playerOneData.moveBackInterval);
   }
-  if(player.footKickEnd){
-    player.handkick = true;
-    player.playerSelector.classList.add("hand-kick");
+  if(playerOneData.footKickEnd && !playerOneData.isDamaged){
+    playerOneData.handkick = true;
+    playerOneData.playerSelector.classList.add("hand-kick");
     playAudio('hand_kick');
-    player.handKickEnd = false;
+    playerOneData.handKickEnd = false;
     setTimeout(function(){
-      if(player.moveForward){
-         clearInterval(player.moveForwardInterval);
-         player.moveForwardInterval = setInterval(function(){
-           moveForwardFunc(player)
+      if(playerOneData.moveForward){
+         clearInterval(playerOneData.moveForwardInterval);
+         playerOneData.moveForwardInterval = setInterval(function(){
+           moveForwardFunc(playerOneData)
         });
       }
-      if(player.moveBack){
-         clearInterval(player.moveBackInterval);
-         player.moveBackInterval = setInterval(function(){
-          moveBackFunc(player);
+      if(playerOneData.moveBack){
+         clearInterval(playerOneData.moveBackInterval);
+         playerOneData.moveBackInterval = setInterval(function(){
+          moveBackFunc(playerOneData);
         });
       }
-      player.handkick = false;
-      player.playerSelector.classList.remove("hand-kick");
+      playerOneData.handkick = false;
+      playerOneData.playerSelector.classList.remove("hand-kick");
       stopAudio('hand_kick');
-      player.handKickEnd = true;
-      if(player.keyPressedHandkick){
-        player.handkick = true;
+      playerOneData.handKickEnd = true;
+      if(playerOneData.keyPressedHandkick){
+        playerOneData.handkick = true;
       }
       else{
-        player.handkick = false;
+        playerOneData.handkick = false;
       }
     }, 300);
-
     if(playerPosDiff > -85 && playerPosDiff < 85){
       makeDamage(handKickDamage);
-      if(!player.jumpEnd){
-        player2.playerSelector.classList.add("hand-damaged");
-        player2.isDamaged = true;
+      playerTwoData.isDamaged = true;
+      if(!playerOneData.jumpEnd){
+        playerTwoData.playerSelector.classList.add("hand-damaged");
+        playAudio('hand_damage');
         setTimeout(function(){
-          player2.playerSelector.classList.remove("hand-damaged");
-          player2.isDamaged = false;
+          playerTwoData.playerSelector.classList.remove("hand-damaged");
+          playerTwoData.isDamaged = false;
+          stopAudio('hand_damage');
         }, 150);
       }
       else{
         setTimeout(function(){
-          player2.playerSelector.classList.add("hand-damaged");
-          player2.isDamaged = true;
+          playerTwoData.playerSelector.classList.add("hand-damaged");
+          playAudio('hand_damage');
         }, 100);
         setTimeout(function(){
-          player2.playerSelector.classList.remove("hand-damaged");
-          player2.isDamaged = false;
+          playerTwoData.playerSelector.classList.remove("hand-damaged");
+          playerTwoData.isDamaged = false;
+          stopAudio('hand_damage');
         }, 250);
       }
     }
   }
 }
 
-function footKickFunc(player){
-  if(!player.moveTop && player.moveForward || player.jumpEnd && player.moveTop && player.moveForward){
-    clearInterval(player.moveForwardInterval);
+function handKickFunc2(){
+  if(!playerTwoData.moveTop && playerTwoData.moveForward || playerTwoData.jumpEnd && playerTwoData.moveTop && playerTwoData.moveForward ){
+    clearInterval(playerTwoData.moveForwardInterval);
   }
-  if(!player.moveTop && player.moveBack || player.jumpEnd && player.moveTop && player.moveBack){
-    clearInterval(player.moveBackInterval);
+  if(!playerTwoData.moveTop && playerTwoData.moveBack || playerTwoData.jumpEnd && playerTwoData.moveTop && playerTwoData.moveBack){
+    clearInterval(playerTwoData.moveBackInterval);
   }
-  if(player.handKickEnd){
-    player.footkick = true;
-    player.playerSelector.classList.add("foot-kick");
-    playAudio('foot_kick');
-    player.footKickEnd = false;
+  if(playerTwoData.footKickEnd && !playerTwoData.isDamaged){
+    playerTwoData.handkick = true;
+    playerTwoData.playerSelector.classList.add("hand-kick");
+    playAudio('hand_kick');
+    playerTwoData.handKickEnd = false;
     setTimeout(function(){
-      if(player.moveForward){
-         clearInterval(player.moveForwardInterval);
-         player.moveForwardInterval = setInterval(function(){
-          moveForwardFunc(player)
+      if(playerTwoData.moveForward){
+         clearInterval(playerTwoData.moveForwardInterval);
+         playerTwoData.moveForwardInterval = setInterval(function(){
+           moveForwardFunc(playerOneData)
         });
       }
-      if(player.moveBack){
-         clearInterval(player.moveBackInterval);
-         player.moveBackInterval= setInterval(function(){
-          moveBackFunc(player)
+      if(playerTwoData.moveBack){
+         clearInterval(playerTwoData.moveBackInterval);
+         playerTwoData.moveBackInterval = setInterval(function(){
+          moveBackFunc(playerOneData);
         });
       }
-      player.footkick = false;
-      player.playerSelector.classList.remove("foot-kick");
-      stopAudio('foot_kick');
-      player.footKickEnd = true;
-      if(player.keyPressedFootkick){
-        player.footkick = true;
+      playerTwoData.handkick = false;
+      playerTwoData.playerSelector.classList.remove("hand-kick");
+      stopAudio('hand_kick');
+      playerTwoData.handKickEnd = true;
+      if(playerTwoData.keyPressedHandkick){
+        playerTwoData.handkick = true;
       }
       else{
-        player.footkick = false;
+        playerTwoData.handkick = false;
+      }
+    }, 300);
+    if(playerPosDiff > -85 && playerPosDiff < 85){
+      makeDamage(handKickDamage);
+      playerOneData.isDamaged = true;
+      if(!playerTwoData.jumpEnd){
+        playerOneData.playerSelector.classList.add("hand-damaged");
+        playAudio('hand_damage');
+        setTimeout(function(){
+          playerOneData.playerSelector.classList.remove("hand-damaged");
+          playerOneData.isDamaged = false;
+          stopAudio('hand_damage');
+        }, 150);
+      }
+      else{
+        setTimeout(function(){
+          playerOneData.playerSelector.classList.add("hand-damaged");
+          playAudio('hand_damage');
+        }, 100);
+        setTimeout(function(){
+          playerOneData.playerSelector.classList.remove("hand-damaged");
+          playerOneData.isDamaged = false;
+          stopAudio('hand_damage');
+        }, 250);
+      }
+    }
+  }
+}
+
+function footKickFunc(){
+  if(!playerOneData.moveTop && playerOneData.moveForward || playerOneData.jumpEnd && playerOneData.moveTop && playerOneData.moveForward){
+    clearInterval(playerOneData.moveForwardInterval);
+  }
+  if(!playerOneData.moveTop && playerOneData.moveBack || playerOneData.jumpEnd && playerOneData.moveTop && playerOneData.moveBack){
+    clearInterval(playerOneData.moveBackInterval);
+  }
+  if(playerOneData.handKickEnd && !playerOneData.isDamaged){
+    playerOneData.footkick = true;
+    playerOneData.playerSelector.classList.add("foot-kick");
+    playAudio('foot_kick');
+    playerOneData.footKickEnd = false;
+    setTimeout(function(){
+      if(playerOneData.moveForward){
+         clearInterval(playerOneData.moveForwardInterval);
+         playerOneData.moveForwardInterval = setInterval(function(){
+          moveForwardFunc(playerOneData)
+        });
+      }
+      if(playerOneData.moveBack){
+         clearInterval(playerOneData.moveBackInterval);
+         playerOneData.moveBackInterval= setInterval(function(){
+          moveBackFunc(playerOneData)
+        });
+      }
+      playerOneData.footkick = false;
+      playerOneData.playerSelector.classList.remove("foot-kick");
+      stopAudio('foot_kick');
+      playerOneData.footKickEnd = true;
+      if(playerOneData.keyPressedFootkick){
+        playerOneData.footkick = true;
+      }
+      else{
+        playerOneData.footkick = false;
       }
     }, 400);
     if(playerPosDiff > -85 && playerPosDiff < 85){
       makeDamage(footKickDamage);
-      if(!player.jumpEnd){
-        player2.playerSelector.classList.add("foot-damaged");
-        player2.isDamaged = true;
+      playerTwoData.isDamaged = true;
+      if(!playerOneData.jumpEnd){
+        playerTwoData.playerSelector.classList.add("foot-damaged");
+        playAudio('foot_damage');
         setTimeout(function(){
-          player2.playerSelector.classList.remove("foot-damaged");
-          player2.isDamaged = false;
+          playerTwoData.playerSelector.classList.remove("foot-damaged");
+          playerTwoData.isDamaged = false;
+          stopAudio('foot_damage');
         }, 200);
       }
       else{
         setTimeout(function(){
-          player2.playerSelector.classList.add("foot-damaged");
-          player2.isDamaged = true;
+          playerTwoData.playerSelector.classList.add("foot-damaged");
+          playAudio('foot_damage');
         }, 300);
         setTimeout(function(){
-          player2.playerSelector.classList.remove("foot-damaged");
-          player2.isDamaged = false;
+          playerTwoData.playerSelector.classList.remove("foot-damaged");
+          playerTwoData.isDamaged = false;
+          stopAudio('foot_damage');
+        }, 500);
+      }
+    }
+  }
+}
+
+function footKickFunc2(){
+  if(!playerTwoData.moveTop && playerTwoData.moveForward || playerTwoData.jumpEnd && playerTwoData.moveTop && playerTwoData.moveForward){
+    clearInterval(playerTwoData.moveForwardInterval);
+  }
+  if(!playerTwoData.moveTop && playerTwoData.moveBack || playerTwoData.jumpEnd && playerTwoData.moveTop && playerTwoData.moveBack){
+    clearInterval(playerTwoData.moveBackInterval);
+  }
+  if(playerTwoData.handKickEnd && !playerTwoData.isDamaged){
+    playerTwoData.footkick = true;
+    playerTwoData.playerSelector.classList.add("foot-kick");
+    playAudio('foot_kick');
+    playerTwoData.footKickEnd = false;
+    setTimeout(function(){
+      if(playerTwoData.moveForward){
+         clearInterval(playerTwoData.moveForwardInterval);
+         playerTwoData.moveForwardInterval = setInterval(function(){
+          moveForwardFunc(playerTwoData)
+        });
+      }
+      if(playerTwoData.moveBack){
+         clearInterval(playerTwoData.moveBackInterval);
+         playerTwoData.moveBackInterval= setInterval(function(){
+          moveBackFunc(playerTwoData)
+        });
+      }
+      playerTwoData.footkick = false;
+      playerTwoData.playerSelector.classList.remove("foot-kick");
+      stopAudio('foot_kick');
+      playerTwoData.footKickEnd = true;
+      if(playerTwoData.keyPressedFootkick){
+        playerTwoData.footkick = true;
+      }
+      else{
+        playerTwoData.footkick = false;
+      }
+    }, 400);
+    if(playerPosDiff > -85 && playerPosDiff < 85){
+      makeDamage(footKickDamage);
+      playerOneData.isDamaged = true;
+      if(!playerTwoData.jumpEnd){
+        playerOneData.playerSelector.classList.add("foot-damaged");
+        playAudio('foot_damage');
+        setTimeout(function(){
+          playerOneData.playerSelector.classList.remove("foot-damaged");
+          playerOneData.isDamaged = false;
+          stopAudio('foot_damage');
+        }, 200);
+      }
+      else{
+        setTimeout(function(){
+          playerOneData.playerSelector.classList.add("foot-damaged");
+          playAudio('foot_damage');
+        }, 300);
+        setTimeout(function(){
+          playerOneData.playerSelector.classList.remove("foot-damaged");
+          playerOneData.isDamaged = false;
+          stopAudio('foot_damage');
         }, 500);
       }
     }
@@ -500,11 +658,10 @@ function jump(player){
     }, 10);
   }
   function jumpEnd(player){
-    player.playerSelector.classList.remove("move-top");
     playAudio('jump_end');
     player.moveTop = false;
     player.jumpEnd = true;
-    player.playerSelector.classList.remove("hand-kick", "foot-kick");
+    player.playerSelector.classList.remove("move-top", "hand-kick", "foot-kick");
     if(player.keyPressedJump){
         player.moveTop = true;
       }
@@ -520,8 +677,10 @@ function jump(player){
 function moveBackFunc(player){
   if(player.playerPosX >= 0){
     if(player.playerPosY < playerHeight || player.playerPosX < player2.playerPosX + playerWidth || player.playerPosX > player2.playerPosX + playerWidth || player.playerPosX === player2.playerPosX + playerWidth){
-      player.moveBack = true;
-      player.playerSelector.style.left = parseInt(player.playerSelector.style.left) - 1 + 'px';
+      if(!(player.playerPosY < playerHeight && player2.playerPosY < playerHeight && Math.abs(playerPosDiff) < 85)){
+        player.moveBack = true;
+        player.playerSelector.style.left = parseInt(player.playerSelector.style.left) - 1 + 'px';
+      }
     }
   }
 }
@@ -529,8 +688,10 @@ function moveBackFunc(player){
 function moveForwardFunc(player){
   if(player.playerPosX <= levelWidth - player.playerSelector.offsetWidth){
     if(player.playerPosY < playerHeight || player.playerPosX < player2.playerPosX - playerWidth || player.playerPosX > player2.playerPosX - playerWidth || player.playerPosX === player2.playerPosX - playerWidth){
-      player.moveForward = true;
-      player.playerSelector.style.left = parseInt(player.playerSelector.style.left) + 1 + 'px';
+      if(!(player.playerPosY < playerHeight && player2.playerPosY < playerHeight && Math.abs(playerPosDiff) < 85)){
+        player.moveForward = true;
+        player.playerSelector.style.left = parseInt(player.playerSelector.style.left) + 1 + 'px';
+      }
     }
   }
 }
@@ -560,6 +721,7 @@ function moveRunFunc(player){
 }
 
 
+
 ///// Get the positions
 
 function getPosition(player) {
@@ -567,15 +729,34 @@ function getPosition(player) {
   player.playerPosY = 0;
   player.playerPosX += (player.playerSelector.offsetLeft - player.playerSelector.scrollLeft + player.playerSelector.clientLeft);
   player.playerPosY += (player.playerSelector.offsetTop - player.playerSelector.scrollTop + player.playerSelector.clientTop);
-  var coords = "x:" + player.playerPosX + " y:" + player.playerPosY;
-  player.playerSelector.innerHTML =  coords;
+  var coords = "Player X:" + player.playerPosX + " Player Y:" + player.playerPosY;
+  document.getElementById("position-info").innerHTML =  coords;
+
+  playerPosDiffJump = Math.abs(playerOneData.playerPosY - playerTwoData.playerPosY);
+  var diffCoords = "Diff x: " + playerPosDiff + " Diff y: " + playerPosDiffJump;
+  document.getElementById("position-diff-info").innerHTML =  diffCoords;
+}
+
+function getPosition2(player) {
+  player.playerPosX = 0;
+  player.playerPosY = 0;
+  player.playerPosX += (player.playerSelector.offsetLeft - player.playerSelector.scrollLeft + player.playerSelector.clientLeft);
+  player.playerPosY += (player.playerSelector.offsetTop - player.playerSelector.scrollTop + player.playerSelector.clientTop);
+  var coords = "Player X:" + player.playerPosX + " Player Y:" + player.playerPosY;
+  document.getElementById("position-info2").innerHTML =  coords;
 }
 
 
 
 function playerPositionFix(){
   playerPosDiff = playerOneData.playerPosX - playerTwoData.playerPosX;
-  if(playerOneData.playerPosX > playerTwoData.playerPosX - playerWidth && playerOneData.playerPosX < playerTwoData.playerPosX + playerWidth && playerOneData.playerPosY > playerHeight - 10 && playerTwoData.playerPosY > playerHeight - 10){
+  
+
+  if(   playerOneData.playerPosX > playerTwoData.playerPosX - playerWidth 
+     && playerOneData.playerPosX < playerTwoData.playerPosX + playerWidth 
+     && playerOneData.playerPosY > playerHeight - 10 
+     && playerTwoData.playerPosY > playerHeight - 10
+     ){
     if (playerPosDiff > 0 ){
       playerOneData.playerPosX += 5;
       playerTwoData.playerPosX -= 5;
@@ -615,7 +796,7 @@ function makeDamage(damage){
 
 getPosInterval = setInterval(function(){
   getPosition(playerOneData);
-  getPosition(playerTwoData);
+  getPosition2(playerTwoData);
   playerPositionFix();
 });
 
