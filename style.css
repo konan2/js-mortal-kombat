@@ -312,7 +312,7 @@ button{
 	animation-name: cyborg-defeated;
 	animation-timing-function: linear;
 	animation-duration: 1s;
-	animation-delay: 0;
+	animation-delay: 1s;
 	animation-iteration-count: infinite;
 	animation-direction: reverse;
 }
