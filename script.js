@@ -787,6 +787,7 @@ function makeDamage(damage){
   player2.life = player2.life - damage;
   if(player2.life < 5){
     player2.life = 0;
+    player2.playerSelector.classList.add("defeated");
   }
   player2.playerLifeSelector.style.width = player2.life + "%";
 }

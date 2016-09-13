@@ -287,6 +287,72 @@ button{
 }
 */
 
+.player.defeated{
+	background-image: url(sprites/defeated/cyrax-defeated.gif);
+	background-position: center;
+	background-repeat: no-repeat;
+	-moz-transform: scaleX(-1);
+	-o-transform: scaleX(-1);
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
+	filter: FlipH;
+	-ms-filter: "FlipH";
+}
+
+.player.defeated:after{
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	background-image: url(sprites/defeated/cyborg-defeated.gif);
+	background-position: center;
+	background-repeat: no-repeat;
+	animation-name: cyborg-defeated;
+	animation-timing-function: linear;
+	animation-duration: 1s;
+	animation-delay: 0;
+	animation-iteration-count: infinite;
+	animation-direction: reverse;
+}
+
+@keyframes cyborg-defeated {
+	0% {
+		opacity: 1;
+	}
+	10% {
+		opacity: 0;
+	}
+	25% {
+		opacity: 1;
+	}
+	55% {
+		opacity: 0;
+	}
+	60% {
+		opacity: 1;
+	}
+	65% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.player.defeated[flipped]{
+	background-image: url(sprites/defeated/cyrax-defeated.gif);
+	background-position: center;
+	background-repeat: no-repeat;
+	-moz-transform: none;
+	-o-transform: none;
+	-webkit-transform: none;
+	transform: none;
+	filter: none;
+	-ms-filter: none;
+}
+
 .player.hand-damaged{
 	background-image: url(sprites/cyraxbeaten/cyrax-hand-damaged.png);
 	background-position: -5px -2px;
