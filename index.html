@@ -11,13 +11,13 @@
 
 <body>
 
-<div class="page-wrapper">
-	<div class="wrapper-sky wrapper">
-		<div style="width: 100%; height: 100%; position: relative">
-			<div class="stars"></div>
-			<div class="twinkling"></div>
+<div id="page-wrapper" class="portal-level">
+	<div class="level-decor">
+		<div class="level-sky">
 			<div class="clouds"></div>
 		</div>
+		<div class="level-floor-decor"></div>
+		<div class="level-floor"></div>
 	</div>
 	<div class="level-wrapper">
 		<div class="wrapper">
@@ -45,11 +45,16 @@
 					</div>
 				</div>
 			</div>
+			<div class="level-switch">
+				<button id="desert" onclick="changeLevel('desert-level')">Desert</button>
+				<button id="portal" onclick="changeLevel('portal-level')">Portal</button>
+				<button id="temple" onclick="changeLevel('temple-level')">Temple</button>
+			</div>
 			<div id="position-diff-info" class="position-info"></div>
 			<div id="position-info" class="position-info"></div>
 			<div id="position-info2" class="position-info"></div>
-			<div id="player1" class="player player_1" style="left:100px; bottom:0;"></div>
-			<div id="player2" class="player player_2" style="left:500px; bottom:0;"></div>
+			<div id="player1" class="player player_1" style="left: 410px; bottom:0;"></div>
+			<div id="player2" class="player player_2" style="left: 782px; bottom:0;"></div>
 		</div>
 	</div>
 

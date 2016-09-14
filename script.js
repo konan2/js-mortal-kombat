@@ -27,7 +27,8 @@ var playerOneData = {
   isDamaged: false,
   moveForwardInterval: null,
   moveBackInterval: null,
-  moveRunInterval: null
+  moveRunInterval: null,
+  defeated: false
 };
 
 
@@ -56,7 +57,8 @@ var playerTwoData = {
   isDamaged: false,
   moveForwardInterval: null,
   moveBackInterval: null,
-  moveRunInterval: null
+  moveRunInterval: null,
+  defeated: false
 };
 
 var player;
@@ -787,7 +789,16 @@ function makeDamage(damage){
   player2.life = player2.life - damage;
   if(player2.life < 5){
     player2.life = 0;
-    player2.playerSelector.classList.add("defeated");
+    player2.defeated = true;
+    if(player2 === playerTwoData){
+      player2Keys = {};
+    }
+    else{
+      playerKeys = {};
+    }
+    setTimeout(function() {
+      player2.playerSelector.classList.add("defeated");
+    }, 500);
   }
   player2.playerLifeSelector.style.width = player2.life + "%";
 }
@@ -828,4 +839,11 @@ function stopAudio(trackname){
 
 document.addEventListener("keydown", funcKeyDown);
 document.addEventListener("keyup", funcKeyUp);
+
+// Change level 
+
+function changeLevel(level){
+  document.getElementById("page-wrapper").classList = [];
+  document.getElementById("page-wrapper").className += level;
+}
 
