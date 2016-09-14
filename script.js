@@ -146,16 +146,11 @@ function funcKeyDown(event){
   }
 
   // jump
-  if(event.keyCode === playerKeys.jump && !playerOneData.block && !playerOneData.moverun){
-    playerOneData.keyPressedJump = true;
-    jump(playerOneData);
+  if((event.keyCode === playerKeys.jump || event.keyCode === player2Keys.jump ) && !playerOneData.block && !playerOneData.moverun){
+    player.keyPressedJump = true;
+    jump(player);
   }
 
-  // jump2
-  if(event.keyCode === player2Keys.jump && !playerTwoData.block && !playerTwoData.moverun){
-    playerTwoData.keyPressedJump = true;
-    jump(playerTwoData);
-  }
 
   // Move forward
   if(event.keyCode === playerKeys.forward && !playerOneData.block && !playerOneData.moverun && !playerOneData.moveBottom && !playerOneData.handkick && !playerOneData.footkick){
@@ -268,18 +263,12 @@ function funcKeyUp(event){
 
 
   // jump
-  if(event.keyCode === playerKeys.jump){
-    playerOneData.moveTop = false;
-    playerOneData.keyPressedJump = false;
-    playerOneData.playerSelector.classList.remove("move-up");
+  if(event.keyCode === playerKeys.jump || event.keyCode === player2Keys.jump){
+    player.moveTop = false;
+    player.keyPressedJump = false;
+    player.playerSelector.classList.remove("move-up");
   }
 
-  // jump2
-  if(event.keyCode === player2Keys.jump){
-    playerTwoData.moveTop = false;
-    playerTwoData.keyPressedJump = false;
-    playerTwoData.playerSelector.classList.remove("move-up");
-  }
 
   // Move forward
   if(event.keyCode === playerKeys.forward){
@@ -640,7 +629,7 @@ function jump(player){
     player.playerSelector.classList.add("move-top");
     setTimeout(function() {
       player.playerSelector.style.bottom = parseInt(player.playerSelector.style.bottom) + 6 + 'px';
-      if (parseInt(player.playerSelector.style.bottom) > 150){
+      if (parseInt(player.playerSelector.style.bottom) > 180){
         callbackFn();
       } 
       else {
