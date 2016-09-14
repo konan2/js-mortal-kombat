@@ -139,7 +139,21 @@ body {
 	background-size: 100% 120%;
 }
 
+.desert-level .level-sky:after{
+	content: "";
+	position: absolute;
+	right: 36px;
+	top: 142px;
+	height: 100px;
+	z-index: 0;
+	width: 100px;
+	border-radius: 100%;
+	box-shadow: 0px 0px 100px 26px rgb(255, 244, 219);
+	background-color: #fff7e5;
+}
+
 .desert-level .clouds{
+	z-index: 1;
 	background:transparent url(img/levels/desert/clouds3.png) repeat top center;
 }
 
@@ -656,6 +670,7 @@ button{
 
 .level-switch{
 	position: absolute;
+	z-index: 1;
 	right: 7px;
 	top: 65px;
 }
