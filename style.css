@@ -255,10 +255,10 @@ body {
 .portal-level .level-decor:after{
 	content: '';
 	left: 670px;
-	top: 361px;
+	top: 365px;
 	position: absolute;
 	width: 56px;
-	height: 7px;
+	height: 2px;
 	border-top-left-radius: 100%;
 	border-top-right-radius: 100%;
 	z-index: 1;
