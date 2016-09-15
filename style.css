@@ -231,7 +231,7 @@ body {
 	animation: none;
 	left: 627px;
 	top: 43px;
-	transform: rotate(23deg) skew(-65deg);
+	transform: rotate(23deg) skew(-61deg);
 	width: 154px;
 	height: 154px;
 	z-index: 1;
@@ -365,8 +365,10 @@ body {
 	transform: rotate(28deg) skew(-57deg) scale(1.7);
 	opacity: 0.1;
 	left: 659px;
-	background: url(img/levels/portal/portal.gif);
+	/* background: url(img/levels/portal/portal.gif); */
 	height: 126px;
+	/* box-shadow: inset 0px 0px 3px 51px rgba(255, 0, 0, 0.75), 0px 0px 38px 28px rgba(255, 0, 0, 0.73); */
+	border-radius: 100%;
 }
 
 @keyframes skyobject {
@@ -385,11 +387,12 @@ body {
 #page-wrapper {
 	height: 500px;
 	min-width: 1024px;
-	width: 1024px;
+	/* width: 1024px; */
 	position: relative;
 	overflow: hidden;
-	width: 70%;
+	/* width: 70%; */
 	margin: 0 auto;
+	max-width: 1440px;
 }
 
 
