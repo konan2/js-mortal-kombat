@@ -132,6 +132,39 @@ body {
 	background-size: 100% 100%;
 	height: 66px;
 }
+
+/*//////////////////////////////////////////////////////*/
+.new-level .level-sky{
+	background: url(img/levels/new/temple-bg.jpg);
+	background-position: center 0px;
+	background-repeat-y: no-repeat;
+	background-size: 100% 90%;
+	background-color: #181818;
+}
+
+.new-level .level-floor-decor{
+	background: url(img/levels/new/temple-decor.png);
+	height: 64px;
+	bottom: 64px;
+	background-position: center bottom;
+}
+
+.new-level .level-decor:after{
+	content: "";
+	position: absolute;
+	left: 52%;
+	top: 0;
+	width: 533px;
+	height: 200px;
+	background: url(img/levels/new/birds.gif) no-repeat;
+	background-size: 33%;
+}
+
+.new-level .level-floor{
+	background: url(img/levels/new/temple-floor.png) center bottom no-repeat;
+	background-size: 100% 100%;
+	height: 66px;
+}
 /*//////////////////////////////////////////////////////*/
 
 .desert-level .level-sky{
@@ -295,13 +328,13 @@ body {
 
 .portal-level .sky-decor:after{
 	content: '';
-	left: -53px;
-	top: 0;
+	left: -41px;
+	top: -13px;
 	position: absolute;
 	background: url(img/levels/portal/lightning.png) center 0;
 	background-size: 100%;
 	width: 108px;
-	height: 240px;
+	height: 259px;
 	animation: lightening 20s linear infinite;
 	transform: scaleX(.8);
 }
@@ -309,12 +342,12 @@ body {
 .portal-level .sky-decor:before{
 	content: '';
 	left: -53px;
-	top: 0;
+	top: -7px;
 	position: absolute;
 	background: url(img/levels/portal/lightning.png) center 0;
 	background-size: 100%;
 	width: 108px;
-	height: 240px;
+	height: 252px;
 	animation: lightening 20s -4s linear infinite;
 	transform: scaleX(.6);
 }
@@ -386,13 +419,10 @@ body {
 
 #page-wrapper {
 	height: 500px;
-	min-width: 1024px;
-	/* width: 1024px; */
+	width: 1344px;
 	position: relative;
 	overflow: hidden;
-	/* width: 70%; */
 	margin: 0 auto;
-	max-width: 1440px;
 }
 
 
@@ -523,7 +553,7 @@ button{
 	margin: 0 5px;
 }
 
-[flipped], .player.defeated{
+[flipped]{
 	-moz-transform: scaleX(-1);
 	-o-transform: scaleX(-1);
 	-webkit-transform: scaleX(-1);
@@ -532,15 +562,6 @@ button{
 	-ms-filter: "FlipH";
 	text-align: right;
 	float: right;
-}
-
-.player.hand-damaged.defeated, .player.foot-damaged.defeated, .player.defeated[flipped]{
-	-moz-transform: none;
-	-o-transform: none;
-	-webkit-transform: none;
-	transform: none;
-	filter: none;
-	-ms-filter: none;
 }
 
 
@@ -604,13 +625,13 @@ button{
 	background-repeat: no-repeat;
 }
 
-.player.hand-damaged{
+.player.hand-damaged, .player.hand-damaged[flipped]{
 	background-image: url(sprites/cyraxbeaten/cyrax-hand-damaged.png);
 	background-position: -5px -2px;
 	background-repeat: no-repeat;
 }
 
-.player.foot-damaged{
+.player.foot-damaged, .player.foot-damaged[flipped]{
 	background-image: url(sprites/cyraxbeaten/cyrax-foot-damaged.png);
 	background-position: -5px -2px;
 	background-repeat: no-repeat;
