@@ -165,10 +165,63 @@ body {
 	background-size: 100% 100%;
 	height: 66px;
 }
+
+
+
+
+
+
 /*//////////////////////////////////////////////////////*/
 
+.mars-level .level-decor{
+	background: #9ba9af url(img/levels/mars/4.jpg) center 160px no-repeat;
+	background-size: 100% 100%;
+	background: url(img/levels/mars/2.jpg) center 0;
+	background-size: 100% 124%;
+}
+
+.mars-level .level-sky{
+	background: none;
+	
+}
+
+.mars-level .sky-decor{
+	background: url(img/levels/mars/mars-bg.png) no-repeat;
+	background-position: center 0;
+	background-repeat-y: no-repeat;
+	background-size: 100% 105%;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	z-index: 2;
+}
+
+.mars-level .level-floor-decor{
+	background: none;
+}
+
+.mars-level .level-decor:after{
+	background: none;
+}
+
+.mars-level .level-floor{
+	background: none;
+}
+
+.mars-level .clouds{
+	z-index: 1;
+	background: transparent url(img/levels/desert/clouds3.png) repeat top center;
+}
+
+/*//////////////////////////////////////////////////////*/
+
+
+
+
+
+
 .desert-level .level-sky{
-	background: url(img/levels/desert/desert-sky.jpg) no-repeat top center;
+	background: url(img/levels/desert/8.jpg) no-repeat top center;
 	background-size: 100% 120%;
 }
 
@@ -435,7 +488,7 @@ body {
 	height: 100%;
 	padding-bottom: 30px;
 	position: relative;
-	z-index: 1;
+	z-index: 10;
 }
 
 .top-panel{
