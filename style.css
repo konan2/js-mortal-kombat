@@ -182,6 +182,16 @@ body {
 	bottom: 11px;
 }
 
+.plant-level .level-floor-decor{
+	background: url(img/levels/plant/floor-decor.png);
+	background-size: 6% 100%;
+	position: absolute;
+	width: 100%;
+	left: 0;
+	z-index: 1;
+	height: 55px;
+	bottom: 59px;
+}
 
 .plant-level .level-floor:after{
 	content: '';
@@ -1044,3 +1054,18 @@ button{
 	top: 65px;
 }
 
+#toggle-info{
+	position: absolute;
+	top: 25%; 
+	right: 0%; 
+	z-index: 99;
+}
+
+#canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 98;
+  width: 100%;
+  height: 96%;
+}
