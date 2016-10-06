@@ -925,11 +925,11 @@ function changeLevel(level){
 
 var particles = [];
 var alreadyRendering = false;
+var canvas = document.getElementById('canvas');
 
 // originally from Rachel Smith on CodePen http://codepen.io/rachsmith/pen/oXBOwg
 /* global particles */
 function sparkShower(startx, starty, sparkWidth, sparkHeight) {
-  var canvas = document.getElementById('canvas');
   var ctx = canvas.getContext('2d');
   var width = canvas.width = sparkWidth;
   var height = canvas.height = sparkHeight;
@@ -1055,8 +1055,7 @@ function sparkShower(startx, starty, sparkWidth, sparkHeight) {
 function startBlood(player2) {
   var initialX = player2.playerPosX + player.playerWidth/2;
   var initialY = player2.playerPosY + player.playerHeight/2;
-  var sparkCanvas = document.getElementById("canvas");
-  var sparkWidth = sparkCanvas.offsetWidth;
-  var sparkHeight = sparkCanvas.offsetHeight;
+  var sparkWidth = canvas.offsetWidth;
+  var sparkHeight = canvas.offsetHeight;
   sparkShower(initialX, initialY, sparkWidth, sparkHeight);
 }
