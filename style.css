@@ -720,17 +720,6 @@ body {
 	box-shadow: 0px 0px 10px 10px #000;
 }*/
 
-.wasted{
-	background-color: #ccc6c6;
-}
-
-
-
-.player-controls{
-	position: absolute;
-	right: 20px;
-	top: 20px;
-}
 
 button{
 	cursor: pointer;
@@ -810,15 +799,11 @@ button{
 }
 
 .player.hand-damaged, .player.hand-damaged[flipped]{
-	background-image: url(sprites/cyraxbeaten/cyrax-hand-damaged.png);
-	background-position: -5px -2px;
-	background-repeat: no-repeat;
+	background: url(sprites/cyraxbeaten/cyrax-hand-damaged.png) -5px -2px no-repeat!important;
 }
 
 .player.foot-damaged, .player.foot-damaged[flipped]{
-	background-image: url(sprites/cyraxbeaten/cyrax-foot-damaged.png);
-	background-position: -5px -2px;
-	background-repeat: no-repeat;
+	background: url(sprites/cyraxbeaten/cyrax-foot-damaged.png) -5px -2px no-repeat!important;
 }
 
 .player.move-forward, .player.move-back[flipped]{
@@ -848,8 +833,8 @@ button{
 	to { background-position: -300px 7px; }
 }
 
-.player.block{
-	background: url('sprites/spritesheet_block.png') no-repeat;
+.player.block, .player.block[flipped]{
+	background: url('sprites/spritesheet_block.png') no-repeat!important;
 	animation: blockstay .1s steps(2) forwards;
 }
 
@@ -858,8 +843,8 @@ button{
 	to { background-position: -300px -3px; }
 }
 
-.player.move-down.block{
-	background: url('sprites/spritesheet_block_seat.png') no-repeat;
+.player.move-down.block, .player.move-down.block[flipped]{
+	background: url('sprites/spritesheet_block_seat.png') no-repeat!important;
 	animation: blockseat .1s steps(2) forwards;
 }
 
@@ -1054,18 +1039,11 @@ button{
 	top: 65px;
 }
 
-#toggle-info{
-	position: absolute;
-	top: 25%; 
-	right: 0%; 
-	z-index: 99;
-}
-
 #canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 98;
-  width: 100%;
-  height: 96%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	width: 100%;
+	height: 96%;
 }

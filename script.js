@@ -45,7 +45,7 @@ var playerOneData = {
   playerPosX: 0,
   playerPosY: 0,
   playerWidth: 150,
-  playerheight: 138,
+  playerHeight: 138,
   keyPressedHandkick: false,
   keyPressedFootkick: false,
   keyPressedJump: false,
@@ -76,7 +76,7 @@ var playerTwoData = {
   playerPosX: 500,
   playerPosY: 262,
   playerWidth: 150,
-  playerheight: 138,
+  playerHeight: 138,
   keyPressedHandkick: false,
   keyPressedFootkick: false,
   keyPressedJump: false,
@@ -118,6 +118,7 @@ insertAudio('desert_level_track');
 insertAudio('jump_end');
 insertAudio('foot_damage');
 insertAudio('hand_damage');
+insertAudio('kick-blocked');
 
 //playAudio('desert_level_track', "loop");
 
@@ -396,26 +397,46 @@ function handKickFunc(){
       }
     }, 300);
     if(playerPosDiff > -85 && playerPosDiff < 85 && playerPosDiffJump < 150){
-      makeDamage(handKickDamage);
-      playerTwoData.isDamaged = true;
       if(!playerOneData.jumpEnd){
         playerTwoData.playerSelector.classList.add("hand-damaged");
-        playAudio('hand_damage');
+        
+        playerTwoData.isDamaged = true;
+        if(playerTwoData.block){
+          makeDamage(handKickDamage/3);
+          playAudio('kick-blocked');
+        }
+        else{
+          playAudio('hand_damage');
+          makeDamage(handKickDamage);
+          startBlood(player2);
+        }
         setTimeout(function(){
           playerTwoData.playerSelector.classList.remove("hand-damaged");
           playerTwoData.isDamaged = false;
           stopAudio('hand_damage');
+          stopAudio('kick-blocked');
         }, 150);
       }
       else{
         setTimeout(function(){
           playerTwoData.playerSelector.classList.add("hand-damaged");
-          playAudio('hand_damage');
+          
+          playerTwoData.isDamaged = true;
+          if(playerTwoData.block){
+            playAudio('kick-blocked');
+            makeDamage(handKickDamage/3);
+          }
+          else{
+            playAudio('hand_damage');
+            makeDamage(handKickDamage);
+            startBlood(player2);
+          }
         }, 100);
         setTimeout(function(){
           playerTwoData.playerSelector.classList.remove("hand-damaged");
           playerTwoData.isDamaged = false;
           stopAudio('hand_damage');
+          stopAudio('kick-blocked');
         }, 250);
       }
     }
@@ -459,26 +480,46 @@ function handKickFunc2(){
       }
     }, 300);
     if(playerPosDiff > -85 && playerPosDiff < 85 && playerPosDiffJump < 150){
-      makeDamage(handKickDamage);
-      playerOneData.isDamaged = true;
       if(!playerTwoData.jumpEnd){
         playerOneData.playerSelector.classList.add("hand-damaged");
-        playAudio('hand_damage');
+        
+        playerTwoData.isDamaged = true;
+        if(playerOneData.block){
+          playAudio('kick-blocked');
+          makeDamage(handKickDamage/3);
+        }
+        else{
+          playAudio('hand_damage');
+          makeDamage(handKickDamage);
+          startBlood(player2);
+        }
         setTimeout(function(){
           playerOneData.playerSelector.classList.remove("hand-damaged");
           playerOneData.isDamaged = false;
           stopAudio('hand_damage');
+          stopAudio('kick-blocked');
         }, 150);
       }
       else{
         setTimeout(function(){
           playerOneData.playerSelector.classList.add("hand-damaged");
-          playAudio('hand_damage');
+          
+          playerOneData.isDamaged = true;
+          if(playerOneData.block){
+            playAudio('kick-blocked');
+            makeDamage(handKickDamage/3);
+          }
+          else{
+            playAudio('hand_damage');
+            makeDamage(handKickDamage);
+            startBlood(player2);
+          }
         }, 100);
         setTimeout(function(){
           playerOneData.playerSelector.classList.remove("hand-damaged");
           playerOneData.isDamaged = false;
           stopAudio('hand_damage');
+          stopAudio('kick-blocked');
         }, 250);
       }
     }
@@ -522,26 +563,46 @@ function footKickFunc(){
       }
     }, 400);
     if(playerPosDiff > -85 && playerPosDiff < 85 && playerPosDiffJump < 150){
-      makeDamage(footKickDamage);
-      playerTwoData.isDamaged = true;
       if(!playerOneData.jumpEnd){
         playerTwoData.playerSelector.classList.add("foot-damaged");
-        playAudio('foot_damage');
+        
+        playerTwoData.isDamaged = true;
+        if(playerTwoData.block){
+          playAudio('kick-blocked');
+          makeDamage(footKickDamage/3);
+        }
+        else{
+          playAudio('foot_damage');
+          makeDamage(footKickDamage);
+          startBlood(player2);
+        }
         setTimeout(function(){
           playerTwoData.playerSelector.classList.remove("foot-damaged");
           playerTwoData.isDamaged = false;
           stopAudio('foot_damage');
+          stopAudio('kick-blocked');
         }, 200);
       }
       else{
         setTimeout(function(){
           playerTwoData.playerSelector.classList.add("foot-damaged");
-          playAudio('foot_damage');
+          
+          playerTwoData.isDamaged = true;
+          if(playerTwoData.block){
+            playAudio('kick-blocked');
+            makeDamage(footKickDamage/3);
+          }
+          else{
+            playAudio('foot_damage');
+            makeDamage(footKickDamage);
+            startBlood(player2);
+          }
         }, 300);
         setTimeout(function(){
           playerTwoData.playerSelector.classList.remove("foot-damaged");
           playerTwoData.isDamaged = false;
           stopAudio('foot_damage');
+          stopAudio('kick-blocked');
         }, 500);
       }
     }
@@ -585,26 +646,46 @@ function footKickFunc2(){
       }
     }, 400);
     if(playerPosDiff > -85 && playerPosDiff < 85 && playerPosDiffJump < 150){
-      makeDamage(footKickDamage);
-      playerOneData.isDamaged = true;
       if(!playerTwoData.jumpEnd){
         playerOneData.playerSelector.classList.add("foot-damaged");
-        playAudio('foot_damage');
+        
+        playerOneData.isDamaged = true;
+        if(playerOneData.block){
+          playAudio('kick-blocked');
+          makeDamage(footKickDamage/3);
+        }
+        else{
+          playAudio('foot_damage');
+          makeDamage(footKickDamage);
+          startBlood(player2);
+        }
         setTimeout(function(){
           playerOneData.playerSelector.classList.remove("foot-damaged");
           playerOneData.isDamaged = false;
           stopAudio('foot_damage');
+          stopAudio('kick-blocked');
         }, 200);
       }
       else{
         setTimeout(function(){
           playerOneData.playerSelector.classList.add("foot-damaged");
-          playAudio('foot_damage');
+          
+          playerOneData.isDamaged = true;
+          if(playerOneData.block){
+            playAudio('kick-blocked');
+            makeDamage(footKickDamage/3);
+          }
+          else{
+            playAudio('foot_damage');
+            makeDamage(footKickDamage);
+            startBlood(player2);
+          }
         }, 300);
         setTimeout(function(){
           playerOneData.playerSelector.classList.remove("foot-damaged");
           playerOneData.isDamaged = false;
           stopAudio('foot_damage');
+          stopAudio('kick-blocked');
         }, 500);
       }
     }
@@ -786,9 +867,11 @@ function makeDamage(damage){
     else{
       playerKeys = {};
     }
-    setTimeout(function() {
-      player2.playerSelector.classList.add("defeated");
-    }, 500);
+    if(!player.defeated){
+      setTimeout(function() {
+        player2.playerSelector.classList.add("defeated");
+      }, 500);
+    }
   }
   player2.playerLifeSelector.style.width = player2.life + "%";
 }
@@ -850,22 +933,22 @@ function sparkShower(startx, starty, sparkWidth, sparkHeight) {
   var ctx = canvas.getContext('2d');
   var width = canvas.width = sparkWidth;
   var height = canvas.height = sparkHeight;
-  var colors = ['#ebff55', '#ebff55', '#ebff55'];
+  var colors = ['#ff0000', '#e40c0c', '#ce0505'];
   // this is only used for simple gravity
   var gravity = 0.08;
   //var particles = [];
   var floor = sparkHeight;
   var currentlySparking = false;
-  var maxSize = 5;
+  var maxSize = 3;
   // This is the acceleration of Gravity in m/s.
   var ag = 9.81;
 
   function initParticles() {
     currentlySparking = true;
-    for (var i = 0; i < 50; i++) {
+    for (var i = 0; i < 30; i++) {
       setTimeout(function() {
         createParticle(i);
-        createParticle(i * 2);
+        //createParticle(i * 2);
       }, i);
     }
   }
@@ -900,11 +983,11 @@ function sparkShower(startx, starty, sparkWidth, sparkHeight) {
     }
 
     this.update = function() {
-      // if a particle has faded to nothing we can reset it to the starting position
-      if (opacity - 0.0005 > 0) opacity -= 0.0005;
-      else reset();
-      // simple gravity
-      //vy += gravity;
+      ///////if a particle has faded to nothing we can reset it to the starting position
+      // if (opacity - 0.0005 > 0) opacity -= 0.0005;
+      // else reset();
+      /////////////simple gravity
+      vy += gravity;
       var d = new Date();
       var timeNow = d.getTime();
       // Calculate gravity based on time elapsed since last update in lastTime
@@ -922,7 +1005,7 @@ function sparkShower(startx, starty, sparkWidth, sparkHeight) {
       } else {
         vsize = 0;
       }
-      // add bouncing off the floor
+      ///////// add bouncing off the floor
       if (y > floor) {
         vy = vy * -0.4;
         vx = vx * 0.96;
@@ -956,12 +1039,12 @@ function sparkShower(startx, starty, sparkWidth, sparkHeight) {
   }
 
   // resize
-  window.addEventListener('resize', resize);
+  // window.addEventListener('resize', resize);
 
-  function resize() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  }
+  // function resize() {
+  //   width = canvas.width = window.innerWidth;
+  //   height = canvas.height = window.innerHeight;
+  // }
 
   // init
   initParticles();
@@ -969,13 +1052,11 @@ function sparkShower(startx, starty, sparkWidth, sparkHeight) {
     render();
 }
 
-function infoButtonClick() {
-  var toggleButton = $('#toggle-info');
-  var initialY = toggleButton.position().left + (toggleButton.width() / 2);
-  var initialX = toggleButton.position().top + (toggleButton.height() / 2);
-  var sparkCanvas = $('#canvas');
-  var sparkWidth = sparkCanvas.width();
-  var sparkHeight = sparkCanvas.height();
-  //var sparkHeight = $('.video-stream').position().top;
-  sparkShower(initialY, initialX, sparkWidth, sparkHeight);
+function startBlood(player2) {
+  var initialX = player2.playerPosX + player.playerWidth/2;
+  var initialY = player2.playerPosY + player.playerHeight/2;
+  var sparkCanvas = document.getElementById("canvas");
+  var sparkWidth = sparkCanvas.offsetWidth;
+  var sparkHeight = sparkCanvas.offsetHeight;
+  sparkShower(initialX, initialY, sparkWidth, sparkHeight);
 }
