@@ -232,7 +232,7 @@ function funcKeyDown(event){
   }
 
   // Run
-  if(event.keyCode === playerKeys.run && !playerOneData.block && !playerOneData.moveTop && playerOneData.jumpEnd && !playerOneData.moveForward && !playerOneData.moveBack){
+  if(event.keyCode === playerKeys.run && !playerOneData.block && !playerOneData.moveTop && playerOneData.jumpEnd && !playerOneData.moveForward && !playerOneData.moveBack && !playerOneData.moveBottom){
     clearInterval(playerOneData.moveRunInterval);
     playerOneData.moveRunInterval = setInterval(function(){
       moveRunFunc(playerOneData);
@@ -240,7 +240,7 @@ function funcKeyDown(event){
   }
 
   // Run2
-  if(event.keyCode === player2Keys.run && !playerTwoData.block && !playerTwoData.moveTop && playerTwoData.jumpEnd && !playerTwoData.moveForward && !playerTwoData.moveBack){
+  if(event.keyCode === player2Keys.run && !playerTwoData.block && !playerTwoData.moveTop && playerTwoData.jumpEnd && !playerTwoData.moveForward && !playerTwoData.moveBack && !playerTwoData.moveBottom){
     clearInterval(playerTwoData.moveRunInterval);
     playerTwoData.moveRunInterval = setInterval(function(){
       moveRunFunc(playerTwoData);
@@ -960,8 +960,8 @@ function sparkShower(startx, starty, sparkWidth, sparkHeight) {
     var z = (Math.random() * 2);
     // randomize the vx and vy a little - but we still want them flying 'up' and 'out'
     var maxex = Math.random() * 20;
-    var vx = (Math.random() * maxex) - (maxex / 2);
-    var vy = (Math.random() * -20);
+    var vx = (Math.random() * maxex) - (maxex / 3);
+    var vy = (Math.random() * -15);
     // velocity size?
     var vsize = 0;
     // randomize size and opacity a little & pick a color from our color palette
