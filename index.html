@@ -5,6 +5,8 @@
 	<title>Title</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
+	<link href="buttons.css" rel="stylesheet">
+	<link href="materialdesignicons.min.css" rel="stylesheet">
 	<link href="style.css" rel="stylesheet">
 	<link rel="icon" href="img/page-icon.png" type="image/png">
 </head>
@@ -53,16 +55,73 @@
 				</div>
 			</div>
 			<div class="level-switch">
-				<button id="desert" onclick="changeLevel('desert-level')">Desert</button>
-				<button id="desert" onclick="changeLevel('mars-level')">Cold Mars</button>
-				<button id="portal" onclick="changeLevel('portal-level')">Alien Portal</button>
-				<button id="temple" onclick="changeLevel('temple-level')">AncientTemple</button>
-				<button id="church" onclick="changeLevel('church-level')">Ceremony Church</button>
-				<button id="arena" onclick="changeLevel('arena-level')">Death Arena</button>
-				<button id="plant" onclick="changeLevel('plant-level')">Power Plant</button>
-				<button id="spaceship" onclick="changeLevel('spaceship-level')">Spaceship</button>
-				<button id="vulkano" onclick="changeLevel('vulkano-level')">Vulkano</button>
-				<button id="bunker" onclick="changeLevel('bunker-level')">Bunker</button>
+				<span class="button-wrap">
+					<button id="desert" class="button button-pill button-raised button-primary" onclick="changeLevel('desert-level')">Desert</button>
+					<button id="desert" class="button button-pill button-raised button-primary" onclick="changeLevel('mars-level')">Cold Mars</button>
+					<button id="portal" class="button button-pill button-raised button-primary" onclick="changeLevel('portal-level')">Alien Portal</button>
+					<button id="temple" class="button button-pill button-raised button-primary" onclick="changeLevel('temple-level')">AncientTemple</button>
+					<button id="church" class="button button-pill button-raised button-primary" onclick="changeLevel('church-level')">Ceremony Church</button>
+					<button id="arena" class="button button-pill button-raised button-primary" onclick="changeLevel('arena-level')">Death Arena</button>
+					<button id="plant" class="button button-pill button-raised button-primary" onclick="changeLevel('plant-level')">Power Plant</button>
+					<button id="spaceship" class="button button-pill button-raised button-primary" onclick="changeLevel('spaceship-level')">Spaceship</button>
+					<button id="vulkano" class="button button-pill button-raised button-primary" onclick="changeLevel('vulkano-level')">Vulkano</button>
+					<button id="bunker" class="button button-pill button-raised button-primary" onclick="changeLevel('bunker-level')">Bunker</button>
+				</span>
+				
+			</div>
+			<div class="screen-controls screen-controls__arrows">
+				<div class="screen-arrows-wrapper">
+					<div class="button-wrap">
+						<button onclick="jump(playerOneData)" class="button button-circle button-raised button-primary">
+							<i class="mdi mdi-arrow-up"></i>
+						</button>
+					</div>
+				</div>
+				<div class="screen-arrows-wrapper">
+					<div class="button-wrap" style="margin-right: 25px;">
+						<button onclick="moveBackFunc()" class="button button-circle button-raised button-primary">
+							<i class="mdi mdi-arrow-left"></i>
+						</button>
+					</div>
+					<div class="button-wrap">
+						<button onclick="moveForwardFunc()" class="button button-circle button-raised button-primary">
+							<i class="mdi mdi-arrow-right"></i>
+						</button>
+					</div>
+				</div>
+				<div class="screen-arrows-wrapper">
+					<div class="button-wrap">
+						<button onclick="moveBottomFunc()" class="button button-circle button-raised button-primary">
+							<i class="mdi mdi-arrow-down"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="screen-controls screen-controls__actions">
+				<div>
+					<div class="button-wrap">
+						<button onclick="handKickFunc()" class="button button-circle button-raised button-primary">
+							A
+						</button>
+					</div>
+					<div class="button-wrap">
+						<button onclick="footKickFunc()" class="button button-circle button-raised button-primary">
+							B
+						</button>
+					</div>
+				</div>
+				<div>
+					<div class="button-wrap">
+						<button onclick="moveRunFunc(playerOneData)" class="button button-circle button-raised button-primary">
+							C
+						</button>
+					</div>
+					<div class="button-wrap">
+						<button onclick="blockFunc(playerOneData)" class="button button-circle button-raised button-primary">
+							D
+						</button>
+					</div>
+				</div>
 			</div>
 			<div id="position-diff-info" class="position-info"></div>
 			<div id="position-info" class="position-info"></div>
