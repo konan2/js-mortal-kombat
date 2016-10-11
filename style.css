@@ -799,10 +799,12 @@ button{
 
 .player.hand-damaged, .player.hand-damaged[flipped]{
 	background: url(sprites/cyraxbeaten/cyrax-hand-damaged.png) -5px -2px no-repeat!important;
+	animation: none;
 }
 
 .player.foot-damaged, .player.foot-damaged[flipped]{
 	background: url(sprites/cyraxbeaten/cyrax-foot-damaged.png) -5px -2px no-repeat!important;
+	animation: none;
 }
 
 .player.move-forward, .player.move-back[flipped]{
@@ -1038,6 +1040,7 @@ button{
 	transform: translateX(50%);
 	bottom: -100px;
 	width: 100%;
+	display: none;
 }
 
 #canvas {
@@ -1046,7 +1049,7 @@ button{
 	left: 0;
 	z-index: 1;
 	width: 100%;
-	height: 96%;
+	height: 100%;
 }
 
 .button{
@@ -1061,6 +1064,7 @@ button{
 .screen-controls{
 	position: absolute;
 	z-index: 2;
+	display: none;
 }
 
 .screen-controls .button-wrap{
