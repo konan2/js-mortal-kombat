@@ -363,7 +363,7 @@ function lifeCheck(){
     player2.life = 0;
     player2.defeated = true;
     if(!player.defeated){
-      player.playerKeys = {};
+      player2.playerKeys = {};
       setTimeout(function() {
         player2.playerSelector.classList.add("defeated");
       }, 500);
