@@ -48,7 +48,6 @@ var playerOneData = {
   }
 };
 
-
 var playerTwoData = {
   playerSelector: document.getElementById("player2"),
   playerLifeSelector: document.getElementById("player2-level"),
