@@ -87,18 +87,12 @@ var playerTwoData = {
 
 var player;
 var player2;
-
 var playerWidth = 72;
 var playerHeight = 262;
-
 var getPosInterval = null;
-
 var blockedDamage = 1;
 var handKickDamage = 2;
 var footKickDamage = 3;
-
-
-
 var playerPosDiff;
 var playerPosDiffJump;
 
