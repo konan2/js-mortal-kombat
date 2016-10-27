@@ -94,9 +94,9 @@ var playerHeight = 262;
 
 var getPosInterval = null;
 
-var blockedDamage = 2;
-var handKickDamage = 5;
-var footKickDamage = 10;
+var blockedDamage = 1;
+var handKickDamage = 2;
+var footKickDamage = 3;
 
 
 
@@ -251,15 +251,6 @@ function funcKeyUp(event){
     player.playerSelector.classList.remove("move-down");
   }
 
-  // Hand kick
-  if(event.keyCode === player.playerKeys.handkick){
-    player.handKickEnd = true;
-  }
-
-  // Foot kick
-  if(event.keyCode === player.playerKeys.footkick){
-    player.footKickEnd = true;
-  }
 
   // Run
   if(event.keyCode === player.playerKeys.run){
@@ -297,6 +288,7 @@ function kickFunc(player, kickType, kickTime, kickEnd, kickTypeClass, kickAudio,
   if(!player.moveTop && player.moveBack || player.jumpEnd && player.moveTop && player.moveBack){
     clearInterval(player.moveBackInterval);
   }
+  console.log(player.handKickEnd);
   if(player.handKickEnd && !player.isDamaged && player.footKickEnd){
     player[kickType] = true;
     player.playerSelector.classList.add(kickTypeClass);
@@ -315,6 +307,7 @@ function kickFunc(player, kickType, kickTime, kickEnd, kickTypeClass, kickAudio,
           moveBackFunc(player)
         });
       }
+      player[kickEnd] = true;
       player[kickType] = false;
       player.playerSelector.classList.remove(kickTypeClass);
       stopAudio(kickAudio);
@@ -547,13 +540,7 @@ function playerPositionFix(){
 
 
 
-// Main interval
 
-getPosInterval = setInterval(function(){
-  getPosition(playerOneData);
-  getPosition2(playerTwoData);
-  playerPositionFix();
-});
 
 //////////////////////////////////////////////////
 
@@ -729,3 +716,13 @@ function startBlood(player2) {
   var sparkHeight = canvas.offsetHeight;
   sparkShower(initialX, initialY, sparkWidth, sparkHeight);
 }
+
+
+
+// Main interval
+
+getPosInterval = setInterval(function(){
+  getPosition(playerOneData);
+  getPosition2(playerTwoData);
+  playerPositionFix();
+});
