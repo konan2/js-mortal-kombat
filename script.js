@@ -43,7 +43,7 @@ var playerOneData = {
     back: 65,
     bottom: 83,
     handkick: 82,
-    footkick: 69,
+    footkick: 84,
     run: 81,
     block: 70
   }
@@ -104,8 +104,8 @@ var levelWidth = levelWrapper.offsetWidth;
 
 // audio
 
-insertAudio('foot_kick');
-insertAudio('hand_kick');
+insertAudio('footkick');
+insertAudio('handkick');
 insertAudio('syborg_run');
 // insertAudio('desert_level_track');
 insertAudio('jump_end');
@@ -148,17 +148,18 @@ function getPlayerSide(event){
 
 function funcKeyDown(event){
   getPlayerSide(event);
+  console.log(event.keyCode);
   // jump
-  if(event.keyCode === player.playerKeys.jump && !player.block && !player.moverun){
+  if(event.keyCode === player.playerKeys.jump){
     jump(player);
   }
   // Move forward
-  if(event.keyCode === player.playerKeys.forward && !player.block && !player.moverun && !player.moveBottom && !player.handkick && !player.footkick){
+  if(event.keyCode === player.playerKeys.forward){
     player.moveForward = true;
     player.playerSelector.classList.add("move-forward");
   }
   // Move back
-  if(event.keyCode === player.playerKeys.back && !player.block && !player.moverun && !player.moveBottom && !player.handkick && !player.footkick){
+  if(event.keyCode === player.playerKeys.back){
     player.moveBack = true;
     player.playerSelector.classList.add("move-back");
   }
@@ -169,16 +170,16 @@ function funcKeyDown(event){
   }
   // Hand kick
   if(event.keyCode === player.playerKeys.handkick){
-    kickFunc(player, 'handkick', 300, 'handKickEnd', "hand-kick", 'hand_kick', 'hand_damage', handKickDamage, "hand-damaged", 100, 250);
+    kickFunc(player, 'handkick', 300, 'handKickEnd', 'hand_damage', handKickDamage, 'hand-damaged', 100, 250);
   }
   // Foot kick
   if(event.keyCode === player.playerKeys.footkick){
-    kickFunc(player, 'footkick', 400, 'footKickEnd', "foot-kick", 'foot_kick', 'foot_damage', footKickDamage, "foot-damaged", 300, 500);
+    kickFunc(player, 'footkick', 400, 'footKickEnd', 'foot_damage', footKickDamage, 'foot-damaged', 300, 500);
   }
 
 
   // Run
-  if(event.keyCode === player.playerKeys.run && !player.block && !player.moveTop && player.jumpEnd && !player.moveForward && !player.moveBack && !player.moveBottom){
+  if(event.keyCode === player.playerKeys.run){
     player.moverun = true;
     player.playerSelector.classList.add("move-run");
     playAudio('syborg_run');
@@ -197,25 +198,27 @@ function funcKeyDown(event){
 
 
 function move(){
-  if(playerOneData.moveForward){
-    movePlayerForward(playerOneData, playerOneData.speed)
-  }
-  if(playerOneData.moveBack){
-    movePlayerBackward(playerOneData, playerOneData.speed)
-  }
-  if(playerTwoData.moveForward){
-    movePlayerForward(playerTwoData, playerTwoData.speed)
-  }
-  if(playerTwoData.moveBack){
-    movePlayerBackward(playerTwoData, playerTwoData.speed)
-  }
-  // run
-  if(player.moverun){
-    if(player.playerPosX > player2.playerPosX){
-      movePlayerBackward(player, player.speed * 2)
+  if((!player.block && !player.moveBottom && !player.handkick && !player.footkick) || (!player.jumpEnd && player.handkick || !player.jumpEnd && player.footkick)){
+    if(playerOneData.moveForward){
+      movePlayerForward(playerOneData, playerOneData.speed)
     }
-    else{
-      movePlayerForward(player, player.speed * 2)
+    if(playerOneData.moveBack){
+      movePlayerBackward(playerOneData, playerOneData.speed)
+    }
+    if(playerTwoData.moveForward){
+      movePlayerForward(playerTwoData, playerTwoData.speed)
+    }
+    if(playerTwoData.moveBack){
+      movePlayerBackward(playerTwoData, playerTwoData.speed)
+    }
+    // run
+    if(player.moverun){
+      if(player.playerPosX > player2.playerPosX){
+        movePlayerBackward(player, player.speed * 2)
+      }
+      else{
+        movePlayerForward(player, player.speed * 2)
+      }
     }
   }
 }
@@ -280,31 +283,25 @@ function funcKeyUp(event){
 
 // Kicks
 
-function kickFunc(player, kickType, kickTime, kickEnd, kickTypeClass, kickAudio, kickDamageAudio, kickDamage, kickClass, beforeKickInterval, afterKickInterval){
-  if(!player.moveTop && player.moveForward || player.jumpEnd && player.moveTop && player.moveForward){
-    clearInterval(player.moveForwardInterval);
-  }
-  if(!player.moveTop && player.moveBack || player.jumpEnd && player.moveTop && player.moveBack){
-    clearInterval(player.moveBackInterval);
-  }
+function kickFunc(player, kickType, kickTime, kickEnd, kickDamageAudio, kickDamage, kickDamageClass, beforeKickInterval, afterKickInterval){
   if(player.handKickEnd && !player.isDamaged && player.footKickEnd){
     player[kickType] = true;
-    player.playerSelector.classList.add(kickTypeClass);
-    playAudio(kickAudio);
+    player.playerSelector.classList.add(kickType);
+    playAudio(kickType);
     player[kickEnd] = false;
     setTimeout(function(){
       player[kickEnd] = true;
       player[kickType] = false;
-      player.playerSelector.classList.remove(kickTypeClass);
-      stopAudio(kickAudio);
+      player.playerSelector.classList.remove(kickType);
+      stopAudio(kickType);
     }, kickTime);
     if(playerPosDiff > -85 && playerPosDiff < 85 && playerPosDiffJump < 150){
-      makeDamage(kickDamageAudio, kickDamage, kickClass, beforeKickInterval, afterKickInterval);
+      makeDamage(kickDamageAudio, kickDamage, kickDamageClass, beforeKickInterval, afterKickInterval);
     }
   }
 }
 
-function makeDamage(kickDamageAudio, kickDamage, kickClass, beforeKickInterval, afterKickInterval){
+function makeDamage(kickDamageAudio, kickDamage, kickDamageClass, beforeKickInterval, afterKickInterval){
   // if jump kick remove before kick interval
   if(!player.jumpEnd){
     afterKickInterval = afterKickInterval - beforeKickInterval;
@@ -312,7 +309,7 @@ function makeDamage(kickDamageAudio, kickDamage, kickClass, beforeKickInterval, 
   }
   // kick intervals
   setTimeout(function(){
-    player2.playerSelector.classList.add(kickClass);
+    player2.playerSelector.classList.add(kickDamageClass);
     player2.isDamaged = true;
     if(player2.block){
       playAudio('kick-blocked');
@@ -327,7 +324,7 @@ function makeDamage(kickDamageAudio, kickDamage, kickClass, beforeKickInterval, 
   }, beforeKickInterval);
   
   setTimeout(function(){
-    player2.playerSelector.classList.remove(kickClass);
+    player2.playerSelector.classList.remove(kickDamageClass);
     player2.isDamaged = false;
     stopAudio(kickDamageAudio);
     stopAudio('kick-blocked');
@@ -390,7 +387,7 @@ function jump(player){
     playAudio('jump_end');
     player.moveTop = false;
     player.jumpEnd = true;
-    player.playerSelector.classList.remove("move-top", "hand-kick", "foot-kick");
+    player.playerSelector.classList.remove("move-top", 'handkick', 'footkick');
     if(player.keyPressedJump){
         player.moveTop = true;
       }
