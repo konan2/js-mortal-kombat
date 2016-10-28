@@ -87,6 +87,7 @@ var playerTwoData = {
 
 var player = playerOneData;
 var player2 = playerTwoData;
+
 var playerWidth = 72;
 var playerHeight = 262;
 var mainInterval = null;
@@ -99,11 +100,7 @@ var playerPosDiffJump;
 var levelWrapper = document.querySelector(".wrapper");
 var levelWidth = levelWrapper.offsetWidth;
 
-var handkick = 'handkick';
-var handKickEnd = 'handKickEnd';
 
-var footkick = 'footkick';
-var footKickEnd = 'footKickEnd';
 
 // audio
 
@@ -172,11 +169,11 @@ function funcKeyDown(event){
   }
   // Hand kick
   if(event.keyCode === player.playerKeys.handkick){
-    kickFunc(player, handkick, 300, handKickEnd, "hand-kick", 'hand_kick', 'hand_damage', handKickDamage, "hand-damaged", 100, 250);
+    kickFunc(player, 'handkick', 300, 'handKickEnd', "hand-kick", 'hand_kick', 'hand_damage', handKickDamage, "hand-damaged", 100, 250);
   }
   // Foot kick
   if(event.keyCode === player.playerKeys.footkick){
-    kickFunc(player, footkick, 400, footKickEnd, "foot-kick", 'foot_kick', 'foot_damage', footKickDamage, "foot-damaged", 300, 500);
+    kickFunc(player, 'footkick', 400, 'footKickEnd', "foot-kick", 'foot_kick', 'foot_damage', footKickDamage, "foot-damaged", 300, 500);
   }
 
 
