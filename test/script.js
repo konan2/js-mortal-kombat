@@ -10,47 +10,19 @@ var player = {
   moveForward: false,
   moveBottom: false,
   moveBack: false,
-  handkick: false,
-  footkick: false,
-  moverun: false,
-  block: false,
-  playerPosX: 0,
-  playerPosY: 0,
-  playerWidth: 150,
-  playerHeight: 138,
-  keyPressedHandkick: false,
-  keyPressedFootkick: false,
-  keyPressedJump: false,
-  footKickEnd: true,
-  handKickEnd: true,
-  jumpEnd: true,
-  life: 100,
-  isDamaged: false,
-  moveForwardInterval: null,
-  moveBackInterval: null,
-  moveRunInterval: null,
-  defeated: false,
-  canRun: true
+  direction: '',
+};
+
+var player2 = {
+  playerSelector: document.getElementById("player2"),
+  moveTop: false,
+  moveForward: false,
+  moveBottom: false,
+  moveBack: false,
+  direction: '',
 };
 
 
-var playerWidth = 72;
-var playerHeight = 262;
-
-var getPosInterval = null;
-
-var handKickDamage = 5;
-var footKickDamage = 10;
-
-
-var playerPosDiff;
-var playerPosDiffJump;
-
-var levelWrapper = document.querySelector(".wrapper");
-
-var levelWidth = levelWrapper.offsetWidth;
-
-var direction;
 
 ///////////////////////////
 
@@ -63,7 +35,7 @@ function game(){
 
 
 function funcKeyDown(event){
-
+  console.log(event.keyCode);
   switch (event.keyCode) {
     case 40:
       player.moveTop = true;
@@ -76,6 +48,18 @@ function funcKeyDown(event){
       break;
     case 39:
       player.moveBack = true;
+      break;
+    case 87:
+      player2.moveTop = true;
+      break;
+    case 68:
+      player2.moveForward = true;
+      break; 
+    case 83:
+      player2.moveBottom = true;
+      break;
+    case 65:
+      player2.moveBack = true;
       break;
   }
 }
@@ -94,31 +78,37 @@ function funcKeyUp(event){
       case 39:
         player.moveBack = false;
         break;
+      case 87:
+        player2.moveTop = false;
+        break;
+      case 68:
+        player2.moveForward = false;
+        break; 
+      case 83:
+        player2.moveBottom = false;
+        break;
+      case 65:
+        player2.moveBack = false;
+        break;
     }
 }
 
 
 
 function move(){
-  if(player.moveTop){
-    direction = 'bottom';
-        player.playerSelector.style[direction] = parseInt(player.playerSelector.style[direction] ) - 1 + 'px';
-  }
   if(player.moveForward){
-    direction = 'left';
-        player.playerSelector.style[direction] = parseInt(player.playerSelector.style[direction] ) - 1 + 'px';
-  }
-  if(player.moveBottom){
-    direction = 'bottom';
-        player.playerSelector.style[direction] = parseInt(player.playerSelector.style[direction] ) + 1 + 'px';
+    player.playerSelector.style.left = parseInt(player.playerSelector.style.left ) - 1 + 'px';
   }
   if(player.moveBack){
-    direction = 'left';
-        player.playerSelector.style[direction] = parseInt(player.playerSelector.style[direction] ) + 1 + 'px';
+    player.playerSelector.style.left = parseInt(player.playerSelector.style.left ) + 1 + 'px';
   }
-   
-
+  if(player2.moveForward){
+    player2.playerSelector.style.left = parseInt(player2.playerSelector.style.left ) - 1 + 'px';
   }
+  if(player2.moveBack){
+    player2.playerSelector.style.left = parseInt(player2.playerSelector.style.left ) + 1 + 'px';
+  }
+}
 
 
 

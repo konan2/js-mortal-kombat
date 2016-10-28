@@ -10,6 +10,9 @@ var player2UsedCodes = [];
 
 // Data
 
+
+
+
 var playerOneData = {
   playerSelector: document.getElementById("player1"),
   playerLifeSelector: document.getElementById("player1-level"),
@@ -31,11 +34,9 @@ var playerOneData = {
   jumpEnd: true,
   life: 100,
   isDamaged: false,
-  moveForwardInterval: null,
-  moveBackInterval: null,
-  moveRunInterval: null,
   defeated: false,
   canRun: true,
+  speed: 1,
   playerKeys: {
     jump: 87,
     forward: 68,
@@ -69,10 +70,9 @@ var playerTwoData = {
   jumpEnd: true,
   life: 100,
   isDamaged: false,
-  moveForwardInterval: null,
-  moveBackInterval: null,
-  moveRunInterval: null,
   defeated: false,
+  canRun: true,
+  speed: 1,
   playerKeys: {
     jump: 38,
     forward: 39,
@@ -85,11 +85,11 @@ var playerTwoData = {
   }
 };
 
-var player;
-var player2;
+var player = playerOneData;
+var player2 = playerTwoData;
 var playerWidth = 72;
 var playerHeight = 262;
-var getPosInterval = null;
+var mainInterval = null;
 var blockedDamage = 1;
 var handKickDamage = 2;
 var footKickDamage = 3;
@@ -146,47 +146,34 @@ function getPlayerSide(event){
     player = playerTwoData;
     player2 = playerOneData;
   }
-  else{
-    return;
-  };
 }
 
 
 function funcKeyDown(event){
-
   getPlayerSide(event);
-
   // jump
   if(event.keyCode === player.playerKeys.jump && !player.block && !player.moverun){
     jump(player);
   }
-
-
   // Move forward
   if(event.keyCode === player.playerKeys.forward && !player.block && !player.moverun && !player.moveBottom && !player.handkick && !player.footkick){
-    moveForwardFunc(player)
+    player.moveForward = true;
+    player.playerSelector.classList.add("move-forward");
   }
-
-
   // Move back
   if(event.keyCode === player.playerKeys.back && !player.block && !player.moverun && !player.moveBottom && !player.handkick && !player.footkick){
-    moveBackFunc(player);
+    player.moveBack = true;
+    player.playerSelector.classList.add("move-back");
   }
-
-
   // Move bottom
   if(event.keyCode === player.playerKeys.bottom){
-    clearInterval(player.moveForwardInterval);
-    clearInterval(player.moveBackInterval);
-    moveBottomFunc(player);
+    player.moveBottom = true;
+    player.playerSelector.classList.add("move-down");
   }
-
   // Hand kick
   if(event.keyCode === player.playerKeys.handkick){
     kickFunc(player, handkick, 300, handKickEnd, "hand-kick", 'hand_kick', 'hand_damage', handKickDamage, "hand-damaged", 100, 250);
   }
-
-
   // Foot kick
   if(event.keyCode === player.playerKeys.footkick){
     kickFunc(player, footkick, 400, footKickEnd, "foot-kick", 'foot_kick', 'foot_damage', footKickDamage, "foot-damaged", 300, 500);
@@ -195,27 +182,61 @@ function funcKeyDown(event){
 
   // Run
   if(event.keyCode === player.playerKeys.run && !player.block && !player.moveTop && player.jumpEnd && !player.moveForward && !player.moveBack && !player.moveBottom){
-    clearInterval(player.moveRunInterval);
-    player.moveRunInterval = setInterval(function(){
-      moveRunFunc(player);
-    });
+    player.moverun = true;
+    player.playerSelector.classList.add("move-run");
+    playAudio('syborg_run');
   }
 
 
   // Block
   if(event.keyCode === player.playerKeys.block){
-    clearInterval(player.moveForwardInterval);
-    clearInterval(player.moveBackInterval);
-    clearInterval(player.moveRunInterval);
-    blockFunc(player);
+    if(!player.moveTop){
+      player.block = true;
+      player.playerSelector.classList.add("block");
+    }
   }
 }
 
 
 
+function move(){
+  if(playerOneData.moveForward){
+    movePlayerForward(playerOneData, playerOneData.speed)
+  }
+  if(playerOneData.moveBack){
+    movePlayerBackward(playerOneData, playerOneData.speed)
+  }
+  if(playerTwoData.moveForward){
+    movePlayerForward(playerTwoData, playerTwoData.speed)
+  }
+  if(playerTwoData.moveBack){
+    movePlayerBackward(playerTwoData, playerTwoData.speed)
+  }
+  // run
+  if(player.moverun){
+    if(player.playerPosX > player2.playerPosX){
+      movePlayerBackward(player, player.speed * 2)
+    }
+    else{
+      movePlayerForward(player, player.speed * 2)
+    }
+  }
+}
+
+
+
+function movePlayerForward(obj, moveSpeed){
+  obj.playerSelector.style.left = parseInt(obj.playerSelector.style.left) + moveSpeed + 'px';
+}
+
+function movePlayerBackward(obj, moveSpeed){
+  obj.playerSelector.style.left = parseInt(obj.playerSelector.style.left) - moveSpeed + 'px';
+}
+
 
 function funcKeyUp(event){
     getPlayerSide(event);
+
   // jump
   if(event.keyCode === player.playerKeys.jump){
     player.moveTop = false;
@@ -227,14 +248,12 @@ function funcKeyUp(event){
   if(event.keyCode === player.playerKeys.forward){
     player.moveForward = false;
     player.playerSelector.classList.remove("move-forward");
-    clearInterval(player.moveForwardInterval);
   }
 
   // Move back
   if(event.keyCode === player.playerKeys.back){
     player.moveBack = false;
     player.playerSelector.classList.remove("move-back");
-    clearInterval(player.moveBackInterval);
   }
 
 
@@ -249,25 +268,15 @@ function funcKeyUp(event){
   if(event.keyCode === player.playerKeys.run){
     player.moverun = false;
     player.playerSelector.classList.remove("move-run");
-    clearInterval(player.moveRunInterval);
   }
 
   // Block
   if(event.keyCode === player.playerKeys.block){
     player.block = false;
     player.playerSelector.classList.remove("block");
-    if(player.moveForward){
-         player.moveForwardInterval = setInterval(function(){
-          moveForwardFunc(player)
-        });
-      }
-    if(player.moveBack){
-       player.moveBackInterval = setInterval(function(){
-        moveBackFunc(player)
-      });
-    }
   }
 }
+
 
 
 
@@ -281,25 +290,12 @@ function kickFunc(player, kickType, kickTime, kickEnd, kickTypeClass, kickAudio,
   if(!player.moveTop && player.moveBack || player.jumpEnd && player.moveTop && player.moveBack){
     clearInterval(player.moveBackInterval);
   }
-  console.log(player.handKickEnd);
   if(player.handKickEnd && !player.isDamaged && player.footKickEnd){
     player[kickType] = true;
     player.playerSelector.classList.add(kickTypeClass);
     playAudio(kickAudio);
     player[kickEnd] = false;
     setTimeout(function(){
-      if(player.moveForward){
-         clearInterval(player.moveForwardInterval);
-         player.moveForwardInterval = setInterval(function(){
-          moveForwardFunc(player)
-        });
-      }
-      if(player.moveBack){
-         clearInterval(player.moveBackInterval);
-         player.moveBackInterval = setInterval(function(){
-          moveBackFunc(player)
-        });
-      }
       player[kickEnd] = true;
       player[kickType] = false;
       player.playerSelector.classList.remove(kickTypeClass);
@@ -328,7 +324,7 @@ function makeDamage(kickDamageAudio, kickDamage, kickClass, beforeKickInterval, 
     else{
       playAudio(kickDamageAudio);
       player2.life = player2.life - kickDamage;
-      startBlood(player2);
+      startBlood();
     }
     lifeCheck();
   }, beforeKickInterval);
@@ -355,48 +351,6 @@ function lifeCheck(){
       }, 500);
     }
   }
-}
-
-
-// Movement
-
-function moveForwardFunc(player){
-  if(player.playerPosX <= levelWidth - player.playerSelector.offsetWidth){
-    if(player.playerPosY < playerHeight || player.playerPosX < player2.playerPosX - playerWidth || player.playerPosX > player2.playerPosX - playerWidth || player.playerPosX === player2.playerPosX - playerWidth){
-      if(!(player.playerPosY < playerHeight && player2.playerPosY < playerHeight && Math.abs(playerPosDiff) < 85)){
-        player.moveForward = true;
-        clearInterval(player.moveForwardInterval);
-        player.playerSelector.classList.add("move-forward");
-        player.moveForwardInterval = setInterval(function(){
-          player.playerSelector.style.left = parseInt(player.playerSelector.style.left) + 1 + 'px';
-        });
-      }
-    }
-  }
-}
-
-
-function moveBackFunc(player){
-  if(player.playerPosX >= 0){
-    if(player.playerPosY < playerHeight || player.playerPosX < player2.playerPosX + playerWidth || player.playerPosX > player2.playerPosX + playerWidth || player.playerPosX === player2.playerPosX + playerWidth){
-      if(!(player.playerPosY < playerHeight && player2.playerPosY < playerHeight && Math.abs(playerPosDiff) < 85)){
-        player.moveBack = true;
-        clearInterval(player.moveBackInterval);
-        player.playerSelector.classList.add("move-back");
-        player.moveBackInterval = setInterval(function(){
-          player.playerSelector.style.left = parseInt(player.playerSelector.style.left) - 1 + 'px';
-        });
-        
-      }
-    }
-  }
-}
-
-
-
-function moveBottomFunc(player){
-  player.moveBottom = true;
-  player.playerSelector.classList.add("move-down");
 }
 
 // jump
@@ -448,29 +402,6 @@ function jump(player){
     }
   }
 }
-
-
-function blockFunc(player){
-  if(!player.moveTop){
-    player.block = true;
-    player.playerSelector.classList.add("block");
-  }
-}
-
-function moveRunFunc(player){
-  if(player.playerPosX <= levelWidth - player.playerWidth && player2.playerPosX > -player.playerWidth/2 && !(playerPosDiff > -85 && playerPosDiff < 85)){
-    player.moverun = true;
-    player.playerSelector.classList.add("move-run");
-    playAudio('syborg_run');
-    if(player.playerPosX > player2.playerPosX){
-      player.playerSelector.style.left = parseInt(player.playerSelector.style.left) - 2 + 'px';
-    }
-    else{
-      player.playerSelector.style.left = parseInt(player.playerSelector.style.left) + 2 + 'px';
-    }
-  }
-}
-
 
 
 ///// Get the positions
@@ -702,7 +633,7 @@ function sparkShower(startx, starty, sparkWidth, sparkHeight) {
     render();
 }
 
-function startBlood(player2) {
+function startBlood() {
   var initialX = player2.playerPosX + player.playerWidth/2;
   var initialY = player2.playerPosY + player.playerHeight/2;
   var sparkWidth = canvas.offsetWidth;
@@ -712,10 +643,22 @@ function startBlood(player2) {
 
 
 
+
+
+document.addEventListener("keydown", funcKeyDown);
+document.addEventListener("keyup", funcKeyUp);
+
 // Main interval
 
-getPosInterval = setInterval(function(){
+
+
+function game(){
   getPosition(playerOneData);
   getPosition2(playerTwoData);
   playerPositionFix();
+  move();
+}
+
+mainInterval = setInterval(function(){
+  game();
 });
