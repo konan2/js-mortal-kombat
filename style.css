@@ -1099,3 +1099,32 @@ button{
 	right: 10px;
 	bottom: 10px;
 }
+
+
+
+
+
+
+
+
+.show{
+	display: block;
+}
+
+.hide{
+	display: none;
+}
+
+#finishBanner{
+	position: absolute;
+	top: 60px;
+	left: 50%;
+	transform: translateX(-50%);
+	background: url('img/finishhim.gif') no-repeat;
+	width: 300px;
+	height: 178px;
+}
+
+.screen-messages{
+
+}
