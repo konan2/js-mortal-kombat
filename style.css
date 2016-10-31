@@ -800,12 +800,12 @@ button{
 
 .player.hand-damaged, .player.hand-damaged[flipped]{
 	background: url(sprites/cyraxbeaten/cyrax-hand-damaged.png) -5px -2px no-repeat!important;
-	animation: none;
+	animation: none!important;
 }
 
 .player.foot-damaged, .player.foot-damaged[flipped]{
 	background: url(sprites/cyraxbeaten/cyrax-foot-damaged.png) -5px -2px no-repeat!important;
-	animation: none;
+	animation: none!important;
 }
 
 .player.move-forward, .player.move-back[flipped]{

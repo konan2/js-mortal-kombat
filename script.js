@@ -189,46 +189,6 @@ function funcKeyDown(event){
   }
 }
 
-// Movement
-
-function movePlayer(curPlayer, oppPlayer){
-  if((!curPlayer.block && !curPlayer.moveBottom && !curPlayer.handkick && !curPlayer.footkick) || (!curPlayer.jumpEnd && curPlayer.handkick || !curPlayer.jumpEnd && curPlayer.footkick)){
-    if(curPlayer.moveForward && curPlayer.playerPosX < levelWidth - curPlayer.playerWidth){
-      movePlayerForward(curPlayer, curPlayer.speed)
-    }
-    if(curPlayer.moveBack && curPlayer.playerPosX >= 0){
-      movePlayerBackward(curPlayer, curPlayer.speed)
-    }
-    // run
-    if(curPlayer.moverun && !curPlayer.moveTop){
-      if(curPlayer.playerPosX > oppPlayer.playerPosX){
-        movePlayerBackward(curPlayer, curPlayer.speed * 2)
-      }
-      else{
-        movePlayerForward(curPlayer, curPlayer.speed * 2)
-      }
-    }
-  }
-  // Set level borders
-  if(curPlayer.playerPosX >= 0 || curPlayer.playerPosX > levelWidth - curPlayer.playerWidth){
-    curPlayer.outOfLevel = true;
-  }
-  else{
-    curPlayer.outOfLevel = false;
-  }
-  console.log(playerOneData.outOfLevel);
-}
-
-
-function movePlayerForward(obj, moveSpeed){
-  obj.playerSelector.style.left = parseInt(obj.playerSelector.style.left) + moveSpeed + 'px';
-}
-
-function movePlayerBackward(obj, moveSpeed){
-  obj.playerSelector.style.left = parseInt(obj.playerSelector.style.left) - moveSpeed + 'px';
-}
-
-
 function funcKeyUp(event){
     getPlayerSide(event);
 
@@ -272,6 +232,48 @@ function funcKeyUp(event){
   }
 }
 
+// Movement
+
+// /&& (kickzone && !(curPlayer.moveTop && oppPlayer.moveTop))
+
+function movePlayer(curPlayer, oppPlayer){
+ 
+    if((!curPlayer.block && !curPlayer.moveBottom && !curPlayer.handkick && !curPlayer.footkick && !curPlayer.isDamaged) || (!curPlayer.jumpEnd && curPlayer.handkick || !curPlayer.jumpEnd && curPlayer.footkick && !curPlayer.isDamaged)){
+      if(curPlayer.moveForward && curPlayer.playerPosX < levelWidth - curPlayer.playerWidth*1.5 && !(curPlayer.playerPosY < 332 && oppPlayer.playerPosY < 332 && kickzone)){
+        movePlayerForward(curPlayer, curPlayer.speed)
+      }
+      if(curPlayer.moveBack && curPlayer.playerPosX >= curPlayer.playerWidth/2 && !(curPlayer.playerPosY < 332 && oppPlayer.playerPosY < 332 && kickzone)){
+        movePlayerBackward(curPlayer, curPlayer.speed)
+      }
+      // run
+      if(curPlayer.moverun && !curPlayer.moveTop && curPlayer.playerPosX < levelWidth - curPlayer.playerWidth*1.5 && curPlayer.playerPosX >= curPlayer.playerWidth/2){
+        if(curPlayer.playerPosX > oppPlayer.playerPosX){
+          movePlayerBackward(curPlayer, curPlayer.speed * 2)
+        }
+        else{
+          movePlayerForward(curPlayer, curPlayer.speed * 2)
+        }
+      }
+    }
+  
+  // Set level borders
+  // if(curPlayer.playerPosX >= 0 || curPlayer.playerPosX > levelWidth - curPlayer.playerWidth){
+  //   curPlayer.outOfLevel = true;
+  // }
+  // else{
+  //   curPlayer.outOfLevel = false;
+  // }
+  // console.log(playerOneData.outOfLevel);
+}
+
+
+function movePlayerForward(obj, moveSpeed){
+  obj.playerSelector.style.left = parseInt(obj.playerSelector.style.left) + moveSpeed + 'px';
+}
+
+function movePlayerBackward(obj, moveSpeed){
+  obj.playerSelector.style.left = parseInt(obj.playerSelector.style.left) - moveSpeed + 'px';
+}
 
 // Kicks
 
@@ -413,8 +415,11 @@ function getPlayersDiff(){
 function playerPositionFix(){
   kickzone = false;
   playerPosDiff = playerOneData.playerPosX - playerTwoData.playerPosX;
-  if(playerOneData.playerPosX > playerTwoData.playerPosX - player.playerWidth/2 && playerOneData.playerPosX < playerTwoData.playerPosX + player.playerWidth/2 && playerOneData.playerPosY > player.playerHeight - 10 && playerTwoData.playerPosY > player.playerHeight - 10){
-    if (playerPosDiff > 0 ){
+  if(playerOneData.playerPosX > playerTwoData.playerPosX - player.playerWidth/2 && 
+     playerOneData.playerPosX < playerTwoData.playerPosX + player.playerWidth/2 && 
+     playerOneData.playerPosY > player.playerHeight * 0.9 && 
+     playerTwoData.playerPosY > player.playerHeight * 0.9){
+    if (playerPosDiff > 0){
       playerOneData.playerPosX += 2;
       playerTwoData.playerPosX -= 2;
     } 
