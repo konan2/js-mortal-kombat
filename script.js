@@ -35,7 +35,8 @@ var playerData = {
   handKickDamage: 2,
   footKickDamage: 3,
   blockedDamage: 1,
-  outOfLevel: false
+  outOfLevel: false,
+  pushing: false
 }
 
 var playerOneData = {
@@ -237,42 +238,42 @@ function funcKeyUp(event){
 // /&& (kickzone && !(curPlayer.moveTop && oppPlayer.moveTop))
 
 function movePlayer(curPlayer, oppPlayer){
- 
-    if((!curPlayer.block && !curPlayer.moveBottom && !curPlayer.handkick && !curPlayer.footkick && !curPlayer.isDamaged) || (!curPlayer.jumpEnd && curPlayer.handkick || !curPlayer.jumpEnd && curPlayer.footkick && !curPlayer.isDamaged)){
-      if(curPlayer.moveForward && curPlayer.playerPosX < levelWidth - curPlayer.playerWidth*1.5 && !(curPlayer.playerPosY < 332 && oppPlayer.playerPosY < 332 && kickzone)){
-        movePlayerForward(curPlayer, curPlayer.speed)
+  // Pushing
+  curPlayer.pushing = false;
+  if(curPlayer.moveForward && kickzone || curPlayer.moveBack && kickzone || curPlayer.moverun && kickzone){
+    curPlayer.pushing = true;
+  }
+  //
+  if((!curPlayer.block && !curPlayer.moveBottom && !curPlayer.handkick && !curPlayer.footkick && !curPlayer.isDamaged) || (!curPlayer.jumpEnd && curPlayer.handkick || !curPlayer.jumpEnd && curPlayer.footkick && !curPlayer.isDamaged)){
+    if(curPlayer.moveForward){
+      movePlayerForward(curPlayer, oppPlayer, curPlayer.speed)
+    }
+    if(curPlayer.moveBack){
+      movePlayerBackward(curPlayer, oppPlayer, curPlayer.speed)
+    }
+    // run
+    if(curPlayer.moverun && !curPlayer.moveTop){
+      if(curPlayer.playerPosX > oppPlayer.playerPosX){
+        movePlayerBackward(curPlayer, oppPlayer, curPlayer.speed*2)
       }
-      if(curPlayer.moveBack && curPlayer.playerPosX >= curPlayer.playerWidth/2 && !(curPlayer.playerPosY < 332 && oppPlayer.playerPosY < 332 && kickzone)){
-        movePlayerBackward(curPlayer, curPlayer.speed)
-      }
-      // run
-      if(curPlayer.moverun && !curPlayer.moveTop && curPlayer.playerPosX < levelWidth - curPlayer.playerWidth*1.5 && curPlayer.playerPosX >= curPlayer.playerWidth/2){
-        if(curPlayer.playerPosX > oppPlayer.playerPosX){
-          movePlayerBackward(curPlayer, curPlayer.speed * 2)
-        }
-        else{
-          movePlayerForward(curPlayer, curPlayer.speed * 2)
-        }
+      else{
+        movePlayerForward(curPlayer, oppPlayer, curPlayer.speed*2)
       }
     }
-  
-  // Set level borders
-  // if(curPlayer.playerPosX >= 0 || curPlayer.playerPosX > levelWidth - curPlayer.playerWidth){
-  //   curPlayer.outOfLevel = true;
-  // }
-  // else{
-  //   curPlayer.outOfLevel = false;
-  // }
-  // console.log(playerOneData.outOfLevel);
+  }
 }
 
 
-function movePlayerForward(obj, moveSpeed){
-  obj.playerSelector.style.left = parseInt(obj.playerSelector.style.left) + moveSpeed + 'px';
+function movePlayerForward(curPlayer, oppPlayer, moveSpeed){
+  if(curPlayer.playerPosX < levelWidth - curPlayer.playerWidth && !(curPlayer.playerPosY < 332 && oppPlayer.playerPosY < 332 && kickzone) && !(curPlayer.pushing && oppPlayer.playerPosX >= levelWidth - curPlayer.playerWidth)){
+    curPlayer.playerSelector.style.left = parseInt(curPlayer.playerSelector.style.left) + moveSpeed + 'px';
+  }
 }
 
-function movePlayerBackward(obj, moveSpeed){
-  obj.playerSelector.style.left = parseInt(obj.playerSelector.style.left) - moveSpeed + 'px';
+function movePlayerBackward(curPlayer, oppPlayer, moveSpeed){
+  if(curPlayer.playerPosX >= 0 && !(curPlayer.playerPosY < 332 && oppPlayer.playerPosY < 332 && kickzone) && !(curPlayer.pushing && oppPlayer.playerPosX <= 0)){
+    curPlayer.playerSelector.style.left = parseInt(curPlayer.playerSelector.style.left) - moveSpeed + 'px';
+  }
 }
 
 // Kicks
