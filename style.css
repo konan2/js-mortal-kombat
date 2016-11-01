@@ -102,7 +102,11 @@ body {
 
 /*//////////////////////////////////////////////////////*/
 .temple-level .level-sky{
-	background: #181818 url(img/levels/temple/temple-bg.jpg) center 0 no-repeat / 100% 90%;
+	background: #181818 url(img/levels/temple/temple-bg.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 .temple-level .level-floor-decor{
@@ -132,7 +136,11 @@ body {
 /*//////////////////////////////////////////////////////*/
 
 .church-level .level-sky{
-	background: url(img/levels/church/church-bg.png) center 0 no-repeat / 100% 115%;
+	background: url(img/levels/church/church-bg.png)no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 /*.church-level .level-floor-decor{
@@ -166,13 +174,21 @@ body {
 /*//////////////////////////////////////////////////////*/
 
 .arena-level .level-sky{
-	background: url(img/levels/arena/arena-bg.jpg) center 0 no-repeat / 100% 102%;
+	background: url(img/levels/arena/arena-bg.jpg)no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 /*//////////////////////////////////////////////////////*/
 
 .plant-level .level-sky{
-	background: url(img/levels/plant/plant-bg.jpg) center 0 no-repeat / 100% 100%;
+	background: url(img/levels/plant/plant-bg.jpg)no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 .plant-level .level-floor{
@@ -226,13 +242,21 @@ body {
 /*//////////////////////////////////////////////////////*/
 
 .vulkano-level .level-sky{
-	background: url(img/levels/vulkano/vulkano-bg.png) center 0 no-repeat / 100% 100%;
+	background: url(img/levels/vulkano/vulkano-bg.png)no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 /*//////////////////////////////////////////////////////*/
 
 .bunker-level .level-sky{
-	background: url(img/levels/bunker/bunker-bg.jpg) center 0 no-repeat / 100% 106%;
+	background: url(img/levels/bunker/bunker-bg.jpg)no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 
@@ -287,8 +311,11 @@ body {
 
 
 .desert-level .level-sky{
-	background: url(img/levels/desert/8.jpg) no-repeat top center;
-	background-size: 100% 120%;
+	background: url(img/levels/desert/8.jpg)no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 .desert-level .level-sky:after{
@@ -338,8 +365,11 @@ body {
 /*//////////////////////////////////////////////////////*/
 
 .portal-level .level-sky{
-	background: url(img/levels/portal/sky-portal.jpg) no-repeat 0px 70%;
-	background-size: 100% 120%;
+	background: url(img/levels/portal/sky-portal.jpg)no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 .portal-level .level-floor-decor{
@@ -592,10 +622,9 @@ body {
 /*//////////////////////////////////////////////////////*/
 
 #page-wrapper {
-	height: 500px;
-	width: 1344px;
+		height: 100%;
 	position: relative;
-	margin: 0 auto;
+	min-height: 500px;
 }
 
 

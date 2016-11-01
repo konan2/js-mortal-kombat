@@ -33,8 +33,8 @@ var playerData = {
   defeated: false,
   canRun: true,
   speed: 1,
-  handKickDamage: 88,
-  footKickDamage: 88,
+  handKickDamage: 1,
+  footKickDamage: 1,
   blockedDamage: 1,
   outOfLevel: false,
   pushing: false
@@ -166,10 +166,10 @@ function funcKeyDown(event){
   // Foot kick
   if(event.keyCode === player.playerKeys.footkick){
     if(player == playerOneData){
-      kickFunc(playerOneData, playerTwoData, 'footkick', 400, 'footKickEnd', 'foot_damage', playerOneData.footKickDamage, 'foot-damaged', 300, 500);
+      kickFunc(playerOneData, playerTwoData, 'footkick', 400, 'footKickEnd', 'foot_damage', playerOneData.footKickDamage, 'foot-damaged', 200, 400);
     }
     if(player == playerTwoData){
-      kickFunc(playerTwoData, playerOneData, 'footkick', 400, 'footKickEnd', 'foot_damage', playerTwoData.footKickDamage, 'foot-damaged', 300, 500);
+      kickFunc(playerTwoData, playerOneData, 'footkick', 400, 'footKickEnd', 'foot_damage', playerTwoData.footKickDamage, 'foot-damaged', 200, 400);
     }
   }
 
@@ -293,7 +293,7 @@ function kickFunc(player, playerOpponent, kickType, kickTime, kickEnd, kickDamag
       player.playerSelector.classList.remove(kickType);
       stopAudio(kickType);
     }, kickTime);
-    if(kickzone && playerPosDiffJump < player.jumpHeight / 3){
+    if(kickzone && playerPosDiffJump < 50 || (kickzone && playerOpponent.moveTop && playerOpponent.moveForward || kickzone && playerOpponent.moveTop && playerOpponent.moveBackward)){
       makeDamage(player, playerOpponent, kickDamageAudio, kickDamage, kickDamageClass, beforeKickInterval, afterKickInterval);
     }
   }
@@ -317,7 +317,6 @@ function makeDamage(player, player2, kickDamageAudio, kickDamage, kickDamageClas
     else{
       playAudio(kickDamageAudio);
       player2.life = player2.life - kickDamage;
-      console.log(player2.life);
       startBlood();
     }
     lifeCheck(player2);
