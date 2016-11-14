@@ -1,0 +1,495 @@
+.temple-level .level-sky{
+  background: #181818 url(img/levels/temple/temple-bg.jpg) no-repeat center center fixed; 
+  background-size: cover;
+}
+
+.temple-level .level-floor-decor{
+  background: url(img/levels/temple/temple-decor.png);
+  height: 64px;
+  bottom: 64px;
+  background-position: center bottom;
+}
+
+.temple-level .level-decor:after{
+  content: "";
+  position: absolute;
+  left: 52%;
+  top: 0;
+  width: 533px;
+  height: 200px;
+  background: url(img/levels/temple/birds.gif) no-repeat;
+  background-size: 33%;
+}
+
+.temple-level .level-floor{
+  background: url(img/levels/temple/temple-floor.png) center bottom no-repeat;
+  background-size: 100% 100%;
+  height: 66px;
+}
+
+/*//////////////////////////////////////////////////////*/
+
+.church-level .level-sky{
+  background: url(img/levels/church/church-bg.png)no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+
+.church-level .level-floor{
+  height: 85px;
+  background: url(img/levels/church/church-floor.png);
+  background-repeat-y: no-repeat;
+  background-size: auto 100%;
+}
+
+
+/*//////////////////////////////////////////////////////*/
+
+.arena-level .level-sky{
+  background: url(img/levels/arena/arena-bg.jpg)no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+/*//////////////////////////////////////////////////////*/
+
+.plant-level .level-sky{
+  background: url(img/levels/plant/plant-bg.jpg)no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.plant-level .level-floor{
+  background: url(img/levels/plant/plant-floor.jpg) center 0 no-repeat;
+  background-size: 100% 100%;
+  height: 50px;
+  bottom: 11px;
+}
+
+.plant-level .level-floor-decor{
+  background: url(img/levels/plant/floor-decor.png);
+  background-size: 6% 100%;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  z-index: 1;
+  height: 55px;
+  bottom: 59px;
+}
+
+.plant-level .level-floor:after{
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  border-top: 1px solid #333;
+  width: 100%;
+  background: linear-gradient(to right, rgb(85, 85, 85) 0%,rgb(79, 79, 79) 25%,rgb(64, 64, 64) 50%,rgb(97, 97, 97) 75%,rgb(63, 63, 63) 100%);
+  background-size: 100%;
+  height: 5px;
+  box-shadow: 0px 3px 1px 0px rgba(51, 51, 51, 0.65);
+}
+
+/*//////////////////////////////////////////////////////*/
+
+.spaceship-level .level-sky{
+  background: url(img/levels/spaceship/spaceship-bg.png) center 0 no-repeat / 100% 106%;
+}
+
+.spaceship-level .clouds{
+  background: url(img/levels/spaceship/space-sky.jpg) repeat;
+  background-size: 50%;
+  z-index: -1;
+  -moz-animation:move-clouds-back 400s linear infinite;
+  -ms-animation:move-clouds-back 400s linear infinite;
+  -o-animation:move-clouds-back 400s linear infinite;
+  -webkit-animation:move-clouds-back 400s linear infinite;
+  animation:move-clouds-back 400s linear infinite;
+}
+
+
+/*//////////////////////////////////////////////////////*/
+
+.vulkano-level .level-sky{
+  background: url(img/levels/vulkano/vulkano-bg.png)no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+/*//////////////////////////////////////////////////////*/
+
+.bunker-level .level-sky{
+  background: url(img/levels/bunker/bunker-bg.jpg)no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+
+
+/*//////////////////////////////////////////////////////*/
+
+.mars-level .level-decor{
+  background: #9ba9af url(img/levels/mars/4.jpg) center 160px no-repeat;
+  background-size: 100% 100%;
+  background: url(img/levels/mars/2.jpg) center 0;
+  background-size: 100% 124%;
+}
+
+.mars-level .level-sky{
+  background: none;
+  
+}
+
+.mars-level .sky-decor{
+  background: url(img/levels/mars/mars-bg.png) no-repeat;
+  background-position: center 0;
+  background-repeat-y: no-repeat;
+  background-size: 100% 105%;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.mars-level .level-floor-decor{
+  background: none;
+}
+
+.mars-level .level-decor:after{
+  background: none;
+}
+
+.mars-level .level-floor{
+  background: none;
+}
+
+.mars-level .clouds{
+  z-index: 1;
+  background: transparent url(img/levels/desert/clouds3.png) repeat top center;
+}
+
+/*//////////////////////////////////////////////////////*/
+
+
+
+
+
+
+.desert-level .level-sky{
+  background: url(img/levels/desert/8.jpg)no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.desert-level .level-sky:after{
+  content: "";
+  position: absolute;
+  right: 36px;
+  top: 39px;
+  height: 100px;
+  z-index: 0;
+  width: 100px;
+  border-radius: 100%;
+  box-shadow: 0px 0px 100px 26px rgb(255, 244, 219);
+  background-color: #fff7e5;
+}
+
+/*.desert-level .level-sky:before{
+  background: url(img/levels/desert/smoke.gif) no-repeat top center;
+   background-size: 100% 120%; 
+  content: "";
+  position: absolute;
+  right: 36px; 
+  top: 240px;
+  left: 38px;
+  height: 201px;
+  z-index: 0;
+  width: 50px;
+}*/
+
+.desert-level .clouds{
+  z-index: 1;
+  background:transparent url(img/levels/desert/clouds3.png) repeat top center;
+  filter: blur(3px) invert(0.4) sepia(0.5);
+}
+
+.desert-level .level-floor-decor{
+  background: url(img/levels/desert/p_2.png) center bottom;
+  background-size: auto 76px;
+  height: 76px;
+  bottom: 50px;
+}
+
+.desert-level .level-floor{
+  background: url(img/levels/desert/p_1.gif) center bottom no-repeat;
+  background-size: 100% 100%;
+  height: 53px
+}
+/*//////////////////////////////////////////////////////*/
+
+.portal-level .level-sky{
+  background: url(img/levels/portal/sky-portal.jpg)no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.portal-level .level-floor-decor{
+  background: none;
+}
+
+.portal-level .level-floor{
+  background: url(img/levels/portal/p_1.png) center bottom no-repeat;
+  background-size: 100% auto;
+}
+
+.portal-level .sky-decor-inner, .portal-level .sky-decor-inner:after{
+  background: url(img/levels/portal/jet.png);
+  background-size: 100%;
+  width: 60px;
+  height: 40px;
+  position: absolute;
+  top: 30%;
+  right: 100%;
+  transform: scale(1);
+  animation: skyplane 15s cubic-bezier(0, 0.16, 0, 1.15) 1;
+}
+
+.portal-level .sky-decor-inner:after{
+  content: '';
+  top: 32%;
+  margin-right: 200px;
+}
+
+@keyframes skyplane {
+  0%{
+    right: 100%;
+  }
+  100%{
+    right: 50px;
+    transform: scale(0);
+  }
+}
+
+/*.portal-level .sky-decor-inner{
+  left: -18px;
+  top: 231px;
+  position: absolute;
+  width: 50px;
+  height: 30px;
+  opacity: .5;
+  border-radius: 100%;
+  background: #93b4cd;
+  z-index: 0;
+  box-shadow: 0px 0px 13px 6px rgba(206, 243, 254, 0.76);
+  transform: rotate(16deg) skew(-70deg);
+}
+
+
+.portal-level .sky-decor-inner:after{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background: #93b4cd url(img/levels/portal/portal-cloud.png) center center no-repeat;
+  background-size: 100% 100%;
+  height: 100%;
+  border-radius: 100%;
+}*/
+
+.portal-level .clouds{
+  content:"";
+  position: absolute;
+  animation: none;
+  left: 627px;
+  top: 43px;
+  transform: rotate(23deg) skew(-61deg);
+  width: 154px;
+  height: 154px;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+
+.portal-level .clouds:after{
+  content:"";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 154px;
+  height: 154px;
+  z-index: 1;
+  animation: portalwave 4s 4s ease-out 2;
+  border-radius: 100%;
+}
+
+@keyframes portalwave {
+  0%{
+    box-shadow: 0px 0px 10px 10px rgba(98, 201, 243, 0), inset 0px 0px 20px rgba(98, 201, 243, .1);
+    opacity: 1;
+    transform: scale(.25);
+  }
+  100%{
+    box-shadow: 0px 0px 60px 60px rgba(98, 201, 243, .8), inset 0px 0px 20px rgba(98, 201, 243, .8);
+    opacity: 0;
+    transform: scale(3);
+  }
+}
+
+/*.portal-level .level-decor:before{
+  content: '';
+  left: 644px;
+  top: 123px;
+  position: absolute;
+  background: url(img/levels/portal/lightning.png) center 0;
+  background-size: 100%;
+  width: 108px;
+  height: 240px;
+  animation: lightening 20s -6s linear infinite;
+  transform: scaleX(.6);
+  z-index: 1;
+}*/
+
+/*.portal-level .level-decor:after{
+  content: '';
+  left: 670px;
+  top: 365px;
+  position: absolute;
+  width: 56px;
+  height: 2px;
+  border-top-left-radius: 100%;
+  border-top-right-radius: 100%;
+  z-index: 1;
+  background: rgba(206, 243, 254, 0.76);
+  box-shadow: 0px 0px 15px 8px rgba(206, 243, 254, 0.76);
+  animation: lighteningbottom 7s ease infinite;
+}
+
+@keyframes lighteningbottom {
+  0%,30%,100%{
+    transform: scale(.9);
+  }
+  25%,60%{
+    transform: scale(1);
+  }
+}*/
+
+/*.portal-level .sky-decor{
+  position: absolute;
+  left: 693px;
+  top: 123px;
+  background: rgba(206, 243, 254, 0.76);
+  background-size: 28px auto;
+  width: 9px;
+  height: 240px;
+  animation: lightening 20s linear infinite;
+  box-shadow: 0px 0px 16px 6px #b6e1fa;
+}
+
+@keyframes lightening {
+  from { background-position: center 0;}
+  to { background-position: center 1000px;}
+}*/
+
+/*.portal-level .sky-decor:after{
+  content: '';
+  left: -41px;
+  top: -13px;
+  position: absolute;
+  background: url(img/levels/portal/lightning.png) center 0;
+  background-size: 100%;
+  width: 108px;
+  height: 259px;
+  animation: lightening 20s linear infinite;
+  transform: scaleX(.8);
+}
+
+.portal-level .sky-decor:before{
+  content: '';
+  left: -53px;
+  top: -7px;
+  position: absolute;
+  background: url(img/levels/portal/lightning.png) center 0;
+  background-size: 100%;
+  width: 108px;
+  height: 252px;
+  animation: lightening 20s -4s linear infinite;
+  transform: scaleX(.6);
+}*/
+
+
+
+.portal-level .cloud{
+  background: #293f56 url(img/levels/portal/portal-cloud.png) center center no-repeat;
+  background-size: 100% 100%;
+  width: 100%;
+  opacity: .7;
+  height: 100%;
+  animation: portal-cloud 60s linear infinite;
+  border-radius: 100%;
+  box-shadow: 0px 0px 43px 44px #31495f;
+}
+
+@keyframes  portal-cloud {
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(-180deg);
+  }
+}
+
+.portal-level .level-sky:after{
+  content: "";
+  position: absolute;
+  border-radius: 100%;
+  width: 48px;
+  top: 108px;
+  left: 50%;
+  height: 20px;
+  animation-name: skyobject;
+  animation-timing-function: linear;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.portal-level .level-sky:before{
+  content: "";
+  position: absolute;
+  /* border-radius: 100%; */
+  width: 102px;
+  top: 55px;
+  transform: rotate(28deg) skew(-57deg) scale(1.7);
+  opacity: 0.1;
+  left: 659px;
+  /* background: url(img/levels/portal/portal.gif); */
+  height: 126px;
+  /* box-shadow: inset 0px 0px 3px 51px rgba(255, 0, 0, 0.75), 0px 0px 38px 28px rgba(255, 0, 0, 0.73); */
+  border-radius: 100%;
+}
+
+@keyframes skyobject {
+  0%,30%,100%{
+    box-shadow: 0px 0px 100px 0px #b3fffe;
+    transform: rotate(180deg);
+  }
+  25%,60%{
+    box-shadow: 0px 0px 200px 15px #b3fffe;
+    transform: rotate(0deg);
+  }
+}

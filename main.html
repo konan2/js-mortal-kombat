@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Mortal Kombat 3.1</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <link href="materialdesignicons.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <link rel="icon" href="img/page-icon.png" type="image/png">
+</head>
+<body>
+<article class="page-wrapper flex-column flex-align_space-between_stretch">
+  <section class="game-container flex flex-column flex-align_space-between_stretch">
+    <header class="header-bar flex-row flex-wrap">
+      <div class="blood-level flex-40">
+        <div id="player1-level" class="blood-level__bar"></div>
+        <div class="blood-level__name">Cyrax</div>
+      </div>
+      <div class="time-counter flex-20 flex-align_center_center">
+        <span>45</span>
+      </div>
+      <div class="blood-level flex-40" flipped>
+        <div id="player2-level" class="blood-level__bar"></div>
+        <div class="blood-level__name text-right" flipped>Kabal</div>
+      </div>
+      <div class="victory-count flex-100">
+        <div class="victory-count__item flex-50 flex-align_start_center">
+          <div class="victory-count-medal"></div>
+          <div class="victory-count-medal"></div>
+        </div>
+        <div class="victory-count__item flex-50  flex-align_end_center">
+          <div class="victory-count-medal"></div>
+        </div>
+      </div>
+    </header>
+    <div class="flex">
+      <div id="level-wrapper" class="plant-level">
+        <div class="level-decor">
+          <div class="level-sky">
+            <div class="sky-decor">
+              <div class="sky-decor-inner"></div>
+            </div>
+            <div class="clouds">
+              <div class="cloud"></div> 
+            </div>
+          </div>
+          <div class="level-floor-decor"></div>
+          <div class="level-floor"></div>
+        </div>
+        <div class="play-zone">
+          <div id="player1" class="player player_1" style="left: 410px; bottom:30px;"></div>
+          <div id="player2" class="player player_2" style="left: 782px; bottom:30px;"></div>
+          <canvas id="canvas"></canvas>
+        </div>
+        <div class="screen-messages">
+          <div id="position-diff-info" class="position-info"></div>
+          <div id="position-info" class="position-info"></div>
+          <div id="position-info2" class="position-info"></div>
+        </div>
+        <div class="screen-controls"></div>
+      </div>
+    </div>
+    <div class="level-switch hidden">
+        <span class="button-wrap">
+          <button id="desert" class="button button-pill button-raised button-primary"    onclick="changeLevel('desert-level')">Desert</button>
+          <button id="desert" class="button button-pill button-raised button-primary"    onclick="changeLevel('mars-level')">Cold Mars</button>
+          <button id="portal" class="button button-pill button-raised button-primary"    onclick="changeLevel('portal-level')">Alien Portal</button>
+          <button id="temple" class="button button-pill button-raised button-primary"    onclick="changeLevel('temple-level')">AncientTemple</button>
+          <button id="church" class="button button-pill button-raised button-primary"    onclick="changeLevel('church-level')">Ceremony Church</button>
+          <button id="arena" class="button button-pill button-raised button-primary"     onclick="changeLevel('arena-level')">Death Arena</button>
+          <button id="plant" class="button button-pill button-raised button-primary"     onclick="changeLevel('plant-level')">Power Plant</button>
+          <button id="spaceship" class="button button-pill button-raised button-primary" onclick="changeLevel('spaceship-level')">Spaceship</button>
+          <button id="vulkano" class="button button-pill button-raised button-primary"   onclick="changeLevel('vulkano-level')">Vulkano</button>
+          <button id="bunker" class="button button-pill button-raised button-primary"    onclick="changeLevel('bunker-level')">Bunker</button>
+        </span>
+      </div>
+      <div class="screen-controls screen-controls__arrows hidden">
+        <div class="screen-arrows-wrapper">
+          <div class="button-wrap">
+            <button onclick="jump(playerOneData)" class="button button-circle button-raised button-primary">
+              <i class="mdi mdi-arrow-up"></i>
+            </button>
+          </div>
+        </div>
+        <div class="screen-arrows-wrapper">
+          <div class="button-wrap" style="margin-right: 25px;">
+            <button onclick="moveBackFunc()" class="button button-circle button-raised button-primary">
+              <i class="mdi mdi-arrow-left"></i>
+            </button>
+          </div>
+          <div class="button-wrap">
+            <button onclick="moveForwardFunc()" class="button button-circle button-raised button-primary">
+              <i class="mdi mdi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+        <div class="screen-arrows-wrapper">
+          <div class="button-wrap">
+            <button onclick="moveBottomFunc()" class="button button-circle button-raised button-primary">
+              <i class="mdi mdi-arrow-down"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="screen-controls screen-controls__actions">
+        <div>
+          <div class="button-wrap">
+            <button onclick="handKickFunc()" class="button button-circle button-raised button-primary">
+              A
+            </button>
+          </div>
+          <div class="button-wrap">
+            <button onclick="footKickFunc()" class="button button-circle button-raised button-primary">
+              B
+            </button>
+          </div>
+        </div>
+        <div>
+          <div class="button-wrap">
+            <button onclick="moveRunFunc(playerOneData)" class="button button-circle button-raised button-primary">
+              C
+            </button>
+          </div>
+          <div class="button-wrap">
+            <button onclick="blockFunc(playerOneData)" class="button button-circle button-raised button-primary">
+              D
+            </button>
+          </div>
+        </div>
+      </div>
+  </section>
+  <footer class="footer-info">
+    <p class="footer-info__text">Here will be footer text</p>
+  </footer>
+  <section id="audio-section" class="audio-tracks-section hidden"></section>
+</article>
+
+<script src="script.js"></script>
+</body>
+</html>

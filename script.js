@@ -85,7 +85,7 @@ var playerPosDiff;
 var playerPosDiffJump;
 
 // Level
-var levelWrapper = document.querySelector(".wrapper");
+var levelWrapper = document.querySelector(".play-zone");
 var levelWidth = levelWrapper.offsetWidth;
 
 // Players near each other and can make damage
@@ -377,7 +377,7 @@ function jump(player){
   function toBottom(callbackFn){
     setTimeout(function() {
       player.playerSelector.style.bottom = parseInt(player.playerSelector.style.bottom) - 6 + 'px';
-      if (parseInt(player.playerSelector.style.bottom) > 0){
+      if (parseInt(player.playerSelector.style.bottom) > 30){
         toBottom(callbackFn);
       } 
       else {
