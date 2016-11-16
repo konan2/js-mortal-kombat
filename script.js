@@ -245,7 +245,7 @@ function movePlayer(curPlayer, oppPlayer){
     curPlayer.pushing = true;
   }
   //
-  if((!curPlayer.block && !curPlayer.moveDown && !curPlayer.handkick && !curPlayer.footkick && !curPlayer.isDamaged) ){  //|| (!curPlayer.jumpEnd && curPlayer.handkick || !curPlayer.jumpEnd && curPlayer.footkick && !curPlayer.isDamaged)
+  if((!curPlayer.block && !curPlayer.moveDown && !curPlayer.handkick && !curPlayer.footkick && !curPlayer.isDamaged) || (!curPlayer.jumpEnd && curPlayer.handkick || !curPlayer.jumpEnd && curPlayer.footkick && !curPlayer.isDamaged)){
     if(curPlayer.moveForward){
       movePlayerForward(curPlayer, oppPlayer, curPlayer.speed)
     }
@@ -265,27 +265,14 @@ function movePlayer(curPlayer, oppPlayer){
 }
 
 
-// function movePlayerForward(curPlayer, oppPlayer, moveSpeed){
-//   if(curPlayer.playerPosX < levelWidth - curPlayer.playerWidth && !(curPlayer.playerPosY < 332 && oppPlayer.playerPosY < 332 && kickzone) && !(curPlayer.pushing && oppPlayer.playerPosX >= levelWidth - curPlayer.playerWidth)){
-//     curPlayer.playerSelector.style.left = parseInt(curPlayer.playerSelector.style.left) + moveSpeed + 'px';
-//   }
-// }
-
-// function movePlayerBackward(curPlayer, oppPlayer, moveSpeed){
-//   if(curPlayer.playerPosX >= 0 && !(curPlayer.playerPosY < 332 && oppPlayer.playerPosY < 332 && kickzone) && !(curPlayer.pusadhing && oppPlayer.playerPosX <= 0)){
-//     curPlayer.playerSelector.style.left = parseInt(curPlayer.playerSelector.style.left) - moveSpeed + 'px';
-//   }
-// }
-
-
 function movePlayerForward(curPlayer, oppPlayer, moveSpeed){
-  if(curPlayer.playerPosX < levelWidth - curPlayer.playerWidth && !((curPlayer.moveTop && curPlayer.moveForward) && (oppPlayer.moveTop && oppPlayer.moveBackward) && kickzone)){
+  if(curPlayer.playerPosX < levelWidth - curPlayer.playerWidth && !(curPlayer.playerPosY < 332 && oppPlayer.playerPosY < 332 && kickzone) && !(curPlayer.pushing && oppPlayer.playerPosX >= levelWidth - curPlayer.playerWidth)){
     curPlayer.playerSelector.style.left = parseInt(curPlayer.playerSelector.style.left) + moveSpeed + 'px';
   }
 }
 
 function movePlayerBackward(curPlayer, oppPlayer, moveSpeed){
-  if(curPlayer.playerPosX >= 0 && !((curPlayer.moveTop && curPlayer.moveBackward) && (oppPlayer.moveTop && oppPlayer.moveForward) && kickzone)){
+  if(curPlayer.playerPosX >= 0 && !(curPlayer.playerPosY < 332 && oppPlayer.playerPosY < 332 && kickzone) && !(curPlayer.pushing && oppPlayer.playerPosX <= 0)){
     curPlayer.playerSelector.style.left = parseInt(curPlayer.playerSelector.style.left) - moveSpeed + 'px';
   }
 }
@@ -390,7 +377,7 @@ function jump(player){
   function toBottom(callbackFn){
     setTimeout(function() {
       player.playerSelector.style.bottom = parseInt(player.playerSelector.style.bottom) - 6 + 'px';
-      if (parseInt(player.playerSelector.style.bottom) > 30){
+      if (parseInt(player.playerSelector.style.bottom) > 0){
         toBottom(callbackFn);
       } 
       else {
@@ -402,7 +389,6 @@ function jump(player){
     playAudio('jump_end');
     player.moveTop = false;
     player.jumpEnd = true;
-    console.log(player.jumpEnd);
     player.playerSelector.classList.remove("move-top", 'handkick', 'footkick');
     if(player.keyPressedJump){
         player.moveTop = true;
@@ -432,9 +418,9 @@ function getPlayersDiff(){
 }
 
 function playerPositionFix(){
+  var levelWidth = levelWrapper.offsetWidth;
   kickzone = false;
   playerPosDiff = playerOneData.playerPosX - playerTwoData.playerPosX;
-
   if(playerOneData.playerPosX > playerTwoData.playerPosX - player.playerWidth/2 && 
      playerOneData.playerPosX < playerTwoData.playerPosX + player.playerWidth/2 && 
      playerOneData.playerPosY > player.playerHeight * 0.9 && 
@@ -465,8 +451,19 @@ function playerPositionFix(){
   }
 }
 
+// Center the players
 
+function alignPlayers(){
+  var levelWidth = levelWrapper.offsetWidth;
+  playerOneStartPos = (levelWidth / 2) - playerOneData.playerWidth - 100;
+  playerTwoStartPos = levelWidth / 2 + 100;
+  playerOneData.playerSelector.style.left = playerOneStartPos + "px";
+  playerOneData.playerSelector.style.bottom = 0 + "px";
+  playerTwoData.playerSelector.style.left = playerTwoStartPos + "px";
+  playerTwoData.playerSelector.style.bottom = 0 + "px";
+}
 
+alignPlayers();
 
 //////////////////////////////////////////////////
 
@@ -644,7 +641,11 @@ function startBlood() {
 }
 
 
-
+window.addEventListener('resize', function(event){
+  levelWidth = levelWrapper.offsetWidth;
+  alignPlayers();
+  playerPositionFix();
+});
 
 
 document.addEventListener("keydown", funcKeyDown);
@@ -664,8 +665,6 @@ function game(){
   // Start player2 movements
   movePlayer(playerTwoData, playerOneData);
 }
-
-
 
 mainInterval = setInterval(function(){
   game();

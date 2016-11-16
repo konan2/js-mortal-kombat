@@ -11,7 +11,7 @@
 </head>
 <body>
 <article class="page-wrapper flex-column flex-align_space-between_stretch">
-  <section class="game-container flex flex-column flex-align_space-between_stretch">
+  <section class="game-container flex-column flex-align_space-between_stretch">
     <header class="header-bar flex-row flex-wrap">
       <div class="blood-level flex-40">
         <div id="player1-level" class="blood-level__bar"></div>
@@ -49,14 +49,15 @@
           <div class="level-floor"></div>
         </div>
         <div class="play-zone">
-          <div id="player1" class="player player_1" style="left: 410px; bottom:30px;"></div>
-          <div id="player2" class="player player_2" style="left: 782px; bottom:30px;"></div>
+          <div id="player1" class="player player_1"></div>
+          <div id="player2" class="player player_2"></div>
           <canvas id="canvas"></canvas>
         </div>
         <div class="screen-messages">
           <div id="position-diff-info" class="position-info"></div>
           <div id="position-info" class="position-info"></div>
           <div id="position-info2" class="position-info"></div>
+          <div id="showdata" class="position-info"></div>
           <div id="finishBanner" class="hidden"></div>
         </div>
         <div class="screen-controls">
@@ -132,7 +133,7 @@
       </div>
     </div>
   </section>
-  <footer class="footer-info">
+  <footer class="footer-info flex">
     <p class="footer-info__text">Here will be footer text</p>
   </footer>
   <section id="audio-section" class="audio-tracks-section hidden"></section>
