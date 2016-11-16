@@ -496,8 +496,8 @@ document.addEventListener("keyup", funcKeyUp);
 // Change level 
 
 function changeLevel(level){
-  document.getElementById("page-wrapper").classList = [];
-  document.getElementById("page-wrapper").className += level;
+  document.getElementById("level-wrapper").classList = [];
+  document.getElementById("level-wrapper").className += level;
 }
 
 /////  Sparks
