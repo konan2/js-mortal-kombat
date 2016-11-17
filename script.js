@@ -455,8 +455,8 @@ function playerPositionFix(){
 
 function alignPlayers(){
   var levelWidth = levelWrapper.offsetWidth;
-  playerOneStartPos = (levelWidth / 2) - playerOneData.playerWidth - 100;
-  playerTwoStartPos = levelWidth / 2 + 100;
+  playerOneStartPos = (levelWidth / 2) - playerOneData.playerWidth - 150;
+  playerTwoStartPos = levelWidth / 2 + 150;
   playerOneData.playerSelector.style.left = playerOneStartPos + "px";
   playerOneData.playerSelector.style.bottom = 0 + "px";
   playerTwoData.playerSelector.style.left = playerTwoStartPos + "px";
@@ -503,6 +503,7 @@ function changeLevel(level){
 function hideStartScreen(){
   document.querySelector('#start-screen').classList.add("hidden");
   document.querySelector('#game-container').classList.remove("visibility-hidden");
+  document.querySelector('#players-list').classList.remove("hidden");
 }
 
 /////  Sparks
