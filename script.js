@@ -500,6 +500,11 @@ function changeLevel(level){
   document.getElementById("level-wrapper").className += level;
 }
 
+function hideStartScreen(){
+  document.querySelector('#start-screen').classList.add("hidden");
+  document.querySelector('#game-container').classList.remove("visibility-hidden");
+}
+
 /////  Sparks
 
 

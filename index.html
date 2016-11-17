@@ -11,7 +11,7 @@
 </head>
 <body>
 <article class="page-wrapper flex-column flex-align_space-between_stretch">
-  <section class="game-container flex-column flex-align_space-between_stretch">
+  <section id="game-container" class="game-container flex-column flex-align_space-between_stretch visibility-hidden flex-align-self_auto">
     <header class="header-bar flex-row flex-wrap">
       <div class="blood-level flex-40">
         <div id="player1-level" class="blood-level__bar"></div>
@@ -119,7 +119,7 @@
       </div>
     </div>
   </section>
-  <footer class="footer-info flex">
+  <footer class="footer-info flex hidden">
       <div class="level-switch">
         <button id="desert" class="button yellow"    onclick="changeLevel('desert-level')">Desert</button>
         <button id="desert" class="button yellow"    onclick="changeLevel('mars-level')">Cold Mars</button>
@@ -136,6 +136,16 @@
     <p class="footer-info__text">Here will be footer text</p>
   </footer>
   <section id="audio-section" class="audio-tracks-section hidden"></section>
+  <section id="start-screen" class="start-screen flex-column flex-align_center_center flex-align-self_auto fade-in">
+<!--     <div class="mk-logo flex-column flex-align_center_center">
+      <img src="img/mk-logo.png" alt="MK Logo">
+      <img src="img/Mortal_Kombat_Logo.svg" alt="MK Logo">
+    </div> -->
+    <div class="start-screen-menu flex-column flex-align_center_center">
+      <span onclick="hideStartScreen()" id="start-select-players" class="start-screen-menu__item slide-top">Start game</span>
+      <span id="start-options" class="start-screen-menu__item slide-top">Options</span>
+    </div>
+  </section>
 </article>
 
 <script src="script.js"></script>

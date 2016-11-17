@@ -1,0 +1,60 @@
+.start-screen{
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 500px;
+  background: #000 url(img/1427635377_009-18.jpg) no-repeat center center;
+  background-size: contain;
+  animation: fade-in 1s ease;
+}
+
+// .mk-logo{
+//   position: relative;
+//   border-radius: 100%;
+//   overflow: hidden;
+//   box-shadow: 0 0 10px #000;
+//   border: 2px solid #000;
+//   &:after, &:before{
+//     content: "";
+//     position: absolute;
+//     left: 0;
+//     z-index: -1;
+//     right: 0;
+//     top: 0;
+//     bottom: 0;
+//     border-radius: 100%;
+//   }
+//   &:before{
+//     z-index: 1;
+//     border: 2px solid #000;
+//   }
+//   &:after{
+//     background: linear-gradient(0deg, #f7f32a, #f97000);
+//     animation: logo-animate 8s ease infinite;
+//   }
+// }
+
+.start-screen-menu{
+  margin-top: 20%;
+  &__item{
+    color: #fff;
+    margin: 10px;
+    font-size: 20px;
+    text-shadow: 0 0 3px #000;
+  //     background: -webkit-linear-gradient(#eee, #333);
+  // -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
+    &:hover{
+      cursor: pointer;
+      font-size: 22px;
+    }
+    &:last-child{
+      animation-delay: 1s;
+    }
+  }
+}
+
+

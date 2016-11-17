@@ -2,6 +2,7 @@ html, body, .page-wrapper{
   height: 100%;
   min-height: 100%;
   width: 100%;
+  background-color: #000;
 }
 
 
@@ -15,8 +16,14 @@ body {
 /* Utilities classes */
 
 .hidden{
-  display: none;
+  display: none!important;
 }
+
+.visibility-hidden{
+  visibility: hidden!important;
+  opacity: 0!important;
+}
+
 
 [flipped]{
   -moz-transform: scaleX(-1);
@@ -51,6 +58,10 @@ body {
   height: 500px;
   min-height: 500px;
   max-height: 500px;
+  width: 100%;
+  visibility: visible!important;
+  opacity: 1;
+  transition: all 1s ease-in-out;
 }
 
 .play-zone{
@@ -66,4 +77,33 @@ body {
   z-index: 1;
   width: 100%;
   height: 100%;
+}
+
+.fade-in{
+  animation: fade-in 1s ease;
+}
+
+.slide-top{
+  animation-name: slidetop;
+  animation-duration: .5s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: backwards;
+  animation-delay: .5s;
+}
+
+
+@keyframes fade-in {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes slidetop{
+  from {transform: translateY(10px);  opacity: 0;}
+  to {transform: translateY(0px); opacity: 1;}
+}
+
+@keyframes logo-animate { 
+    0%{background-position:51% 0%}
+    50%{background-position:50% 100%}
+    100%{background-position:51% 0%}
 }
