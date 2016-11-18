@@ -16,6 +16,9 @@ var gameData = {
   soundsEnabled: true
 }
 
+var levelsData = ["temple-level","church-level","arena-level","plant-level","spaceship-level","vulkano-level","bunker-level","mars-level","desert-level","portal-level"]
+
+
 var playerData = {
   moveTop: false,
   moveForward: false,
@@ -496,10 +499,33 @@ document.addEventListener("keyup", funcKeyUp);
 
 // Change level 
 
-function changeLevel(level){
+
+
+
+function changeLevel(item){
+  var currentLevelName = levelsData[item];
   document.getElementById("level-wrapper").classList = [];
-  document.getElementById("level-wrapper").className += level;
+  document.getElementById("level-wrapper").className += currentLevelName;
 }
+
+var levelCount = 0;
+
+function nextLevel() {
+    levelCount = levelCount + 1; // increase i by one
+    if (levelCount == levelsData.length){
+      levelCount = 0;
+    }
+    changeLevel(levelCount);
+}
+
+function prevLevel() {
+   levelCount = levelCount - 1;
+   if (levelCount < 0) {
+        levelCount = levelsData.length - 1;
+    }
+    changeLevel(levelCount);
+}
+
 
 
 function startScreen(){
@@ -530,13 +556,15 @@ function handler(event) {
 
 
 function hideStartScreen(){
-  chooseFighter();
-  startScreenLoopMusic.pause();
-  startScreenLoopMusic.currentTime = 0;
+  chooseSoundActive.play();
+  setTimeout(function(){
+    chooseFighter();
+    startScreenLoopMusic.pause();
+    startScreenLoopMusic.currentTime = 0;
+  }, 350)
 }
 
 function chooseFighter(){
-  chooseSoundActive.play();
   document.querySelector('#start-screen').classList.add("hidden");
   document.querySelector('#game-container').classList.remove("visibility-hidden");
   document.querySelector('#players-list').classList.remove("hidden");

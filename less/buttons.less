@@ -93,3 +93,33 @@
   border: solid 1px #a77f35;
   box-shadow: inset 0 10px 15px 0 #dba646; 
 }
+
+
+
+.choose-level-wrapper{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  .choose-level{
+    min-width: 570px;
+    &__item{
+      .title;
+      cursor: pointer;
+      font-size: 44px;
+      transition: all .4s ease-in-out;
+      &:hover{
+        transform: translateX(-5px);
+      }
+      &:active{
+        transform: translateX(-10px);
+      }
+      &:last-child:hover{
+        transform: translateX(5px);
+      }
+      &:last-child:active{
+        transform: translateX(10px);
+      }
+    }
+  }
+}

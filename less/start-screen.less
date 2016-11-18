@@ -8,9 +8,17 @@
   overflow: hidden;
   height: 500px;
   background: #000;
-  .clouds{
+  &:after{
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     box-shadow: inset 0 0 85px 20px #000;
-    z-index: 1;
+  }
+  .clouds{
+    z-index: 2;
     background:transparent url(img/levels/desert/clouds3.png) repeat top center;
   }
 }
@@ -25,7 +33,7 @@
   height: 100vh;
   background: #000 url(img/thumb-1920-262767.jpg) no-repeat 0 0;
   background-size: cover;
-  animation: start-screen-bg 60s linear infinite alternate-reverse;
+  animation: start-screen-bg 30s linear infinite alternate-reverse;
 }
 
 .start-screen-menu{
@@ -47,6 +55,7 @@
 
 .mk-logo{
   position: relative;
+  z-index: 1;
   border-radius: 100%;
   overflow: hidden;
   img{
@@ -60,6 +69,7 @@
     top: -50%;
     left: 0px;
     width: 0%;
+    z-index: -1;
     height: 200%;
     transform: rotate(28deg);
     animation: logo-animate-effect 1.5s 1.5s ease-in-out 1;
