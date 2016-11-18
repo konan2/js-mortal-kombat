@@ -5,40 +5,33 @@
   bottom: 0;
   left: 0;
   right: 0;
+  overflow: hidden;
   height: 500px;
-  background: #000 url(img/1427635377_009-18.jpg) no-repeat center center;
-  background-size: contain;
-  animation: fade-in 1s ease;
+  background: #000;
+  .clouds{
+    box-shadow: inset 0 0 85px 20px #000;
+    z-index: 1;
+    background:transparent url(img/levels/desert/clouds3.png) repeat top center;
+  }
 }
 
-// .mk-logo{
-//   position: relative;
-//   border-radius: 100%;
-//   overflow: hidden;
-//   box-shadow: 0 0 10px #000;
-//   border: 2px solid #000;
-//   &:after, &:before{
-//     content: "";
-//     position: absolute;
-//     left: 0;
-//     z-index: -1;
-//     right: 0;
-//     top: 0;
-//     bottom: 0;
-//     border-radius: 100%;
-//   }
-//   &:before{
-//     z-index: 1;
-//     border: 2px solid #000;
-//   }
-//   &:after{
-//     background: linear-gradient(0deg, #f7f32a, #f97000);
-//     animation: logo-animate 8s ease infinite;
-//   }
-// }
+.start-screen-add-bg{
+  position: absolute;
+  z-index: -2;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background: #000 url(img/thumb-1920-262767.jpg) no-repeat 0 0;
+  background-size: cover;
+  animation: start-screen-bg 60s linear infinite alternate-reverse;
+}
 
 .start-screen-menu{
-  margin-top: 20%;
+  position: relative;
+  z-index: 2;
+  margin-top: 2%;
   &__item{
     .title;
     margin: 10px;
@@ -52,4 +45,55 @@
   }
 }
 
+.mk-logo{
+  position: relative;
+  border-radius: 100%;
+  overflow: hidden;
+  img{
+    border-radius: 100%;
+    animation: logo-animate 1.5s ease-in-out 1;
+    transition: all 1s ease;
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: 0px;
+    width: 0%;
+    height: 200%;
+    transform: rotate(28deg);
+    animation: logo-animate-effect 1.5s 1.5s ease-in-out 1;
+  }
+}
 
+@keyframes logo-animate-effect { 
+  0%{
+     background-color: rgba(255,255,255,0.4);
+    transition: none;
+  }
+  100%{
+    width: 200%;
+   background-color: rgba(255,255,255,0);
+    transition: all 0.3s ease-out;
+  }
+}
+
+@keyframes logo-animate { 
+  0%{
+    filter: invert(1);
+    transform: scale(.5);
+  }
+  100%{
+    filter: invert(0);
+    transform: scale(1);
+  }
+}
+
+@keyframes start-screen-bg { 
+  0%{
+    transform: translateY(0%);
+  }
+  100%{
+    transform: translateY(-25%);
+  }
+}

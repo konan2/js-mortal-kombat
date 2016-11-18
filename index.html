@@ -5,7 +5,7 @@
   <title>Mortal Kombat 3.1</title>
   <meta name="keywords" content="JS Mortal Kombat" />
   <meta name="description" content="JS Mortal Kombat", "simple game like Sega Mortal Kombat 3" />
-  <meta name="viewport" content="width=device-width; initial-scale=1.0">
+<!--   <meta name="viewport" content="width=device-width; initial-scale=1.0"> -->
   <link href="materialdesignicons.min.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
   <link rel="icon" href="img/page-icon.png" type="image/png">
@@ -13,7 +13,7 @@
 <body>
 <article class="page-wrapper flex-column flex-align_space-between_stretch">
   <section id="game-container" class="game-container flex-column flex-align_space-between_stretch visibility-hidden flex-align-self_auto">
-    <header class="header-bar flex-row flex-wrap visibility-hidden">
+    <header id="header-bar" class="header-bar flex-row flex-wrap hidden slide-top">
       <div class="blood-level flex-40">
         <div id="player1-level" class="blood-level__bar"></div>
         <div class="blood-level__name">Cyrax</div>
@@ -138,53 +138,56 @@
   </footer>
   <section id="audio-section" class="audio-tracks-section hidden"></section>
   <section id="start-screen" class="start-screen flex-column flex-align_center_center flex-align-self_auto fade-in">
-<!--     <div class="mk-logo flex-column flex-align_center_center">
-      <img src="img/mk-logo.png" alt="MK Logo">
+    <div class="start-screen-add-bg"></div>
+    <div class="clouds"></div>
+    <div class="mk-logo flex-column flex-align_center_center">
+      <!-- <img src="img/mk-logo.png" alt="MK Logo"> -->
       <img src="img/Mortal_Kombat_Logo.svg" alt="MK Logo">
-    </div> -->
+    </div>
     <div class="start-screen-menu flex-column flex-align_center_center">
-      <span onclick="hideStartScreen()" id="start-select-players" class="start-screen-menu__item slide-top">Start game</span>
-      <span id="start-options" class="start-screen-menu__item slide-top">Options</span>
+      <span onclick="hideStartScreen()" id="start-select-players" class="start-screen-menu__item slide-top menu-item">Start game</span>
+      <span                             id="start-options"        class="start-screen-menu__item slide-top menu-item">Options</span>
     </div>
   </section>
   <section id="players-list" class="players-list flex-column flex-align_center_center flex-align-self_auto hidden">
     <h2 class="players-list__title title fade-in">Select your fighter</h2>
     <div class="flex-row flex-align_center_center slide-top">
-      <a class="players-list__item" href="#"><img src="img/players-list/kitana.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/reptile.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/sonya.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/jax.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/nightwolf.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/jade.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/scorpion.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/kitana.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/reptile.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/sonya.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/jax.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/nightwolf.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/jade.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/scorpion.gif" alt="" class="pic" width="48" height="59"></a>
     </div>
     <div class="flex-row flex-align_center_center slide-top">
-      <a class="players-list__item" href="#"><img src="img/players-list/rain.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/kano.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/mileena.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/02.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/subzero-old.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/subzero.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/noobsaibot.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/rain.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/kano.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/mileena.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/02.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/subzero-old.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/subzero.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/noobsaibot.gif" alt="" class="pic" width="48" height="59"></a>
     </div>
     <div class="flex-row flex-align_center_center slide-top">
-      <a class="players-list__item" href="#"><img src="img/players-list/sektor.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/sindel.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/stryker.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/cyrax.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/sektor.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/sindel.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/stryker.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/cyrax.gif" alt="" class="pic" width="48" height="59"></a>
     </div>
     <div class="flex-row flex-align_center_center slide-top">
-      <a class="players-list__item" href="#"><img src="img/players-list/kabal.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/sheeva.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/shangtsung.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/liukang.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/kabal.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/sheeva.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/shangtsung.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/liukang.gif" alt="" class="pic" width="48" height="59"></a>
     </div>
     <div class="flex-row flex-align_center_center slide-top">
-      <a class="players-list__item" href="#"><img src="img/players-list/kunglao.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/motaro.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/shaokahn.gif" alt="" class="pic" width="48" height="59"></a>
-      <a class="players-list__item" href="#"><img src="img/players-list/ermac.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/kunglao.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/motaro.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/shaokahn.gif" alt="" class="pic" width="48" height="59"></a>
+      <a class="players-list__item menu-item" href="#"><img src="img/players-list/ermac.gif" alt="" class="pic" width="48" height="59"></a>
     </div>
+    <h2 onclick="startFight()" class="players-list__title title fade-in">Start</h2>
   </section>
 </article>
 

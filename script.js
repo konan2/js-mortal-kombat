@@ -9,6 +9,13 @@ var player2UsedCodes = [];
 
 // Data
 
+var gameData = {
+  roundTime: 45,
+  playersAreChoosen: false,
+  musicEnabled: true,
+  soundsEnabled: true
+}
+
 var playerData = {
   moveTop: false,
   moveForward: false,
@@ -36,7 +43,6 @@ var playerData = {
   handKickDamage: 1,
   footKickDamage: 1,
   blockedDamage: 1,
-  outOfLevel: false,
   pushing: false
 }
 
@@ -95,13 +101,11 @@ var kickzone = false;
 insertAudio('footkick');
 insertAudio('handkick');
 insertAudio('syborg_run');
-// insertAudio('desert_level_track');
 insertAudio('jump_end');
 insertAudio('foot_damage');
 insertAudio('hand_damage');
 insertAudio('kick-blocked');
 
-//playAudio('desert_level_track', "loop");
 
 
 // get player keys function
@@ -114,9 +118,6 @@ function getPlayerKeys(playerOneKeyMap, playerOneKeyMap){
     player2UsedCodes.push(playerTwoData.playerKeys[j]);
   }
 }
-
-getPlayerKeys(playerOneData.playerKeys, playerTwoData.playerKeys);
-
 
 ///////////////////////////
 
@@ -500,10 +501,60 @@ function changeLevel(level){
   document.getElementById("level-wrapper").className += level;
 }
 
+
+function startScreen(){
+  startScreenLoopMusic = new Audio('audio/startscreen.mp3');
+  chooseFighterLoopMusic = new Audio('audio/choosefighter.mp3');
+  chooseSound = new Audio('audio/menuitem.mp3');
+  chooseSoundActive = new Audio('audio/menuitem_active.mp3');
+  startScreenLoopMusic.play();
+  startScreenLoopMusic.loop = true;
+}
+
+startScreen();
+
+
+
+var chooseSoundHover = document.querySelectorAll(".menu-item");
+
+for (i = 0; i < chooseSoundHover.length; ++i) {
+  chooseSoundHover[i].onmouseover = handler;
+}
+
+function handler(event) {
+  if (event.type == 'mouseover') {
+    chooseSound.currentTime = 0;
+    chooseSound.play();
+  }
+}
+
+
 function hideStartScreen(){
+  chooseFighter();
+  startScreenLoopMusic.pause();
+  startScreenLoopMusic.currentTime = 0;
+}
+
+function chooseFighter(){
+  chooseSoundActive.play();
   document.querySelector('#start-screen').classList.add("hidden");
   document.querySelector('#game-container').classList.remove("visibility-hidden");
   document.querySelector('#players-list').classList.remove("hidden");
+  chooseFighterLoopMusic.play();
+  chooseFighterLoopMusic.loop = true;
+}
+
+function playGame(){
+  getPlayerKeys(playerOneData.playerKeys, playerTwoData.playerKeys);
+}
+
+function startFight(){
+  chooseSoundActive.play();
+  chooseFighterLoopMusic.pause();
+  chooseFighterLoopMusic.currentTime = 0;
+  document.querySelector('#players-list').classList.add("hidden");
+  document.querySelector('#header-bar').classList.remove("hidden");
+  playGame();
 }
 
 /////  Sparks
