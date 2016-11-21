@@ -554,10 +554,8 @@ for (i = 0; i < chooseSoundHover.length; ++i) {
 }
 
 function handler(event) {
-  if (event.type == 'mouseover') {
     chooseSound.currentTime = 0;
     chooseSound.play();
-  }
 }
 
 ////
