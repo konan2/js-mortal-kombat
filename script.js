@@ -16,7 +16,7 @@ var gameData = {
   soundsEnabled: true
 }
 
-var levelsData = ["temple-level","church-level","arena-level","plant-level","spaceship-level","vulkano-level","bunker-level","mars-level","desert-level","portal-level"]
+var levelsData = ["temple","church","arena","plant","spaceship","vulkano","bunker","mars","desert","portal"]
 
 
 var playerData = {
@@ -506,6 +506,7 @@ function changeLevel(item){
   var currentLevelName = levelsData[item];
   document.getElementById("level-wrapper").classList = [];
   document.getElementById("level-wrapper").className += currentLevelName;
+  document.getElementById("level-name").innerHTML = currentLevelName;
 }
 
 var levelCount = 0;
@@ -516,6 +517,8 @@ function nextLevel() {
       levelCount = 0;
     }
     changeLevel(levelCount);
+    chooseSoundActive.currentTime = 0;
+    chooseSoundActive.play();
 }
 
 function prevLevel() {
@@ -524,6 +527,8 @@ function prevLevel() {
         levelCount = levelsData.length - 1;
     }
     changeLevel(levelCount);
+    chooseSoundActive.currentTime = 0;
+    chooseSoundActive.play();
 }
 
 
@@ -533,13 +538,13 @@ function startScreen(){
   chooseFighterLoopMusic = new Audio('audio/choosefighter.mp3');
   chooseSound = new Audio('audio/menuitem.mp3');
   chooseSoundActive = new Audio('audio/menuitem_active.mp3');
-  startScreenLoopMusic.play();
-  startScreenLoopMusic.loop = true;
+  //startScreenLoopMusic.play();
+  //startScreenLoopMusic.loop = true;
 }
 
 startScreen();
 
-
+//// Sound on mouse hover
 
 var chooseSoundHover = document.querySelectorAll(".menu-item");
 
@@ -553,6 +558,8 @@ function handler(event) {
     chooseSound.play();
   }
 }
+
+////
 
 
 function hideStartScreen(){
@@ -568,9 +575,11 @@ function chooseFighter(){
   document.querySelector('#start-screen').classList.add("hidden");
   document.querySelector('#game-container').classList.remove("visibility-hidden");
   document.querySelector('#players-list').classList.remove("hidden");
-  chooseFighterLoopMusic.play();
-  chooseFighterLoopMusic.loop = true;
+  //chooseFighterLoopMusic.play();
+  //chooseFighterLoopMusic.loop = true;
 }
+
+chooseFighter();
 
 function playGame(){
   getPlayerKeys(playerOneData.playerKeys, playerTwoData.playerKeys);
@@ -584,6 +593,61 @@ function startFight(){
   document.querySelector('#header-bar').classList.remove("hidden");
   playGame();
 }
+
+
+
+// Choose player function
+
+// function playerListHover(){
+  var playerListItems = document.querySelectorAll(".players-list__item");
+  var playerOnePlayerPreview = document.querySelector("#player-preview-1");
+  var playerTwoPlayerPreview = document.querySelector("#player-preview-2");
+
+
+  for (i = 0; i < playerListItems.length; ++i) {
+    playerListItems[i].onmouseover = changePlayerPreview;
+  }
+
+  function changePlayerPreview(event) {
+    if (event.type == 'mouseover') {
+      chooseSound.currentTime = 0;
+      chooseSound.play();
+
+      var txt = this.firstElementChild.getAttribute('src');
+
+      var re1 ='.*?';  // Non-greedy match on filler
+      var re2 ='(?:[a-z][a-z]+)';  // Uninteresting: word
+      var re3 ='.*?';  // Non-greedy match on filler
+      var re4 ='(?:[a-z][a-z]+)';  // Uninteresting: word
+      var re5 ='.*?';  // Non-greedy match on filler
+      var re6 ='(?:[a-z][a-z]+)';  // Uninteresting: word
+      var re7 ='.*?';  // Non-greedy match on filler
+      var re8 ='((?:[a-z][a-z]+))';  // Word 1
+
+      var p = new RegExp(re1+re2+re3+re4+re5+re6+re7+re8,["i"]);
+      var m = p.exec(txt);
+      if (m != null)
+      {
+          var word1=m[1];
+          playerOnePlayerPreview.firstElementChild.setAttribute("src", "img/players-list/versus/" + word1.replace(/</,"&lt;") + ".png");
+          // playerOnePlayerPreview.firstElementChild.classList.remove("slide-right");
+          // playerOnePlayerPreview.firstElementChild.classList.add("slide-right");
+          //console.log()                                               img/players-list/versus/sub-zero.png
+      }
+    }
+  }
+//}
+
+
+
+
+
+
+function choosePlayer(){
+
+}
+
+
 
 /////  Sparks
 

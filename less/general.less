@@ -23,6 +23,9 @@ section{
   font-size: 20px;
   color: #fff;
   text-shadow: 0 0 3px #000;
+  position: relative;
+  z-index: 1;
+  text-transform: uppercase;
 }
 
 /* Utilities classes */
@@ -49,6 +52,14 @@ section{
 
 .text-right{
   text-align: right!important;
+}
+
+.text-left{
+  text-align: left!important;
+}
+
+.text-center{
+  text-align: center!important;
 }
 
 #level-wrapper{
@@ -103,6 +114,22 @@ section{
   animation-delay: .5s;
 }
 
+.slide-left{
+  animation-name: slideleft;
+  animation-duration: .5s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: backwards;
+  animation-delay: .5s;
+}
+
+.slide-right{
+  animation-name: slideright;
+  animation-duration: .5s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: backwards;
+  animation-delay: .5s;
+}
+
 
 @keyframes fade-in {
   from {opacity: 0;}
@@ -112,5 +139,15 @@ section{
 @keyframes slidetop{
   from {transform: translateY(10px);  opacity: 0;}
   to {transform: translateY(0px); opacity: 1;}
+}
+
+@keyframes slideleft{
+  from {transform: translateX(-10px);  opacity: 0;}
+  to {transform: translateX(0px); opacity: 1;}
+}
+
+@keyframes slideright{
+  from {transform: translateX(10px);  opacity: 0;}
+  to {transform: translateX(0px); opacity: 1;}
 }
 
