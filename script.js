@@ -538,6 +538,7 @@ function startScreen(){
   chooseFighterLoopMusic = new Audio('audio/choosefighter.mp3');
   chooseSound = new Audio('audio/menuitem.mp3');
   chooseSoundActive = new Audio('audio/menuitem_active.mp3');
+  chooseSoundActivePlayer = new Audio('audio/menuitem_active.mp3');
   //startScreenLoopMusic.play();
   //startScreenLoopMusic.loop = true;
 }
@@ -606,10 +607,11 @@ function startFight(){
 
   for (i = 0; i < playerListItems.length; ++i) {
     playerListItems[i].onmouseover = changePlayerPreview;
+    playerListItems[i].onclick = choosePlayerPreview;
   }
 
-  function changePlayerPreview(event) {
-    if (event.type == 'mouseover') {
+  function changePlayerPreview() {
+ 
       chooseSound.currentTime = 0;
       chooseSound.play();
 
@@ -626,7 +628,7 @@ function startFight(){
 
       var p = new RegExp(re1+re2+re3+re4+re5+re6+re7+re8,["i"]);
       var m = p.exec(txt);
-      if (m != null)
+      if (m != null);
       {
           var word1=m[1];
           playerOnePlayerPreview.firstElementChild.setAttribute("src", "img/players-list/versus/" + word1.replace(/</,"&lt;") + ".png");
@@ -634,10 +636,14 @@ function startFight(){
           // playerOnePlayerPreview.firstElementChild.classList.add("slide-right");
           //console.log()                                               img/players-list/versus/sub-zero.png
       }
-    }
-  }
-//}
+}
 
+
+function choosePlayerPreview(){
+  chooseSound.currentTime = 0;
+  chooseSoundActive.play();
+  this.classList.add("choosen");
+}
 
 
 
