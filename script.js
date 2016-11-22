@@ -612,12 +612,13 @@ function prevLevel() {
 
 
 function startScreen(){
+    // Hide start screen
 
   //startScreenLoopMusic.play();
   //startScreenLoopMusic.loop = true;
 }
 
-//startScreen();
+startScreen();
 
 //// Sound on mouse hover
 
@@ -636,7 +637,10 @@ function handler(event) {
 
 
 function hideStartScreen(){
-  //chooseSoundActive.play();
+  chooseSoundActive.play();
+  document.querySelector('#start-screen').classList.add("hidden");
+  document.querySelector('#game-container').classList.remove("visibility-hidden");
+  document.querySelector('#players-list').classList.remove("hidden");
   setTimeout(function(){
     chooseFighter();
     startScreenLoopMusic.pause();
@@ -738,10 +742,6 @@ function changePlayerPreview() {
 
   choosePlayersFunction(playerOneData, playerOnePlayerName, playerOnePlayerPreview);
 
-  // Hide start screen
-  document.querySelector('#start-screen').classList.add("hidden");
-  document.querySelector('#game-container').classList.remove("visibility-hidden");
-  document.querySelector('#players-list').classList.remove("hidden");
 
 
 function setPlayerName(playerName, playerData){
