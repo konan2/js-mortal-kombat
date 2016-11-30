@@ -50,18 +50,102 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, 
 body {
 	font: 12px/18px Arial, sans-serif;
 }
-.wrapper {
-	min-width: 1000px;
-	max-width: 1000px;
+
+html, body{
+	height: 100%;
+}
+
+.viewport {
+	min-width: 100%;
+	max-width: 100%;
 	margin: 0 auto;
-	height: 400px;
-	border: 1px solid gray;
+	height: 100%;
 	position: relative;
+	overflow: hidden;
+}
+
+.level-wrap{
+	position: absolute;
+	width: 20000px;
+	height: 1200px;
+	background: linear-gradient(to bottom, #1e5799 0%,#2989d8 50%,#7db9e8 100%);
+}
+.level-wrap:after{
+	content: '';
+	transform:rotateX(65deg);
+	background: url(img/grass2.jpg);
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100px;
+}
+
+.level-wrap:before{
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 70px;
+	background: url(img/ground.png);
+}
+
+.position-info{
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
 }
 
 .player{
-	width: 20px;
-	height: 20px;
-	background: #000;
 	position: absolute;
+	width: 100px;
+	height: 30px;
+	background: url("img/plane.png") no-repeat;
+	background-position: 0 0;
+	background-size: 100%;
+	/*transition: all .75s linear;*/
+}
+
+.player.move-forward:after{
+	content: '';
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 5px 15px 5px 0;
+	border-color: transparent #ff0015 transparent transparent;
+	animation: jetfire .1s alternate infinite;
+	left: -10px;
+	top: 16px;
+	border-radius: 100%;
+}
+
+.move-backward{
+	transform: scaleX(-1);
+}
+
+.move-top{
+	transform: rotate(-45deg);
+}
+
+.move-bottom{
+	transform: rotate(45deg);
+}
+
+@keyframes jetfire{
+	0%{border-color: transparent #ff0015 transparent transparent;}
+	100%{border-color: transparent #d8c309 transparent transparent;}
+}
+
+
+.flipped{
+	-moz-transform: scaleX(-1);
+	-o-transform: scaleX(-1);
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
+	filter: FlipH;
+	-ms-filter: "FlipH";
+	text-align: right;
 }

@@ -4,91 +4,76 @@
 
 // Data
 
+var levelWraper = document.querySelector(".level-wrap");
+var viewport = document.querySelector(".viewport");
+
 var player = {
-  playerSelector: document.getElementById("player1"),
+  selector: document.getElementById("player1"),
   moveTop: false,
   moveForward: false,
   moveBottom: false,
-  moveBack: false,
-  direction: '',
+  moveBackward: false,
+  positionX: 100,
+  positionY: 40
 };
 
-var player2 = {
-  playerSelector: document.getElementById("player2"),
-  moveTop: false,
-  moveForward: false,
-  moveBottom: false,
-  moveBack: false,
-  direction: '',
-};
-
-
-
-///////////////////////////
-
-function game(){
-  document.addEventListener("keydown", funcKeyDown);
-  document.addEventListener("keyup", funcKeyUp);
-  move();
+var levelWrap = {
+  viewSelector: viewport,
+  viewHeight: viewport.offsetHeight,
+  viewWidth: viewport.offsetWidth,
+  selector: levelWraper,
+  positionXMax: levelWraper.offsetWidth,
+  positionYMax: levelWraper.offsetHeight,
+  positionX: 0,
+  positionY: 0
 }
+
+var viewDiff = (levelWrap.positionYMax - levelWrap.viewHeight)*-1;
+
+//////////////////////////
+
+
 
 
 
 function funcKeyDown(event){
-  console.log(event.keyCode);
+  //console.log(player.positionY);
   switch (event.keyCode) {
     case 40:
-      player.moveTop = true;
+      player.moveBottom = true;
+      player.selector.classList.add("move-bottom");
       break;
     case 37:
-      player.moveForward = true;
+      player.moveBackward = true;
+      player.selector.classList.add("move-backward");
       break; 
     case 38:
-      player.moveBottom = true;
+      player.moveTop = true;
+      player.selector.classList.add("move-top");
       break;
     case 39:
-      player.moveBack = true;
-      break;
-    case 87:
-      player2.moveTop = true;
-      break;
-    case 68:
-      player2.moveForward = true;
-      break; 
-    case 83:
-      player2.moveBottom = true;
-      break;
-    case 65:
-      player2.moveBack = true;
+       player.moveForward = true;
+       player.selector.classList.add("move-forward");
       break;
   }
 }
-
 function funcKeyUp(event){
    switch (event.keyCode) {
       case 40:
-        player.moveTop = false;
+        player.moveBottom = false;
+        player.selector.classList.remove("move-bottom");
         break;
       case 37:
-        player.moveForward = false;
+         //player.moveBackward = false;
+         //player.selector.classList.remove("move-backward");
         break; 
       case 38:
-        player.moveBottom = false;
+        player.moveTop = false;
+        player.selector.classList.remove("move-top");
         break;
       case 39:
-        player.moveBack = false;
-        break;
-      case 87:
-        player2.moveTop = false;
-        break;
-      case 68:
-        player2.moveForward = false;
-        break; 
-      case 83:
-        player2.moveBottom = false;
-        break;
-      case 65:
-        player2.moveBack = false;
+        //player.moveForward = false;
+        //player.selector.classList.remove("move-forward");
         break;
     }
 }
@@ -96,22 +81,65 @@ function funcKeyUp(event){
 
 
 function move(){
+  console.log(levelWrap.positionY);
+  //console.log("player pos y: " + player.positionY + " levelWrap.viewHeight/2: " + levelWrap.viewHeight/2);
   if(player.moveForward){
-    player.playerSelector.style.left = parseInt(player.playerSelector.style.left ) - 1 + 'px';
+    levelWrap.positionX = levelWrap.positionX - 1;
   }
-  if(player.moveBack){
-    player.playerSelector.style.left = parseInt(player.playerSelector.style.left ) + 1 + 'px';
+  if(player.moveBackward){
+    levelWrap.positionX = levelWrap.positionX + 1;
   }
-  if(player2.moveForward){
-    player2.playerSelector.style.left = parseInt(player2.playerSelector.style.left ) - 1 + 'px';
+  if(player.moveTop && player.positionY <= levelWrap.viewHeight - 70){
+    if(player.positionY >= levelWrap.viewHeight/2 && levelWrap.positionY >= viewDiff){
+      levelWrap.positionY = levelWrap.positionY - 1;
+    }
+    else{
+      player.positionY = player.positionY + 1;
+    }
   }
-  if(player2.moveBack){
-    player2.playerSelector.style.left = parseInt(player2.playerSelector.style.left ) + 1 + 'px';
+  // if(player.moveTop && levelWrap.positionY >= ((levelWrap.positionYMax - levelWrap.viewHeight)* -1)){
+  //   if(player.positionY < levelWrap.viewHeight/2){
+  //     player.positionY = player.positionY + 1;
+  //   }
+  //   else{
+  //     levelWrap.positionY = levelWrap.positionY - 1;
+  //   }
+  // }
+  if(player.moveBottom){
+    if(levelWrap.positionY <= 0 && player.positionY <= levelWrap.viewHeight/2){
+      levelWrap.positionY = levelWrap.positionY + 1;
+    }
+    else{
+      player.positionY = player.positionY - 1;
+    }
+
   }
 }
 
+function getPosition(obj, infoblock) {
+  obj.playerPosX = 0;
+  obj.playerPosY = 0;
+  obj.playerPosX += (obj.selector.offsetLeft - obj.selector.scrollLeft + obj.selector.clientLeft);
+  obj.playerPosY += (obj.selector.offsetTop - obj.selector.scrollTop + obj.selector.clientTop);
+  var coords = "Level X:" + obj.playerPosX + " Level Y:" + obj.playerPosY;
+  document.getElementById(infoblock).innerHTML =  coords;
+}
+
+function setPosition(){
+  levelWrap.selector.style.left = parseInt(levelWrap.positionX) + 'px';
+  levelWrap.selector.style.bottom = parseInt(levelWrap.positionY) + 'px';
+  player.selector.style.left = parseInt(player.positionX) + 'px';
+  player.selector.style.bottom = parseInt(player.positionY) + 'px';
+}
 
 
+function game(){
+  getPosition(levelWrap, "position-info");
+  document.addEventListener("keydown", funcKeyDown);
+  document.addEventListener("keyup", funcKeyUp);
+  move();
+  setPosition();
+}
 
 // Main interval
 
