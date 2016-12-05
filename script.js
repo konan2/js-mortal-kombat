@@ -120,6 +120,7 @@ chooseFighterLoopMusic = new Audio('audio/choosefighter.mp3');
 chooseSound = new Audio('audio/menuitem.mp3');
 chooseSoundActive = new Audio('audio/menuitem_active.mp3');
 chooseSoundActivePlayer = new Audio('audio/menuitem_active.mp3');
+figthMusic = new Audio('audio/fight_music.mp3');
 
 cyraxName = new Audio('audio/names/cyrax.mp3');
 ermacName = new Audio('audio/names/ermac.mp3');
@@ -611,14 +612,7 @@ function prevLevel() {
 
 
 
-function startScreen(){
-    // Hide start screen
 
-  //startScreenLoopMusic.play();
-  //startScreenLoopMusic.loop = true;
-}
-
-startScreen();
 
 //// Sound on mouse hover
 
@@ -642,25 +636,23 @@ function hideStartScreen(){
   document.querySelector('#game-container').classList.remove("visibility-hidden");
   document.querySelector('#players-list').classList.remove("hidden");
   setTimeout(function(){
-    chooseFighter();
     startScreenLoopMusic.pause();
     startScreenLoopMusic.currentTime = 0;
+    chooseFighterLoopMusic.play();
+    chooseFighterLoopMusic.loop = true;
   }, 350)
 }
 
 
-function playGame(){
-  playerOneData.playerSelector.classList.remove("hidden");
-  playerTwoData.playerSelector.classList.remove("hidden");
-}
 
 function startFight(){
-  //chooseSoundActive.play();
-  chooseFighterLoopMusic.pause();
-  chooseFighterLoopMusic.currentTime = 0;
   document.querySelector('#players-list').classList.add("hidden");
   document.querySelector('#header-bar').classList.remove("hidden");
-  playGame();
+  playerOneData.playerSelector.classList.remove("hidden");
+  playerTwoData.playerSelector.classList.remove("hidden");
+  chooseFighterLoopMusic.pause();
+  chooseFighterLoopMusic.currentTime = 0;
+  figthMusic.play();
 }
 
 
@@ -680,8 +672,7 @@ var playerTwoPlayerName = document.querySelector("#players-list-fighter-name-2")
 
 function choosePlayersFunction(currentPlayerData, currentPlayerName, currentPlayerPreview){
 
-  //chooseFighterLoopMusic.play();
-  //chooseFighterLoopMusic.loop = true;
+
 
   // Find player items
 
@@ -736,12 +727,6 @@ function changePlayerPreview() {
     }
   }
 }
-
-  setPlayerName(playerOnePlayerName, playerOneData);
-  setPlayerName(playerTwoPlayerName, playerTwoData);
-
-  choosePlayersFunction(playerOneData, playerOnePlayerName, playerOnePlayerPreview);
-
 
 
 function setPlayerName(playerName, playerData){
@@ -924,3 +909,15 @@ function game(){
 mainInterval = setInterval(function(){
   game();
 });
+
+
+
+
+startScreenLoopMusic.play();
+startScreenLoopMusic.loop = true;
+
+
+setPlayerName(playerOnePlayerName, playerOneData);
+setPlayerName(playerTwoPlayerName, playerTwoData);
+
+choosePlayersFunction(playerOneData, playerOnePlayerName, playerOnePlayerPreview);

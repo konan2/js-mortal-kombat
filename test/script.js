@@ -14,7 +14,9 @@ var player = {
   moveBottom: false,
   moveBackward: false,
   positionX: 100,
-  positionY: 40
+  positionY: 40,
+  speed: 1,
+  accelerate: false
 };
 
 var levelWrap = {
@@ -30,6 +32,8 @@ var levelWrap = {
 
 var viewDiff = (levelWrap.positionYMax - levelWrap.viewHeight)*-1;
 
+
+
 //////////////////////////
 
 
@@ -37,7 +41,7 @@ var viewDiff = (levelWrap.positionYMax - levelWrap.viewHeight)*-1;
 
 
 function funcKeyDown(event){
-  //console.log(player.positionY);
+  console.log(player.accelerate);
   switch (event.keyCode) {
     case 40:
       player.moveBottom = true;
@@ -58,6 +62,7 @@ function funcKeyDown(event){
   }
 }
 function funcKeyUp(event){
+  console.log(player.accelerate);
    switch (event.keyCode) {
       case 40:
         player.moveBottom = false;
@@ -73,7 +78,7 @@ function funcKeyUp(event){
         break;
       case 39:
         //player.moveForward = false;
-        //player.selector.classList.remove("move-forward");
+        player.accelerate = false;
         break;
     }
 }
@@ -84,7 +89,13 @@ function move(){
   console.log(levelWrap.positionY);
   //console.log("player pos y: " + player.positionY + " levelWrap.viewHeight/2: " + levelWrap.viewHeight/2);
   if(player.moveForward){
-    levelWrap.positionX = levelWrap.positionX - 1;
+    levelWrap.positionX = levelWrap.positionX - player.speed;
+    setInterval(function(){
+      player.accelerate = true;
+    },2000)
+    setTimeout(function(){
+      if(player.speed <= 10 && player.accelerate){player.speed = player.speed + 0.01;}
+    }, 2000)
   }
   if(player.moveBackward){
     levelWrap.positionX = levelWrap.positionX + 1;
@@ -97,14 +108,6 @@ function move(){
       player.positionY = player.positionY + 1;
     }
   }
-  // if(player.moveTop && levelWrap.positionY >= ((levelWrap.positionYMax - levelWrap.viewHeight)* -1)){
-  //   if(player.positionY < levelWrap.viewHeight/2){
-  //     player.positionY = player.positionY + 1;
-  //   }
-  //   else{
-  //     levelWrap.positionY = levelWrap.positionY - 1;
-  //   }
-  // }
   if(player.moveBottom){
     if(levelWrap.positionY <= 0 && player.positionY <= levelWrap.viewHeight/2){
       levelWrap.positionY = levelWrap.positionY + 1;
@@ -126,10 +129,10 @@ function getPosition(obj, infoblock) {
 }
 
 function setPosition(){
-  levelWrap.selector.style.left = parseInt(levelWrap.positionX) + 'px';
-  levelWrap.selector.style.bottom = parseInt(levelWrap.positionY) + 'px';
-  player.selector.style.left = parseInt(player.positionX) + 'px';
-  player.selector.style.bottom = parseInt(player.positionY) + 'px';
+  levelWrap.selector.style.left = levelWrap.positionX + 'px';
+  levelWrap.selector.style.bottom = levelWrap.positionY + 'px';
+  player.selector.style.left = player.positionX + 'px';
+  player.selector.style.bottom = player.positionY + 'px';
 }
 
 
