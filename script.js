@@ -18,7 +18,8 @@ var gameData = {
   playerTwoChoosen: false
 }
 
-var levelsData = ["temple","church","arena","plant","spaceship","vulkano","bunker","mars","desert","portal"]
+var levelsData = ["temple","church","plant", "desert"];
+//var levelsData = ["temple","church","arena","plant","spaceship","vulkano","bunker","mars","desert","portal"];
 
 
 var playerData = {
@@ -51,11 +52,17 @@ var playerData = {
   pushing: false
 }
 
+
+
 var playerOneData = {
   __proto__: playerData,
-  playerName: "cyrax",
+  playerName: "",
   playerSelector: document.getElementById("player1"),
   playerLifeSelector: document.getElementById("player1-level"),
+  playerLifeNameSelector: document.getElementById("player1-blood-level"),
+  playerPreview: document.querySelector("#player-preview-1"),
+  playerPreviewName: document.querySelector("#players-list-fighter-name-1"),
+  isChoosen: false,
   playerKeys: {
     jump: 87,
     forward: 68,
@@ -70,9 +77,13 @@ var playerOneData = {
 
 var playerTwoData = {
   __proto__: playerData,
-  playerName: "subzero",
+  playerName: "",
   playerSelector: document.getElementById("player2"),
   playerLifeSelector: document.getElementById("player2-level"),
+  playerLifeNameSelector: document.getElementById("player2-blood-level"),
+  playerPreview: document.querySelector("#player-preview-2"),
+  playerPreviewName: document.querySelector("#players-list-fighter-name-2"),
+  isChoosen: false,
   playerKeys: {
     jump: 38,
     forward: 39,
@@ -120,63 +131,29 @@ chooseFighterLoopMusic = new Audio('audio/choosefighter.mp3');
 chooseSound = new Audio('audio/menuitem.mp3');
 chooseSoundActive = new Audio('audio/menuitem_active.mp3');
 chooseSoundActivePlayer = new Audio('audio/menuitem_active.mp3');
+chooseYoutDestiny = new Audio('audio/choose-your-destiny.mp3');
 figthMusic = new Audio('audio/fight_music.mp3');
 
-cyraxName = new Audio('audio/names/cyrax.mp3');
-ermacName = new Audio('audio/names/ermac.mp3');
-jadeName = new Audio('audio/names/jade.mp3');
-jaxName = new Audio('audio/names/jax.mp3');
-kabalName = new Audio('audio/names/kabal.mp3');
-kanoName = new Audio('audio/names/kano.mp3');
-kitanaName = new Audio('audio/names/kitana.mp3');
-kunglaoName = new Audio('audio/names/kunglao.mp3');
-liukangName = new Audio('audio/names/liukang.mp3');
-mileenaName = new Audio('audio/names/mileena.mp3');
-motaroName = new Audio('audio/names/motaro.mp3');
-nightwolfName = new Audio('audio/names/nightwolf.mp3');
-reptileName = new Audio('audio/names/reptile.mp3');
-scorpionName = new Audio('audio/names/scorpion.mp3');
-sektorName = new Audio('audio/names/sektor.mp3');
-shangtsungName = new Audio('audio/names/shangtsung.mp3');
-sheevaName = new Audio('audio/names/sheeva.mp3');
-sindelName = new Audio('audio/names/sindel.mp3');
-smokeName = new Audio('audio/names/smoke.mp3');
-sonyaName = new Audio('audio/names/sonya.mp3');
-strykerName = new Audio('audio/names/stryker.mp3');
-subzeroName = new Audio('audio/names/subzero.mp3');
-rainName = new Audio('audio/names/rain.mp3');
-noobsaibotName = new Audio('audio/names/noobsaibot.mp3');
 
+/// Players  
 
-var playerNamesSound = {
-  cyrax: cyraxName,
-  ermac: ermacName,
-  jade: jadeName,
-  jax: jaxName,
-  kabal: kabalName,
-  kano: kanoName,
-  kitana: kitanaName,
-  kunglao: kunglaoName,
-  liukang: liukangName,
-  mileena: mileenaName,
-  motaro: motaroName,
-  nightwolf: nightwolfName,
-  reptile: reptileName,
-  scorpion: scorpionName,
-  sektor: sektorName,
-  shangtsung: shangtsungName,
-  sheeva: sheevaName,
-  sindel: sindelName,
-  smoke: smokeName,
-  sonya: sonyaName,
-  stryker: strykerName,
-  subzero: subzeroName,
-  subzeroo: subzeroName,
-  rain: rainName,
-  noobsaibot: noobsaibotName
+var cyrax = {
+  name: "cyrax",
+  soundName: new Audio('audio/names/cyrax.mp3'),
+  soundRun: new Audio('audio/syborg_run.mp3'),
+  previewImgIcon: "img/players-list/cyrax.gif",
+  previewImg: "img/players-list/versus/cyrax.png",
 }
 
+var kabal = {
+  name: "kabal",
+  soundName: new Audio('audio/names/kabal.mp3'),
+  soundRun: new Audio('audio/syborg_run.mp3'),
+  previewImgIcon: "img/players-list/kabal.gif",
+  previewImg: "img/players-list/versus/kabal.png",
+}
 
+var AllPlayersObj = {cyrax, kabal};
 
 
 // get player keys function
@@ -630,93 +607,97 @@ function handler(event) {
 ////
 
 
-function hideStartScreen(){
-  chooseSoundActive.play();
-  document.querySelector('#start-screen').classList.add("hidden");
-  document.querySelector('#game-container').classList.remove("visibility-hidden");
-  document.querySelector('#players-list').classList.remove("hidden");
-  setTimeout(function(){
-    startScreenLoopMusic.pause();
-    startScreenLoopMusic.currentTime = 0;
-    chooseFighterLoopMusic.play();
-    chooseFighterLoopMusic.loop = true;
-  }, 350)
-}
 
 
 
-function startFight(){
-  document.querySelector('#players-list').classList.add("hidden");
-  document.querySelector('#header-bar').classList.remove("hidden");
-  playerOneData.playerSelector.classList.remove("hidden");
-  playerTwoData.playerSelector.classList.remove("hidden");
-  chooseFighterLoopMusic.pause();
-  chooseFighterLoopMusic.currentTime = 0;
-  figthMusic.play();
-}
 
 
 
 // Choose player function
 
+var playersListParent = document.querySelector("#players-list-items");
+
+function getPlayersList(){
+  for (i in AllPlayersObj){
+    var player = AllPlayersObj[i];
+    playersListParent.innerHTML += "<span id=" + player.name + " class='players-list__item menu-item'><img class='players-list-player-image' src=" + player.previewImgIcon + " alt='' width='48' height='59'></span>";
+  }
+}
+
+getPlayersList();
+
 
 var playerListItems = document.querySelectorAll(".players-list__item");
 var playerListNumber = playerListItems.length;
-var playerOnePlayerPreview = document.querySelector("#player-preview-1");
-var playerTwoPlayerPreview = document.querySelector("#player-preview-2");
-var playerOnePlayerName = document.querySelector("#players-list-fighter-name-1");
-var playerTwoPlayerName = document.querySelector("#players-list-fighter-name-2");
 
 
 
+
+
+// function pickRandomProperty(obj) {
+//     var result;
+//     var test;
+//     var count = 0;
+//     for (var prop in obj)
+//         if (Math.random() < 1/++count)
+//            result = prop;
+//     return result;
+// }
+
+// function getRandomPreviewImgPath(){
+//  var customPlayerPreview = pickRandomProperty(AllPlayersObj);
+//  var playerRes = AllPlayersObj[customPlayerPreview];
+//  return playerRes.previewImg;
+// }
+
+
+
+//   playerOneData.playerPreview.innerHTML = "<img src=" + getRandomPreviewImgPath() + " />";
+//   playerTwoData.playerPreview.innerHTML = "<img src=" + getRandomPreviewImgPath() + " flipped />";
+
+
+
+function choosePlayersSection(){
+  chooseYoutDestiny.play();
+  choosePlayersFunction(playerOneData, playerOneData.playerPreviewName, playerOneData.playerPreview);
+}
 
 function choosePlayersFunction(currentPlayerData, currentPlayerName, currentPlayerPreview){
 
-
+  
 
   // Find player items
-
   for (i = 0; i < playerListNumber; ++i) {
     playerListItems[i].onmouseover = changePlayerPreview;
     playerListItems[i].onclick = choosePlayerPreview;
   }
 
-function changePlayerPreview() {
-  chooseSound.currentTime = 0;
-  chooseSound.play();
+  function changePlayerPreview() {
+    var ObjName = this.getAttribute("id");
+    var playerRes = AllPlayersObj[ObjName];
 
-  var txt = this.firstElementChild.getAttribute('src');
-
-  var re1 ='.*?';  // Non-greedy match on filler
-  var re2 ='(?:[a-z][a-z]+)';  // Uninteresting: word
-  var re3 ='.*?';  // Non-greedy match on filler
-  var re4 ='(?:[a-z][a-z]+)';  // Uninteresting: word
-  var re5 ='.*?';  // Non-greedy match on filler
-  var re6 ='(?:[a-z][a-z]+)';  // Uninteresting: word
-  var re7 ='.*?';  // Non-greedy match on filler
-  var re8 ='((?:[a-z][a-z]+))';  // Word 1
-
-  var p = new RegExp(re1+re2+re3+re4+re5+re6+re7+re8,["i"]);
-  var m = p.exec(txt);
-  if (m != null);
-  {
-      var word1=m[1];
-      currentPlayerPreview.firstElementChild.setAttribute("src", "img/players-list/versus/" + word1.replace(/</,"&lt;") + ".png");
-      currentPlayerData.playerName = word1.replace(/</,"&lt;");
-      setPlayerName(currentPlayerName, currentPlayerData);
+    chooseSound.currentTime = 0;
+    chooseSound.play();
+    currentPlayerData.playerName = playerRes.name;
+    setPlayerName(currentPlayerData);
+    currentPlayerData.playerPreview.innerHTML = "<img src=" + playerRes.previewImg + " />";
   }
-}
+
+
+
 
   function choosePlayerPreview(){
+    var ObjName = this.getAttribute("id");
+    var playerRes = AllPlayersObj[ObjName];
+
     chooseSound.currentTime = 0;
     chooseSoundActive.play();
-    playSound(playerNamesSound[currentPlayerData.playerName]);
+    playSound(playerRes.soundName);
     this.classList.add("players-list__item_choosen");
     gameData.playerOneChoosen = true;
-
     console.log("player 1 made choice " + gameData.playerOneChoosen);
     if(gameData.playerOneChoosen && !gameData.playerTwoChoosen){
-      choosePlayersFunction(playerTwoData, playerTwoPlayerName, playerTwoPlayerPreview);
+      choosePlayersFunction(playerTwoData, playerTwoData.playerPreviewName, playerTwoData.playerPreview);
     }
     if(currentPlayerData == playerTwoData){
         console.log("player 2 made choice " + gameData.playerTwoChoosen);
@@ -728,10 +709,46 @@ function changePlayerPreview() {
   }
 }
 
-
-function setPlayerName(playerName, playerData){
-  playerName.innerHTML = playerData.playerName;
+function setPlayerName(playerData){
+  playerData.playerLifeNameSelector.innerHTML= playerData.playerName;
+  playerData.playerPreviewName.innerHTML = playerData.playerName;
 }
+
+function setPlayerSkin(playerData){
+  playerData.playerSelector.classList.add(playerData.playerName);
+}
+
+
+
+
+function hideStartScreen(){
+  //chooseSoundActive.play();
+  document.querySelector('#start-screen').classList.add("hidden");
+  document.querySelector('#game-container').classList.remove("visibility-hidden");
+  document.querySelector('#players-list').classList.remove("hidden");
+  setTimeout(function(){
+    //startScreenLoopMusic.pause();
+    //startScreenLoopMusic.currentTime = 0;
+    //chooseFighterLoopMusic.play();
+    //chooseFighterLoopMusic.loop = true;
+  }, 350)
+}
+
+hideStartScreen();
+
+
+function startFight(){
+  setPlayerSkin(playerOneData);
+  setPlayerSkin(playerTwoData);
+  document.querySelector('#players-list').classList.add("hidden");
+  document.querySelector('#header-bar').classList.remove("hidden");
+  playerOneData.playerSelector.classList.remove("hidden");
+  playerTwoData.playerSelector.classList.remove("hidden");
+  chooseFighterLoopMusic.pause();
+  chooseFighterLoopMusic.currentTime = 0;
+  //figthMusic.play();
+}
+
 
 
 
@@ -913,11 +930,15 @@ mainInterval = setInterval(function(){
 
 
 
-startScreenLoopMusic.play();
-startScreenLoopMusic.loop = true;
+//startScreenLoopMusic.play();
+//startScreenLoopMusic.loop = true;
 
 
-setPlayerName(playerOnePlayerName, playerOneData);
-setPlayerName(playerTwoPlayerName, playerTwoData);
 
-choosePlayersFunction(playerOneData, playerOnePlayerName, playerOnePlayerPreview);
+
+
+
+choosePlayersSection();
+
+
+hideStartScreen();
