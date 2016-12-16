@@ -132,7 +132,7 @@
       <img src="img/Mortal_Kombat_Logo.svg" alt="MK Logo">
     </div>
     <div class="start-screen-menu flex-column flex-align_center_center">
-      <span onclick="hideStartScreen()" id="start-select-players" class="start-screen-menu__item slide-top menu-item">Start game</span>
+      <span onclick="choosePlayersSection()" id="start-select-players" class="start-screen-menu__item slide-top menu-item">Start game</span>
       <span id="start-options" class="start-screen-menu__item slide-top menu-item">Options</span>
     </div>
   </section>
@@ -144,7 +144,9 @@
         <h2 id="players-list-fighter-name-2" class="players-list__fighter-name title flex-30 flex-align_start_center"></h2>
       </div>
     </div>
-    <div id="players-list-items" class="flex-row players-row flex-grow flex-wrap flex-align_center_center slide-top"></div>
+    <div class="flex-row players-row flex-grow flex-align_center_center slide-top">
+      <div id="players-list-items" class="flex-row flex-wrap"></div>
+    </div>
     <div class="flex-row flex-align_space-between_center flex-10 slide-top choose-level">
       <span onclick="prevLevel()" id="prev-level" class="choose-level__item menu-item"><i class="mdi mdi-chevron-left"></i></span>
       <h2 class="players-list__title title fade-in flex-row flex-100 flex-align_space-between_center">
@@ -153,8 +155,12 @@
       <span onclick="nextLevel()" id="next-level" class="choose-level__item menu-item"><i class="mdi mdi-chevron-right"></i></span>
     </div>
     <div class="flex-row flex-align_space-between_center player-preview-wrapper">
-      <div id="player-preview-1" class="flex flex-align_start_end player-preview slide-left"></div>
-      <div id="player-preview-2" class="flex flex-align_start_end player-preview slide-right" flipped></div>
+      <div id="player-preview-1" class="flex flex-align_start_end player-preview">
+        <img src="img/players-list/versus/cyrax.png">
+      </div>
+      <div id="player-preview-2" class="flex flex-align_start_end player-preview" flipped>
+        <img src="img/players-list/versus/subzero.png">
+      </div>
     </div>
   </section>
 </article>

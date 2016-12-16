@@ -34,6 +34,7 @@
     border-color: #353535 #444 #7b7b7b #444;
     box-shadow: inset 0 0 10px #000;
     cursor: pointer;
+    position: relative;
     &:hover{
       animation: select-border-animation .5s linear infinite alternate-reverse;
     }
@@ -49,27 +50,54 @@
        
     }
   }
-  .players-row:nth-child(2){
-    animation-delay: .4s;
-  }
-  .players-row:nth-child(3){
-    animation-delay: .6s;
-  }
-  .players-row:nth-child(4){
-    animation-delay: .8s;
-  }
-  .players-row:nth-child(5){
-    animation-delay: 1s;
-  }
+  // .players-row:nth-child(2){
+  //   animation-delay: .4s;
+  // }
+  // .players-row:nth-child(3){
+  //   animation-delay: .6s;
+  // }
+  // .players-row:nth-child(4){
+  //   animation-delay: .8s;
+  // }
+  // .players-row:nth-child(5){
+  //   animation-delay: 1s;
+  // }
 }
 
 #players-list-items{
   max-width: 270px;
+  &.players-are-choosen{
+    pointer-events: none;
+  }
 }
 
 .players-row{
   position: relative;
   z-index: 1;
+}
+
+.player-one-choose:after, .player-two-choose:after{
+  .title;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-one-choose:after{
+  content: "1";
+}
+
+.player-two-choose:after{
+  content: "2";
+}
+
+.player-one-choose.player-two-choose:after{
+  content: "1, 2";
 }
 
 @keyframes select-border-animation{
