@@ -364,7 +364,7 @@ function kickFunc(player, playerOpponent, kickType, kickTime, kickEnd, kickDamag
       player[kickType] = false;
       player.attack = false;
       player.playerSelector.classList.remove(kickType);
-      stopAudio(kickType);
+      stopSound(kickType);
     }, kickTime);
     if(kickzone && playerPosDiffJump < 50 || (kickzone && playerOpponent.moveTop && playerOpponent.moveForward || kickzone && playerOpponent.moveTop && playerOpponent.moveBackward)){
       makeDamage(player, playerOpponent, kickDamageAudio, kickDamage, kickDamageClass, beforeKickInterval, afterKickInterval);
@@ -398,8 +398,8 @@ function makeDamage(player, player2, kickDamageAudio, kickDamage, kickDamageClas
   setTimeout(function(){
     player2.playerSelector.classList.remove(kickDamageClass);
     player2.isDamaged = false;
-    stopAudio(kickDamageAudio);
-    stopAudio('kick-blocked');
+    stopSound(kickDamageAudio);
+    stopSound('kick-blocked');
     
   }, afterKickInterval);
   
@@ -556,18 +556,10 @@ function playAudio(trackname, loop){
   }
 }
 
-function playSound(soundName){
-  soundName.play();
-}
 
 function stopSound(soundName){
   soundName.pause();
   soundName.currentTime = 0;
-}
-
-function stopAudio(trackname){
-  document.getElementById(trackname).pause();
-  document.getElementById(trackname).currentTime = 0;
 }
 
 //////////////////////////////////////////////////
@@ -666,26 +658,7 @@ var playerListNumber = playerListItems.length;
 //     return result;
 // }
 
-// function getRandomPreviewImgPath(){
-//  var customPlayerPreview = pickRandomProperty(AllPlayersObj);
-//  var playerRes = AllPlayersObj[customPlayerPreview];
-//  return playerRes.previewImg;
-// }
 
-
-
-//   playerOneData.playerPreview.innerHTML = "<img src=" + getRandomPreviewImgPath() + " />";
-//   playerTwoData.playerPreview.innerHTML = "<img src=" + getRandomPreviewImgPath() + " flipped />";
-
-
-function hideStartScreen(){
-  //chooseSoundActive.play();
-  
-  setTimeout(function(){
-    //startScreenLoopMusic.pause();
-    //startScreenLoopMusic.currentTime = 0;
-  }, 350)
-}
 
 
 
@@ -747,7 +720,7 @@ function choosePlayersFunction(currentPlayerData, currentPlayerName, currentPlay
 
       chooseSound.currentTime = 0;
       chooseSoundActive.play();
-      playSound(playerRes.soundName);
+      playerRes.soundName.play();
       this.classList.add("players-list__item_choosen");
 
       gameData.playerOneChoosen = true;
