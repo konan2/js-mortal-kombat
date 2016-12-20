@@ -648,15 +648,7 @@ var playerListNumber = playerListItems.length;
 
 
 
-// function pickRandomProperty(obj) {
-//     var result;
-//     var test;
-//     var count = 0;
-//     for (var prop in obj)
-//         if (Math.random() < 1/++count)
-//            result = prop;
-//     return result;
-// }
+
 
 
 
@@ -755,10 +747,45 @@ function setPlayerSkin(playerData){
 // hideStartScreen();
 
 
+// function pickRandomProperty(obj) {
+//     var result;
+//     var test;
+//     var count = 0;
+//     for (var prop in obj)
+//         if (Math.random() < 1/++count)
+//            result = prop;
+//     return result;
+// }
+
+function RandomValue(max){
+  return Math.floor(Math.random() * max);
+}
+
+
 function StartScreen(){
   startScreenLoopMusic.play();
   startScreenLoopMusic.loop = true;
+
+  var sliderImgArray = document.querySelectorAll(".start-screen-add-bg img");
+  var sliderImgArraySize = sliderImgArray.length;
+  var currentSlide = 0;
+
+  sliderImgArray[RandomValue(sliderImgArraySize)].classList.toggle("visible");
+
+   setInterval(
+    function(){
+      for(i=0;i<sliderImgArraySize;i++){
+        sliderImgArray[i].removeAttribute("class");
+      }
+      sliderImgArray[currentSlide].classList.toggle("visible");
+      currentSlide++;
+      if(currentSlide === sliderImgArray.length){
+        currentSlide = 0;
+    }
+  }, 3000);
 }
+
+
 
 
 function startFight(){
