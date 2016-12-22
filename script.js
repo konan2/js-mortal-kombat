@@ -116,13 +116,15 @@ var levelWidth = levelWrapper.offsetWidth;
 var kickzone = false;
 
 // audio
-insertAudio('footkick');
-insertAudio('handkick');
-insertAudio('syborg_run');
-insertAudio('jump_end');
-insertAudio('foot_damage');
-insertAudio('hand_damage');
-insertAudio('kick-blocked');
+
+
+footkickSound = new Audio('audio/footkick.mp3');
+handkickSound = new Audio('audio/handkick.mp3');
+syborg_runSound = new Audio('audio/syborg_run.mp3');
+jump_endSound = new Audio('audio/jump_end.mp3');
+foot_damageSound = new Audio('audio/foot_damage.mp3');
+hand_damageSound = new Audio('audio/hand_damage.mp3');
+kick_blockedSound = new Audio('audio/kick_blocked.mp3');
 
 startScreenLoopMusic = new Audio('audio/startscreen.mp3');
 chooseFighterLoopMusic = new Audio('audio/playerListMusic.mp3');
@@ -131,6 +133,20 @@ chooseSoundActive = new Audio('audio/menuitem_active.mp3');
 chooseSoundActivePlayer = new Audio('audio/menuitem_active.mp3');
 chooseYoutDestiny = new Audio('audio/choose-your-destiny.mp3');
 figthMusic = new Audio('audio/fight_music.mp3');
+
+// Level tracks
+
+level_track_1 = new Audio('audio/level_tracks/Kelly_Bailey_Combine_Harvester.mp3');
+level_track_2 = new Audio('audio/level_tracks/Kelly_Bailey__You_are_Not_Supposed_to_Be_Here.mp3');
+level_track_3 = new Audio('audio/level_tracks/Kelly_Bailey_Abandoned_in_place.mp3');
+level_track_4 = new Audio('audio/level_tracks/Kelly_Bailey_Cp_violation.mp3');
+level_track_5 = new Audio('audio/level_tracks/Kelly_Bailey_Kaon.mp3');
+level_track_6 = new Audio('audio/level_tracks/Kelly_Bailey_Last_legs.mp3');
+level_track_7 = new Audio('audio/level_tracks/Kelly_Bailey_Sector_sweep.mp3');
+level_track_8 = new Audio('audio/level_tracks/Kelly_Bailey_Vortal_combat.mp3');
+level_track_9 = new Audio('audio/level_tracks/Kelly_Bailey_What_kind_of_hospital_is_this.mp3');
+
+var AllLevelTracks = {level_track_1, level_track_2, level_track_3, level_track_4, level_track_5, level_track_6, level_track_7, level_track_8, level_track_9};
 
 
 /// Players  
@@ -230,19 +246,19 @@ function funcKeyDown(event){
   // Hand kick
   if(event.keyCode === player.playerKeys.handkick){
     if(player == playerOneData){
-      kickFunc(playerOneData, playerTwoData,'handkick', 300, 'handKickEnd', 'hand_damage', playerOneData.handKickDamage, 'hand-damaged', 100, 250);
+      kickFunc(playerOneData, playerTwoData,'handkick', 300, 'handKickEnd', hand_damageSound, playerOneData.handKickDamage, 'hand-damaged', 100, 250, handkickSound);
     }
     if(player == playerTwoData){
-      kickFunc(playerTwoData, playerOneData, 'handkick', 300, 'handKickEnd', 'hand_damage', playerTwoData.handKickDamage, 'hand-damaged', 100, 250);
+      kickFunc(playerTwoData, playerOneData, 'handkick', 300, 'handKickEnd', hand_damageSound, playerTwoData.handKickDamage, 'hand-damaged', 100, 250, handkickSound);
     }
   }
   // Foot kick
   if(event.keyCode === player.playerKeys.footkick){
     if(player == playerOneData){
-      kickFunc(playerOneData, playerTwoData, 'footkick', 400, 'footKickEnd', 'foot_damage', playerOneData.footKickDamage, 'foot-damaged', 200, 400);
+      kickFunc(playerOneData, playerTwoData, 'footkick', 400, 'footKickEnd', foot_damageSound, playerOneData.footKickDamage, 'foot-damaged', 200, 400, footkickSound);
     }
     if(player == playerTwoData){
-      kickFunc(playerTwoData, playerOneData, 'footkick', 400, 'footKickEnd', 'foot_damage', playerTwoData.footKickDamage, 'foot-damaged', 200, 400);
+      kickFunc(playerTwoData, playerOneData, 'footkick', 400, 'footKickEnd', foot_damageSound, playerTwoData.footKickDamage, 'foot-damaged', 200, 400, footkickSound);
     }
   }
 
@@ -251,7 +267,7 @@ function funcKeyDown(event){
   if(event.keyCode === player.playerKeys.run){
     player.moverun = true;
     player.playerSelector.classList.add("move-run");
-    playAudio('syborg_run');
+    playSound(syborg_runSound);
   }
 
 
@@ -352,19 +368,19 @@ function movePlayerBackward(curPlayer, oppPlayer, moveSpeed){
 
 // Kicks
 
-function kickFunc(player, playerOpponent, kickType, kickTime, kickEnd, kickDamageAudio, kickDamage, kickDamageClass, beforeKickInterval, afterKickInterval){
+function kickFunc(player, playerOpponent, kickType, kickTime, kickEnd, kickDamageAudio, kickDamage, kickDamageClass, beforeKickInterval, afterKickInterval, kickTypeAudio){
   if(!player.isDamaged && !kickzone && player.handKickEnd && player.footKickEnd || (!player.isDamaged && kickzone && player.handKickEnd && player.footKickEnd && !playerOpponent.handkick && !playerOpponent.footkick)){
     player[kickType] = true;
     player.attack = true;
     player.playerSelector.classList.add(kickType);
-    playAudio(kickType);
+    playSound(kickTypeAudio);
     player[kickEnd] = false;
     setTimeout(function(){
       player[kickEnd] = true;
       player[kickType] = false;
       player.attack = false;
       player.playerSelector.classList.remove(kickType);
-      stopSound(kickType);
+      stopSound(kickTypeAudio);
     }, kickTime);
     if(kickzone && playerPosDiffJump < 50 || (kickzone && playerOpponent.moveTop && playerOpponent.moveForward || kickzone && playerOpponent.moveTop && playerOpponent.moveBackward)){
       makeDamage(player, playerOpponent, kickDamageAudio, kickDamage, kickDamageClass, beforeKickInterval, afterKickInterval);
@@ -384,11 +400,11 @@ function makeDamage(player, player2, kickDamageAudio, kickDamage, kickDamageClas
     player2.playerSelector.classList.add(kickDamageClass);
     player2.isDamaged = true;
     if(player2.block){
-      playAudio('kick-blocked');
+      playSound(kick_blockedSound);
       player2.life = player2.life - player2.blockedDamage;
     }
     else{
-      playAudio(kickDamageAudio);
+      playSound(kickDamageAudio);
       player2.life = player2.life - kickDamage;
       startBlood();
     }
@@ -399,7 +415,7 @@ function makeDamage(player, player2, kickDamageAudio, kickDamage, kickDamageClas
     player2.playerSelector.classList.remove(kickDamageClass);
     player2.isDamaged = false;
     stopSound(kickDamageAudio);
-    stopSound('kick-blocked');
+    stopSound(kick_blockedSound);
     
   }, afterKickInterval);
   
@@ -459,7 +475,7 @@ function jump(player){
     }, 10);
   }
   function jumpEnd(player){
-    playAudio('jump_end');
+    playSound(jump_endSound);
     player.moveTop = false;
     player.jumpEnd = true;
     player.playerSelector.classList.remove("move-top", 'handkick', 'footkick');
@@ -542,24 +558,22 @@ alignPlayers();
 
 /// sounds
 
-function insertAudio(trackname){
-  var audioSection = document.getElementById("audio-section");
-  var audioRun = "<audio id=" + trackname + " src='audio/" + trackname + ".mp3' type='audio/mp3'></audio>";
-  audioRun.loop = false;
-  audioSection.innerHTML = audioSection.innerHTML + audioRun;
-}
 
-function playAudio(trackname, loop){
-  document.getElementById(trackname).play();
-  if(loop){
-    document.getElementById(trackname).setAttribute("loop", "");
+
+function playSound(trackname, loop, volume){
+  trackname.play();
+  if(loop !== undefined){
+    trackname.loop = true;
+  }
+  if(volume !== undefined){
+    trackname.volume = volume;
   }
 }
 
 
-function stopSound(soundName){
-  soundName.pause();
-  soundName.currentTime = 0;
+function stopSound(trackname){
+  trackname.pause();
+  trackname.currentTime = 0;
 }
 
 //////////////////////////////////////////////////
@@ -587,8 +601,8 @@ function nextLevel() {
       levelCount = 0;
     }
     changeLevel(levelCount);
-    chooseSoundActive.currentTime = 0;
-    chooseSoundActive.play();
+    stopSound(chooseSoundActive);
+    playSound(chooseSoundActive);
 }
 
 function prevLevel() {
@@ -597,8 +611,8 @@ function prevLevel() {
         levelCount = levelsData.length - 1;
     }
     changeLevel(levelCount);
-    chooseSoundActive.currentTime = 0;
-    chooseSoundActive.play();
+    stopSound(chooseSoundActive);
+    playSound(chooseSoundActive);
 }
 
 
@@ -614,11 +628,10 @@ for (i = 0; i < chooseSoundHover.length; ++i) {
 }
 
 function handler(event) {
-    chooseSound.currentTime = 0;
-    chooseSound.play();
+  stopSound(chooseSound);
+  playSound(chooseSound);
 }
 
-////
 
 
 
@@ -655,18 +668,20 @@ var playerListNumber = playerListItems.length;
 
 
 function choosePlayersSection(){
-  startScreenLoopMusic.pause();
-  startScreenLoopMusic.currentTime = 0;
-  chooseSoundActive.play();
+
+  stopSound(startScreenLoopMusic);
+
+  //playSound(chooseSoundActive);
+
   document.querySelector('#start-screen').classList.add("hidden");
   document.querySelector('#game-container').classList.remove("visibility-hidden");
   document.querySelector('#players-list').classList.remove("hidden");
-  chooseFighterLoopMusic.play();
-  chooseFighterLoopMusic.volume=.3;
-  chooseFighterLoopMusic.loop = true;
-  setTimeout(function(){
-    chooseYoutDestiny.play();
-  }, 1000);
+
+  playSound(chooseFighterLoopMusic, 'loop', .3);
+
+  // setTimeout(function(){
+  //   playSound(chooseYoutDestiny);
+  // }, 1000);
   
   choosePlayersFunction(playerOneData, playerOneData.playerPreviewName, playerOneData.playerPreview);
 }
@@ -690,8 +705,10 @@ function choosePlayersFunction(currentPlayerData, currentPlayerName, currentPlay
       else{
         this.classList.add("player-two-choose");
       }
-      chooseSound.currentTime = 0;
-      chooseSound.play();
+
+      stopSound(chooseSound);
+      playSound(chooseSound);
+
       currentPlayerData.playerName = playerRes.name;
       setPlayerName(currentPlayerData);
       currentPlayerData.playerPreview.innerHTML = "<img src=" + playerRes.previewImg + " />";
@@ -711,8 +728,8 @@ function choosePlayersFunction(currentPlayerData, currentPlayerName, currentPlay
       var playerRes = AllPlayersObj[ObjName];
 
       chooseSound.currentTime = 0;
-      chooseSoundActive.play();
-      playerRes.soundName.play();
+      playSound(chooseSoundActive);
+      playSound(playerRes.soundName);
       this.classList.add("players-list__item_choosen");
 
       gameData.playerOneChoosen = true;
@@ -747,24 +764,28 @@ function setPlayerSkin(playerData){
 // hideStartScreen();
 
 
-// function pickRandomProperty(obj) {
-//     var result;
-//     var test;
-//     var count = 0;
-//     for (var prop in obj)
-//         if (Math.random() < 1/++count)
-//            result = prop;
-//     return result;
-// }
+// Random obj item
+
+function pickRandomProperty(obj) {
+    var result;
+    var test;
+    var count = 0;
+    for (var prop in obj)
+        if (Math.random() < 1/++count)
+           result = prop;
+    return result;
+}
+
+// Random value
 
 function RandomValue(max){
   return Math.floor(Math.random() * max);
 }
 
+//
 
 function StartScreen(){
-  startScreenLoopMusic.play();
-  startScreenLoopMusic.loop = true;
+  playSound(startScreenLoopMusic, 'loop');
 
   var sliderImgArray = document.querySelectorAll(".start-screen-add-bg img");
   var sliderImgArraySize = sliderImgArray.length;
@@ -791,12 +812,19 @@ function StartScreen(){
 function startFight(){
   setPlayerSkin(playerOneData);
   setPlayerSkin(playerTwoData);
+
+  
+
   document.querySelector('#players-list').classList.add("hidden");
   document.querySelector('#header-bar').classList.remove("hidden");
   playerOneData.playerSelector.classList.remove("hidden");
   playerTwoData.playerSelector.classList.remove("hidden");
-  chooseFighterLoopMusic.pause();
-  chooseFighterLoopMusic.currentTime = 0;
+
+  stopSound(chooseFighterLoopMusic);
+
+  var currentLevelTrack = pickRandomProperty(AllLevelTracks);
+  playSound(AllLevelTracks[currentLevelTrack], 'loop');
+
   getPlayerKeys(playerOneData.playerKeys, playerTwoData.playerKeys);
   //figthMusic.play();
 }
