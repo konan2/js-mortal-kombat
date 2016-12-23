@@ -21,6 +21,9 @@
     z-index: 2;
     background: transparent url(img/clouds_white.png) repeat center center;
   }
+  .mk-logo img{
+    animation: logo-animate 1.5s ease-in-out 1;
+  }
 }
 
 .start-screen-add-bg{
@@ -31,14 +34,6 @@
   left: 0;
   right: 0;
   height: 100vh;
-  // background: #000 url(img/thumb-1920-262767.jpg) no-repeat 0 0;
-  // background: #000 url(img/cyrax_vs_sektor.jpg) no-repeat center;
-  // background: #000 url(img/slider/1.jpg) no-repeat center;
-  // background: #000 url(img/slider/2.jpg) no-repeat center;
-  // background: #000 url(img/slider/3.jpg) no-repeat center;
-  // background: #000 url(img/slider/4.jpg) no-repeat center;
-  // background: #000 url(img/slider/5.jpg) no-repeat center;
-  // background-size: cover;
   animation: start-screen-bg 30s linear infinite alternate-reverse;
 }
 
@@ -79,7 +74,6 @@
   overflow: hidden;
   img{
     border-radius: 100%;
-    animation: logo-animate 1.5s ease-in-out 1;
     transition: all 1s ease;
   }
   &:after {

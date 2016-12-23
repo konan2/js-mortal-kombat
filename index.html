@@ -13,7 +13,7 @@
 </head>
 <body>
 <article class="page-wrapper flex-column flex-align_space-between_stretch">
-  <section id="game-container" class="game-container flex-column flex-align_space-between_stretch visibility-hidden flex-align-self_auto">
+  <section id="game-container" class="game-container flex-column flex-align_space-between_stretch flex-align-self_auto">
     <header id="header-bar" class="header-bar flex-row flex-wrap hidden slide-top">
       <div class="blood-level flex-40">
         <div id="player1-level" class="blood-level__bar"></div>
@@ -141,8 +141,24 @@
       <span onclick="optionsAction()" id="start-options" class="start-screen-menu__item slide-top menu-item">Options</span>
     </div>
   </section>
-  <section id="start-options-screen" class="hidden">
-    
+  <section id="start-options-screen" class="flex-row flex-align_center_center flex-align-self_auto hidden">
+    <div id="start-options-modal" class="modal flex-column flex-align_center_stretch">
+      <header class="title modal-title flex-row flex-align_space-between_center">
+        <i onclick="closeOptions()" class="mdi mdi-arrow-left"></i>
+        <span>Options</span>
+        <i onclick="closeOptions()" class="mdi mdi-check"></i>
+      </header>
+      <div class="modal-content flex-row flex-align_space-around_center flex">
+        <div class="flex-column flex-align_center_center flex">
+          <span>Overall volume: 100%</span>
+          <span>Music volume: 90%</span>
+        </div>
+        <div class="flex-column flex-align_center_center flex">
+          <span>Effects volume: 90%</span>
+          <span>Voice volume: 90%</span>
+        </div>
+      </div>
+    </div>
   </section>
   <section id="players-list" class="players-list flex-column flex-align_center_center flex-align-self_auto hidden">
     <div class="flex-row flex-align_center_center flex-10 slide-top players-list__header">

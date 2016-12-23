@@ -695,8 +695,7 @@ var playerListNumber = playerListItems.length;
 
 function choosePlayersSection(){
 
-  showScreen("#game-container");
-  
+  changeScreen("#game-container", "#players-list");
 
   playSound(chooseFighterLoopMusic, 'loop', .3);
 
@@ -782,7 +781,7 @@ function setPlayerSkin(playerData){
 //
 
 function StartScreen(){
-  showScreen("#start-screen");
+  changeScreen("#start-screen");
   playSound(startScreenLoopMusic, 'loop');
 
   var sliderImgArray = document.querySelectorAll(".start-screen-add-bg img");
@@ -808,7 +807,7 @@ function StartScreen(){
 
 
 function startFight(){
-  showScreen("#game-container");
+  changeScreen("#game-container");
   
   setPlayerSkin(playerOneData);
   setPlayerSkin(playerTwoData);
@@ -992,13 +991,18 @@ function startGameAction(){
 }
 
 function optionsAction(){
- 
+  playSound(chooseSoundActive);
+  changeScreen("#start-options-screen", "#start-screen");
+}
+
+function closeOptions(){
+  changeScreen("#start-screen");
 }
 
 
 // Run game
 
-//StartScreen();
+StartScreen();
 //startFight();
 
 // Listeners
@@ -1036,12 +1040,17 @@ mainInterval = setInterval(function(){
 
 
 
-function showScreen(screenId){
+function changeScreen(screenId, exceptId){
   var allScreens = document.querySelectorAll("section");
   for(i=0;i<allScreens.length;i++){
     allScreens[i].classList.add("hidden");
   }
   document.querySelector(screenId).classList.remove("hidden");
+  if(exceptId){
+    document.querySelector(exceptId).classList.remove("hidden");
+  }
 }
 
-showScreen("#start-options-screen");
+
+
+
