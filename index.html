@@ -37,7 +37,7 @@
       </div>
     </header>
     <div class="flex">
-      <div id="level-wrapper" class="plant">
+      <div id="level-wrapper">
         <div class="level-decor">
           <div class="level-sky">
             <div class="sky-decor">
@@ -161,15 +161,21 @@
     </div>
   </section>
   <section id="players-list" class="players-list flex-column flex-align_center_center flex-align-self_auto hidden">
-    <div class="flex-row flex-align_center_center flex-10 slide-top players-list__header">
-      <div class="flex-row flex-align_center_center flex-100">
-        <h2 id="players-list-fighter-name-1" class="players-list__fighter-name title flex-30 flex-align_end_center"></h2>
+    <div class="flex-row flex-align_center_stretch slide-top players-list__header">
+      <div class="flex-row flex-align_center_center flex-100 players-info-block">
+        <div class="players-list__fighter-name flex-30 flex-row flex-align_space-between_center">
+          <img src="img/mortal-kombat-logo-small-animated.gif">
+          <h2 id="players-list-fighter-name-1" class="title"></h2>
+        </div>
         <h2 class="players-list__title title flex flex-align_center_center">Select your fighter</h2>
-        <h2 id="players-list-fighter-name-2" class="players-list__fighter-name title flex-30 flex-align_start_center"></h2>
+        <div class="players-list__fighter-name flex-30 flex-row flex-align_space-between_center">
+          <h2 id="players-list-fighter-name-2" class="title"></h2>
+          <img src="img/mortal-kombat-logo-small-animated.gif" flipped>
+        </div>
       </div>
     </div>
     <div class="flex-row players-row flex-grow flex-align_center_center slide-top">
-      <div id="players-list-items" class="flex-row flex-wrap"></div>
+      <div id="players-list-items" class="flex-row flex-align_center_center flex-wrap"></div>
     </div>
     <div class="flex-row flex-align_space-between_center flex-10 slide-top choose-level">
       <span onclick="prevLevel()" id="prev-level" class="choose-level__item menu-item"><i class="mdi mdi-chevron-left"></i></span>

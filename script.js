@@ -18,7 +18,8 @@ var gameData = {
   playerTwoChoosen: false
 }
 
-var levelsData = ["temple","church","plant", "desert"];
+var levelsData = ["temple", "church", "plant", "desert"];
+
 //var levelsData = ["temple","church","arena","plant","spaceship","vulkano","bunker","mars","desert","portal"];
 
 
@@ -696,6 +697,10 @@ var playerListNumber = playerListItems.length;
 function choosePlayersSection(){
 
   changeScreen("#game-container", "#players-list");
+
+  var rand = levelsData[Math.floor(Math.random() * levelsData.length)];
+
+  document.getElementById("level-wrapper").classList.add(rand);
 
   playSound(chooseFighterLoopMusic, 'loop', .3);
 

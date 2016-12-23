@@ -9,9 +9,10 @@
   animation: fade-in 1s ease;
   &__header{
     width: 100%;
+    min-height: 80px;
   }
   &__title{
-    max-width: 590px;
+    //max-width: 590px;
   }
   &:after{
     content: "";
@@ -35,6 +36,7 @@
     box-shadow: inset 0 0 10px #000;
     cursor: pointer;
     position: relative;
+    z-index: 1;
     &:hover{
       animation: select-border-animation .5s linear infinite alternate-reverse;
     }
@@ -138,6 +140,15 @@
 }
 
 @keyframes player-preview-animation{
-0%  {transform: translateX(-10px);}
-100%{transform: translateX(0);}
+  0%  {transform: translateX(-10px);}
+  100%{transform: translateX(0);}
+}
+
+.players-info-block{
+  background: linear-gradient(to right, #000000 0%, transparent 25%, transparent 75%,#000000 100%); 
+}
+
+#players-list-items{
+  //background-color: rgba(0, 0, 0, 0.5);
+  //box-shadow: 0 0 40px 22px rgba(0,0,0,0.5);
 }
