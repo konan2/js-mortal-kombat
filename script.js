@@ -194,13 +194,32 @@ var subzero = {
 var AllPlayersObj = {cyrax, kabal, smoke, sektor, subzero};
 
 
+
+// Random obj item
+function pickRandomProperty(obj) {
+    var result;
+    var test;
+    var count = 0;
+    for (var prop in obj)
+        if (Math.random() < 1/++count)
+           result = prop;
+    return result;
+}
+
+// Random value
+
+function RandomValue(max){
+  return Math.floor(Math.random() * max);
+}
+
+
 // get player keys function
 
-function getPlayerKeys(playerOneKeyMap, playerOneKeyMap){
-  for(var i in playerOneKeyMap) {
+function getPlayerKeys(playerKeyMap){
+  for(var i in playerKeyMap) {
     playerUsedCodes.push(playerOneData.playerKeys[i]);
   }
-  for(var j in playerOneKeyMap) {
+  for(var j in playerKeyMap) {
     player2UsedCodes.push(playerTwoData.playerKeys[j]);
   }
 }
@@ -221,28 +240,40 @@ function getPlayerSide(event){
 }
 
 
+
+
+
+
+
+
+
+
 function funcKeyDown(event){
   getPlayerSide(event);
-  //console.log(event.keyCode);
+  
   // jump
   if(event.keyCode === player.playerKeys.jump){
     jump(player);
   }
+
   // Move forward
   if(event.keyCode === player.playerKeys.forward){
     player.moveForward = true;
     player.playerSelector.classList.add("move-forward");
   }
+
   // Move back
   if(event.keyCode === player.playerKeys.back){
     player.moveBackward = true;
     player.playerSelector.classList.add("move-back");
   }
+
   // Move bottom
   if(event.keyCode === player.playerKeys.bottom){
     player.moveDown = true;
     player.playerSelector.classList.add("move-down");
   }
+
   // Hand kick
   if(event.keyCode === player.playerKeys.handkick){
     if(player == playerOneData){
@@ -252,6 +283,7 @@ function funcKeyDown(event){
       kickFunc(playerTwoData, playerOneData, 'handkick', 300, 'handKickEnd', hand_damageSound, playerTwoData.handKickDamage, 'hand-damaged', 100, 250, handkickSound);
     }
   }
+
   // Foot kick
   if(event.keyCode === player.playerKeys.footkick){
     if(player == playerOneData){
@@ -262,14 +294,12 @@ function funcKeyDown(event){
     }
   }
 
-
   // Run
   if(event.keyCode === player.playerKeys.run){
     player.moverun = true;
     player.playerSelector.classList.add("move-run");
     playSound(syborg_runSound);
   }
-
 
   // Block
   if(event.keyCode === player.playerKeys.block){
@@ -578,8 +608,7 @@ function stopSound(trackname){
 
 //////////////////////////////////////////////////
 
-document.addEventListener("keydown", funcKeyDown);
-document.addEventListener("keyup", funcKeyUp);
+
 
 // Change level 
 
@@ -637,9 +666,6 @@ function handler(event) {
 
 
 
-
-
-
 // Choose player function
 
 var playersListParent = document.querySelector("#players-list-items");
@@ -669,13 +695,8 @@ var playerListNumber = playerListItems.length;
 
 function choosePlayersSection(){
 
-  stopSound(startScreenLoopMusic);
-
-  //playSound(chooseSoundActive);
-
-  document.querySelector('#start-screen').classList.add("hidden");
-  document.querySelector('#game-container').classList.remove("visibility-hidden");
-  document.querySelector('#players-list').classList.remove("hidden");
+  showScreen("#game-container");
+  
 
   playSound(chooseFighterLoopMusic, 'loop', .3);
 
@@ -758,33 +779,10 @@ function setPlayerSkin(playerData){
 }
 
 
-
-
-
-// hideStartScreen();
-
-
-// Random obj item
-
-function pickRandomProperty(obj) {
-    var result;
-    var test;
-    var count = 0;
-    for (var prop in obj)
-        if (Math.random() < 1/++count)
-           result = prop;
-    return result;
-}
-
-// Random value
-
-function RandomValue(max){
-  return Math.floor(Math.random() * max);
-}
-
 //
 
 function StartScreen(){
+  showScreen("#start-screen");
   playSound(startScreenLoopMusic, 'loop');
 
   var sliderImgArray = document.querySelectorAll(".start-screen-add-bg img");
@@ -810,10 +808,10 @@ function StartScreen(){
 
 
 function startFight(){
+  showScreen("#game-container");
+  
   setPlayerSkin(playerOneData);
   setPlayerSkin(playerTwoData);
-
-  
 
   document.querySelector('#players-list').classList.add("hidden");
   document.querySelector('#header-bar').classList.remove("hidden");
@@ -826,7 +824,14 @@ function startFight(){
   playSound(AllLevelTracks[currentLevelTrack], 'loop');
 
   getPlayerKeys(playerOneData.playerKeys, playerTwoData.playerKeys);
-  //figthMusic.play();
+
+  // Start keyboard listener
+  
+  setTimeout(function(){
+    alert("Fight!");
+    document.addEventListener("keydown", funcKeyDown);
+    document.addEventListener("keyup", funcKeyUp);
+  }, 3000);
 }
 
 
@@ -978,6 +983,26 @@ function startBlood() {
 }
 
 
+// Menu controls
+
+function startGameAction(){
+  playSound(chooseSoundActive);
+  stopSound(startScreenLoopMusic);
+  choosePlayersSection();
+}
+
+function optionsAction(){
+ 
+}
+
+
+// Run game
+
+//StartScreen();
+//startFight();
+
+// Listeners
+
 window.addEventListener('resize', function(event){
   levelWidth = levelWrapper.offsetWidth;
   alignPlayers();
@@ -985,12 +1010,9 @@ window.addEventListener('resize', function(event){
 });
 
 
-document.addEventListener("keydown", funcKeyDown);
-document.addEventListener("keyup", funcKeyUp);
+
 
 // Main interval
-
-
 
 function game(){
   getPosition(playerOneData, "position-info");
@@ -1014,9 +1036,12 @@ mainInterval = setInterval(function(){
 
 
 
+function showScreen(screenId){
+  var allScreens = document.querySelectorAll("section");
+  for(i=0;i<allScreens.length;i++){
+    allScreens[i].classList.add("hidden");
+  }
+  document.querySelector(screenId).classList.remove("hidden");
+}
 
-StartScreen();
-
-// choosePlayersSection();
-
-// hideStartScreen();
+showScreen("#start-options-screen");

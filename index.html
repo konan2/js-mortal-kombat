@@ -61,7 +61,7 @@
           <div id="position-info2" class="position-info"></div>
           <div id="finishBanner" class="hidden"></div>
         </div>
-        <div class="screen-controls">
+ <!--        <div class="screen-controls">
           <div class="screen-controls screen-controls__arrows hidden">
             <div class="screen-arrows-wrapper">
               <div class="button-wrap">
@@ -116,18 +116,17 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
   <footer class="footer-info flex hidden">
     <p class="footer-info__text">Here will be footer text</p>
   </footer>
-  <section id="audio-section" class="audio-tracks-section hidden"></section>
   <section id="start-screen" class="start-screen flex-column flex-align_center_center flex-align-self_auto fade-in">
     <div class="start-screen-add-bg">
       <img src="img/slider/1.jpg" />
-<!--       <img src="img/slider/2.jpg" /> -->
+      <!-- <img src="img/slider/2.jpg" /> -->
       <img src="img/slider/3.jpg" />
       <img src="img/slider/4.jpg" />
       <!-- <img src="img/slider/5.jpg" /> -->
@@ -138,9 +137,12 @@
       <img src="img/Mortal_Kombat_Logo.svg" alt="MK Logo">
     </div>
     <div class="start-screen-menu flex-column flex-align_center_center">
-      <span onclick="choosePlayersSection()" id="start-select-players" class="start-screen-menu__item slide-top menu-item">Start game</span>
-      <span id="start-options" class="start-screen-menu__item slide-top menu-item">Options</span>
+      <span onclick="startGameAction()" id="start-select-players" class="start-screen-menu__item slide-top menu-item">Start game</span>
+      <span onclick="optionsAction()" id="start-options" class="start-screen-menu__item slide-top menu-item">Options</span>
     </div>
+  </section>
+  <section id="start-options-screen" class="hidden">
+    
   </section>
   <section id="players-list" class="players-list flex-column flex-align_center_center flex-align-self_auto hidden">
     <div class="flex-row flex-align_center_center flex-10 slide-top players-list__header">
