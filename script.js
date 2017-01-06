@@ -10,16 +10,17 @@ var player2UsedCodes = [];
 // Data
 
 var gameData = {
-  roundTime: 5,
+  roundTime: 20,
   currentRoundTime: undefined,
+  roundsMaxCount: 3,
+  currentRound: 0,
   playersAreChoosen: false,
   musicEnabled: true,
   soundsEnabled: true,
   playerOneChoosen: false,
   playerTwoChoosen: false,
   fightStarted: false,
-  fightEnded: false,
-  roundNumber: 1
+  fightEnded: false
 }
 
 var levelsData = ["temple", "church", "plant", "desert"];
@@ -107,6 +108,7 @@ var player2 = playerTwoData;
 // Global data
 
 var mainInterval = null;
+var roundTimerInterval = null;
 
 // Player position diff
 var playerPosDiff;
@@ -489,12 +491,17 @@ function lifeCheck(player){
     player.playerLifeSelector.style.width = 0 + "%";
     document.querySelector("#finishBanner").classList.toggle("hidden");
     player.defeated = true;
-    if(player.defeated){
-      player.playerKeys = {};
-      setTimeout(function() {
-        player.playerSelector.classList.add("defeated");
-      }, 500);
-    }
+    //gameData.currentRound = gameData.currentRound + 1;
+
+    setTimeout(function() {
+      player.playerSelector.classList.add("defeated");
+    }, 500);
+
+    //setTimeout(startFight, 1000);
+    // if(player.defeated){
+    //   //player.playerKeys = {};
+      
+    // }
   }
 }
 
@@ -714,6 +721,10 @@ function handler(event) {
 
 function choosePlayersSection(){
 
+  gameData.currentRound = 0;
+
+
+
   if(playersListParent.classList.contains("players-are-choosen")){
     playersListParent.classList.remove("players-are-choosen");
   }
@@ -812,7 +823,7 @@ function choosePlayersFunction(currentPlayerData, currentPlayerName, currentPlay
 
           playersListParent.classList.toggle("players-are-choosen");
 
-          setTimeout(startFight, 2000);
+          setTimeout(startFight, 1000);
       }
 
     }
@@ -860,33 +871,55 @@ function StartScreen(){
 
 
 function startFight(){
+  gameData.currentRound = gameData.currentRound + 1;
+  console.log(gameData.currentRound);
+  
   changeScreen("#game-container");
+
+  // set up health
+   playerOneData.playerLifeSelector.style.width = 100 + "%";
+   playerOneData.life = 100;
+   playerTwoData.playerLifeSelector.style.width = 100 + "%";
+   playerTwoData.life = 100;
+
+  //set up timer
+
+  if(timerHtml.hasAttribute("class")){
+    timerHtml.removeAttribute("class");
+  }
   timerHtml.innerHTML = gameData.roundTime;
 
+
+  // set player skins
   setPlayerSkin(playerOneData);
   setPlayerSkin(playerTwoData);
 
+
+  // hide the pplayers list
   document.querySelector('#players-list').classList.add("hidden");
 
+  // show life bars and timer
   document.querySelector('#header-bar').classList.remove("hidden");
 
+
+  // show the players
   playerOneData.playerSelector.classList.remove("hidden");
   playerTwoData.playerSelector.classList.remove("hidden");
 
+  // stop select player music
   stopSound(chooseFighterLoopMusic);
 
+  // set random fight track
   var currentLevelTrack = pickRandomProperty(AllLevelTracks);
-
   currentFightMusicTrack = AllLevelTracks[currentLevelTrack];
-
   playSound(currentFightMusicTrack, 'loop', .3);
+
+  // Round count 
+
+  roundCountFunc();
 
   // Start keyboard listener
   getPlayerKeys(playerOneData.playerKeys, playerTwoData.playerKeys);
-
-  playSound(roundOneSound);
-  roundMessages("Round " + gameData.roundNumber, 2000);
-
 
   setTimeout(function(){
     roundTimer();
@@ -1068,7 +1101,7 @@ function closeOptions(){
 // Run game
 
 StartScreen();
-//startFight();
+
 
 // Listeners
 
@@ -1094,9 +1127,7 @@ function game(){
   movePlayer(playerTwoData, playerOneData);
 }
 
-mainInterval = setInterval(function(){
-  game();
-});
+mainInterval = setInterval(game);
 
 
 
@@ -1117,20 +1148,26 @@ function changeScreen(screenId, exceptId){
 }
 
 
-var roundTimerInterval = null;
+
 
 
 
 function roundTimer(){
-  
   gameData.currentRoundTime = gameData.roundTime;
-  gameData.fightStarted = true;
+  
+  
   roundTimerInterval = setInterval(function(){
     if(gameData.currentRoundTime !== 0){
       gameData.currentRoundTime--;
       timerHtml.innerHTML = gameData.currentRoundTime;
+      if(gameData.currentRoundTime < 10){
+        timerHtml.classList.add("fade-pulse");
+      }
+      if(gameData.currentRoundTime < 4){
+        timerHtml.classList.add("danger-color");
+      }
     }
-    else{
+    if(gameData.currentRoundTime === 0){
       gameData.fightStarted = false;
       gameData.fightEnded = true;
       clearInterval(roundTimerInterval);
@@ -1141,27 +1178,46 @@ function roundTimer(){
       // Stop keyboard listener
       document.removeEventListener("keydown", funcKeyDown);
       document.removeEventListener("keyup", funcKeyUp);
-      
-      choosePlayersSection();
+      if(gameData.currentRound < 3){
+        startFight();
+      }
+      else{
+        choosePlayersSection();
+      }
     }
   }, 1000);
 }
 
-
-
-
-
-
-
-
-
-function checkRoundResults(){
-  if(gameData.currentRoundTime == 0 || playerOneData.life == 0 || playerTwoData.life == 0){
-    if(playerOneData.life > playerTwoData.life){
-
-    }
+function roundCountFunc(){
+  //gameData.fightStarted = true;
+  if (gameData.currentRound === 1) {
+    playSound(roundOneSound);
+    roundMessages("Round " + gameData.currentRound, 2000);
+  }
+  if (gameData.currentRound === 2) {
+    playSound(roundTwoSound);
+    roundMessages("Round " + gameData.currentRound, 2000);
+  }
+  if (gameData.currentRound === 3) {
+    playSound(roundThreeSound);
+    roundMessages("Round " + gameData.currentRound, 2000);
+    
   }
 }
+
+
+
+
+
+
+
+// function checkRoundResults(){
+//   if(gameData.currentRoundTime == 0 || playerOneData.life == 0 || playerTwoData.life == 0){
+//     if(playerOneData.life > playerTwoData.life){
+
+//     }
+//   }
+// }
 
 
 

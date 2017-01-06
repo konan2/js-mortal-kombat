@@ -13,13 +13,13 @@
 </head>
 <body>
 <article class="page-wrapper flex-column flex-align_space-between_stretch">
-  <section id="game-container" class="game-container flex-column flex-align_space-between_stretch flex-align-self_auto">
+  <section id="game-container" class="game-container flex-column flex-align_space-between_stretch flex-align-self_auto fade-in">
     <header id="header-bar" class="header-bar flex-row flex-wrap hidden slide-top">
       <div class="blood-level flex-40">
         <div id="player1-level" class="blood-level__bar"></div>
         <div id="player1-blood-level" class="blood-level__name"></div>
       </div>
-      <div class="time-counter flex-20 flex-align_center_center">
+      <div id="round-time-block" class="time-counter flex-20 flex-align_center_center title">
         <span id="round-time"></span>
       </div>
       <div class="blood-level flex-40" flipped>
@@ -126,11 +126,23 @@
   </footer>
   <section id="start-screen" class="start-screen flex-column flex-align_center_center flex-align-self_auto fade-in">
     <div class="start-screen-add-bg">
-      <img src="img/slider/1.jpg" />
+      <!-- <img src="img/slider/1.jpg" /> -->
       <!-- <img src="img/slider/2.jpg" /> -->
-      <img src="img/slider/3.jpg" />
-      <img src="img/slider/4.jpg" />
+ <!--      <img src="img/slider/3.jpg" />
+      <img src="img/slider/4.jpg" /> -->
       <!-- <img src="img/slider/5.jpg" /> -->
+      <!-- <img src="https://s-media-cache-ak0.pinimg.com/originals/2a/0a/3a/2a0a3a9fd98df896f1eed95bc18b8f83.jpg" />
+      <img src="http://www.marcogenovesi.com/wp-content/uploads/2015/04/Prometheus_053_sr_035_DMP_MG.jpg">
+      <img src="http://img.gawkerassets.com/img/17pkbifel1wtjjpg/original.jpg">
+      <img src="http://ic.pics.livejournal.com/cleolinda/1427760/419798/original.jpg">
+      <img src="http://www.marcogenovesi.com/wp-content/uploads/2015/08/Prometheus_030_dp_760_Concept_LV233_alien_valley.jpg">
+      <img src="https://s-media-cache-ak0.pinimg.com/originals/b1/12/cc/b112cc51af4b6a815b55bdf990af8fb2.jpg"> -->
+      <!-- <img src="http://www.starbase1.co.uk/pages/Galleries2/Other%20CGI/slides/skull-wallx.jpg"> -->
+      <img src="img/slider/6.jpg" />
+      <!-- <img src="http://level-design.org/wp-content/uploads/2015/09/martinthiago_002.jpg"> -->
+      <img src="img/slider/7.png" />
+      
+
     </div>
     <div class="clouds"></div>
     <div class="mk-logo flex-column flex-align_center_center">
@@ -142,7 +154,7 @@
       <span onclick="optionsAction()" id="start-options" class="start-screen-menu__item slide-top menu-item">Options</span>
     </div>
   </section>
-  <section id="start-options-screen" class="flex-row flex-align_center_center flex-align-self_auto hidden">
+  <section id="start-options-screen" class="flex-row flex-align_center_center flex-align-self_auto hidden fade-in">
     <div id="start-options-modal" class="modal flex-column flex-align_center_stretch">
       <header class="title modal-title flex-row flex-align_space-between_center">
         <i onclick="closeOptions()" class="mdi mdi-arrow-left"></i>
@@ -161,7 +173,7 @@
       </div>
     </div>
   </section>
-  <section id="players-list" class="players-list flex-column flex-align_center_center flex-align-self_auto hidden">
+  <section id="players-list" class="players-list flex-column flex-align_center_center flex-align-self_auto hidden fade-in">
     <div class="flex-row flex-align_center_stretch slide-top players-list__header">
       <div class="flex-row flex-align_center_center flex-100 players-info-block">
         <div class="players-list__fighter-name flex-30 flex-row flex-align_space-between_center">
