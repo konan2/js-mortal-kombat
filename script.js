@@ -10,7 +10,7 @@ var player2UsedCodes = [];
 // Data
 
 var gameData = {
-  roundTime: 1,
+  roundTime: 5,
   currentRoundTime: undefined,
   playersAreChoosen: false,
   musicEnabled: true,
@@ -54,14 +54,15 @@ var playerData = {
   handKickDamage: 1,
   footKickDamage: 1,
   blockedDamage: 1,
-  pushing: false
+  pushing: false,
+  playerNameAttr: "player-model"
 }
 
 
 
 var playerOneData = {
   __proto__: playerData,
-  playerSelector: document.getElementById("player1"),
+  playerSelector: document.querySelector(".player_1"),
   playerLifeSelector: document.getElementById("player1-level"),
   playerLifeNameSelector: document.getElementById("player1-blood-level"),
   playerPreview: document.querySelector("#player-preview-1"),
@@ -81,7 +82,7 @@ var playerOneData = {
 
 var playerTwoData = {
   __proto__: playerData,
-  playerSelector: document.getElementById("player2"),
+  playerSelector: document.querySelector(".player_2"),
   playerLifeSelector: document.getElementById("player2-level"),
   playerLifeNameSelector: document.getElementById("player2-blood-level"),
   playerPreview: document.querySelector("#player-preview-2"),
@@ -824,7 +825,8 @@ function setPlayerName(playerData){
 }
 
 function setPlayerSkin(playerData){
-  playerData.playerSelector.classList.add(playerData.playerName);
+  playerData.playerSelector.removeAttribute(playerData.playerNameAttr);
+  playerData.playerSelector.setAttribute(playerData.playerNameAttr, playerData.playerName);
 }
 
 
@@ -865,7 +867,9 @@ function startFight(){
   setPlayerSkin(playerTwoData);
 
   document.querySelector('#players-list').classList.add("hidden");
+
   document.querySelector('#header-bar').classList.remove("hidden");
+
   playerOneData.playerSelector.classList.remove("hidden");
   playerTwoData.playerSelector.classList.remove("hidden");
 
