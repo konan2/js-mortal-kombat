@@ -10,12 +10,16 @@ var player2UsedCodes = [];
 // Data
 
 var gameData = {
-  roundTime: 45,
+  roundTime: 1,
+  currentRoundTime: undefined,
   playersAreChoosen: false,
   musicEnabled: true,
   soundsEnabled: true,
   playerOneChoosen: false,
-  playerTwoChoosen: false
+  playerTwoChoosen: false,
+  fightStarted: false,
+  fightEnded: false,
+  roundNumber: 1
 }
 
 var levelsData = ["temple", "church", "plant", "desert"];
@@ -111,12 +115,28 @@ var playerPosDiffJump;
 var levelWrapper = document.querySelector(".play-zone");
 var levelWidth = levelWrapper.offsetWidth;
 
+var playersListParent = document.querySelector("#players-list-items");
+
+var roundNumberText = document.querySelector("#round-number");
+
+
+var timerHtml = document.querySelector("#round-time");
+
+// Level bg 
+
+var levelBgBlock = document.getElementById("level-wrapper");
+
+// Fight messages
+
+var startFightMessage = "<img src='img/start-fight.gif' />";
 
 
 // Players near each other and can make damage
 var kickzone = false;
 
 // audio
+
+var currentFightMusicTrack;
 
 
 footkickSound = new Audio('audio/footkick.mp3');
@@ -134,6 +154,14 @@ chooseSoundActive = new Audio('audio/menuitem_active.mp3');
 chooseSoundActivePlayer = new Audio('audio/menuitem_active.mp3');
 chooseYoutDestiny = new Audio('audio/choose-your-destiny.mp3');
 figthMusic = new Audio('audio/fight_music.mp3');
+
+// shao kahn voices
+
+roundOneSound = new Audio('audio/round-one.mp3');
+roundTwoSound = new Audio('audio/round-two.mp3');
+roundThreeSound = new Audio('audio/round-three.mp3');
+fightSound = new Audio('audio/fight.mp3');
+finishHimSound = new Audio('audio/finish-him.mp3');
 
 // Level tracks
 
@@ -458,7 +486,7 @@ function lifeCheck(player){
   player.playerLifeSelector.style.width = player.life + "%";
   if(player.life <= 0){
     player.playerLifeSelector.style.width = 0 + "%";
-    document.querySelector("#finishBanner").classList.toggle("hide");
+    document.querySelector("#finishBanner").classList.toggle("hidden");
     player.defeated = true;
     if(player.defeated){
       player.playerKeys = {};
@@ -618,8 +646,8 @@ function stopSound(trackname){
 
 function changeLevel(item){
   var currentLevelName = levelsData[item];
-  document.getElementById("level-wrapper").classList = [];
-  document.getElementById("level-wrapper").className += currentLevelName;
+  levelBgBlock.className = "";
+  levelBgBlock.classList.add(currentLevelName);
   document.getElementById("level-name").innerHTML = currentLevelName;
 }
 
@@ -669,20 +697,9 @@ function handler(event) {
 
 // Choose player function
 
-var playersListParent = document.querySelector("#players-list-items");
-
-function getPlayersList(){
-  for (i in AllPlayersObj){
-    var player = AllPlayersObj[i];
-    playersListParent.innerHTML += "<span id=" + player.name + " class='players-list__item menu-item'><img class='players-list-player-image' src=" + player.previewImgIcon + " alt='' width='48' height='59'></span>";
-  }
-}
-
-getPlayersList();
 
 
-var playerListItems = document.querySelectorAll(".players-list__item");
-var playerListNumber = playerListItems.length;
+
 
 
 
@@ -696,22 +713,48 @@ var playerListNumber = playerListItems.length;
 
 function choosePlayersSection(){
 
+  if(playersListParent.classList.contains("players-are-choosen")){
+    playersListParent.classList.remove("players-are-choosen");
+  }
+
+  gameData.playerOneChoosen = false;
+  gameData.playerTwoChoosen = false;
+  gameData.playersAreChoosen = false;
+
+  playersListParent.innerHTML = "";
+
+for (i in AllPlayersObj){
+    var player = AllPlayersObj[i];
+    playersListParent.innerHTML += "<span id=" + player.name + " class='players-list__item menu-item'><img class='players-list-player-image' src=" + player.previewImgIcon + " alt='' width='48' height='59'></span>";
+  }
+  
+
   changeScreen("#game-container", "#players-list");
 
   var rand = levelsData[Math.floor(Math.random() * levelsData.length)];
 
-  document.getElementById("level-wrapper").classList.add(rand);
+  
+  if(!levelBgBlock.hasAttribute("class")){
+    levelBgBlock.className = "";
+    levelBgBlock.classList.add(rand);
+  }
+  
 
   playSound(chooseFighterLoopMusic, 'loop', .3);
 
-  // setTimeout(function(){
-  //   playSound(chooseYoutDestiny);
-  // }, 1000);
+  setTimeout(function(){
+    playSound(chooseYoutDestiny);
+  }, 1000);
   
   choosePlayersFunction(playerOneData, playerOneData.playerPreviewName, playerOneData.playerPreview);
 }
 
 function choosePlayersFunction(currentPlayerData, currentPlayerName, currentPlayerPreview){
+
+    var playerListItems = document.querySelectorAll(".players-list__item");
+    var playerListNumber = playerListItems.length;
+
+    
 
     // Find player items
     for (i = 0; i < playerListNumber; ++i) {
@@ -727,7 +770,7 @@ function choosePlayersFunction(currentPlayerData, currentPlayerName, currentPlay
       if(!gameData.playerOneChoosen){
          this.classList.add("player-one-choose");
       }
-      else{
+      if(gameData.playerOneChoosen && !gameData.playerTwoChoosen){
         this.classList.add("player-two-choose");
       }
 
@@ -739,11 +782,11 @@ function choosePlayersFunction(currentPlayerData, currentPlayerName, currentPlay
       currentPlayerData.playerPreview.innerHTML = "<img src=" + playerRes.previewImg + " />";
     }
 
-    function playerListLeave(classname){
+    function playerListLeave(){
       if(!gameData.playerOneChoosen){
          this.classList.remove("player-one-choose");
       }
-      if(!gameData.playerTwoChoosen){
+      if(gameData.playerOneChoosen && !gameData.playerTwoChoosen){
         this.classList.remove("player-two-choose");
       }
     }
@@ -765,7 +808,9 @@ function choosePlayersFunction(currentPlayerData, currentPlayerName, currentPlay
       if(currentPlayerData == playerTwoData){
           gameData.playerTwoChoosen = true;
           gameData.playersAreChoosen = true;
+
           playersListParent.classList.toggle("players-are-choosen");
+
           setTimeout(startFight, 2000);
       }
 
@@ -811,9 +856,11 @@ function StartScreen(){
 
 
 
+
 function startFight(){
   changeScreen("#game-container");
-  
+  timerHtml.innerHTML = gameData.roundTime;
+
   setPlayerSkin(playerOneData);
   setPlayerSkin(playerTwoData);
 
@@ -825,17 +872,26 @@ function startFight(){
   stopSound(chooseFighterLoopMusic);
 
   var currentLevelTrack = pickRandomProperty(AllLevelTracks);
-  playSound(AllLevelTracks[currentLevelTrack], 'loop');
 
-  getPlayerKeys(playerOneData.playerKeys, playerTwoData.playerKeys);
+  currentFightMusicTrack = AllLevelTracks[currentLevelTrack];
+
+  playSound(currentFightMusicTrack, 'loop', .3);
 
   // Start keyboard listener
-  
+  getPlayerKeys(playerOneData.playerKeys, playerTwoData.playerKeys);
+
+  playSound(roundOneSound);
+  roundMessages("Round " + gameData.roundNumber, 2000);
+
+
   setTimeout(function(){
-    alert("Fight!");
+    roundTimer();
+    playSound(fightSound);
+    roundMessages(startFightMessage, 1000);
     document.addEventListener("keydown", funcKeyDown);
     document.addEventListener("keyup", funcKeyUp);
-  }, 3000);
+  }, 2000);
+
 }
 
 
@@ -1057,5 +1113,89 @@ function changeScreen(screenId, exceptId){
 }
 
 
+var roundTimerInterval = null;
 
 
+
+function roundTimer(){
+  
+  gameData.currentRoundTime = gameData.roundTime;
+  gameData.fightStarted = true;
+  roundTimerInterval = setInterval(function(){
+    if(gameData.currentRoundTime !== 0){
+      gameData.currentRoundTime--;
+      timerHtml.innerHTML = gameData.currentRoundTime;
+    }
+    else{
+      gameData.fightStarted = false;
+      gameData.fightEnded = true;
+      clearInterval(roundTimerInterval);
+      playerOneData.playerSelector.classList.add("hidden");
+      playerTwoData.playerSelector.classList.add("hidden");
+      document.querySelector('#header-bar').classList.add("hidden");
+      stopSound(currentFightMusicTrack);
+      // Stop keyboard listener
+      document.removeEventListener("keydown", funcKeyDown);
+      document.removeEventListener("keyup", funcKeyUp);
+      
+      choosePlayersSection();
+    }
+  }, 1000);
+}
+
+
+
+
+
+
+
+
+
+function checkRoundResults(){
+  if(gameData.currentRoundTime == 0 || playerOneData.life == 0 || playerTwoData.life == 0){
+    if(playerOneData.life > playerTwoData.life){
+
+    }
+  }
+}
+
+
+
+
+
+
+function roundMessages(text, deleteInterval){
+  var roundMessagesBlock =  document.querySelector("#round-messages");
+  var newTitleElem = document.createElement("h2");
+  newTitleElem.innerHTML = text;
+  document.querySelector("#round-messages").appendChild(newTitleElem).classList.add("title", "fade-in");
+  setTimeout(function() {
+    roundMessagesBlock.innerHTML = "";
+  }, deleteInterval);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function toogleClass(elem, class){
+//   if(elem.classList.has(class)){
+//     elem.classList.remove(class);
+//   }
+//   else{
+//     elem.classList.add(class);
+//   }
+// }
