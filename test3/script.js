@@ -111,9 +111,12 @@ const defaultArena = {
   width: '100%',
   height: '100%',
   selector: document.querySelector("#arena"),
-  skySelector: document.querySelector(".arena-decor__item_sky"),
-  decorSelector: document.querySelector(".arena-decor__item_decor"),
-  groundSelector: document.querySelector(".arena-decor__item_ground")
+  decorSelectors: {
+    skySelector: document.querySelector(".arena-decor__item_sky"),
+    cloudsSelector: document.querySelector(".arena-decor__item_clouds"),
+    decorSelector: document.querySelector(".arena-decor__item_decor"),
+    groundSelector: document.querySelector(".arena-decor__item_ground")
+  }
 }
 
 
@@ -121,68 +124,83 @@ const defaultArena = {
 
 let temple = {
   name: 'temple',
-  sky: 'img/levels/temple/temple-bg.jpg',
-  decor: 'img/levels/temple/temple-decor.png',
-  ground: 'img/levels/temple/temple-floor.png'
+  sky: 'url(img/levels/temple/temple-bg.jpg)',
+  clouds: 'transparent',
+  decor: 'url(img/levels/temple/temple-decor.png)',
+  ground: 'url(img/levels/temple/temple-floor.png)'
 }
 
 let church = {
   name: 'church',
-  sky: 'img/levels/church/church-bg.png',
-  ground: 'img/levels/church/church-floor.png'
+  sky: 'url(img/levels/church/church-bg.png)',
+  clouds: 'transparent',
+  decor: 'transparent',
+  ground: 'url(img/levels/church/church-floor.png)'
 }
 
 let shaoKahnPlace = {
   name: 'shaoKahnArena',
-  sky: 'img/levels/arena/arena-bg.jpg'
+  sky: 'url(img/levels/arena/arena-bg.jpg)',
+  clouds: 'transparent',
+  decor: 'transparent',
+  ground: 'transparent'
 }
 
 let plant = {
   name: 'plant',
-  sky: 'img/levels/plant/plant-bg.jpg',
-  decor: 'img/levels/plant/floor-decor.png',
-  ground: 'img/levels/plant/plant-floor.jpg'
+  sky: 'url(img/levels/plant/plant-bg.jpg)',
+  clouds: 'transparent',
+  decor: 'url(img/levels/plant/floor-decor.png)',
+  ground: 'url(img/levels/plant/plant-floor.jpg)'
 }
 
 let spaceship = {
   name: 'spaceship',
-  sky: 'img/levels/spaceship/spaceship-bg.png',
-  clouds: 'img/levels/spaceship/space-sky.jpg',
-  decor: 'img/levels/plant/floor-decor.png',
-  ground: 'img/levels/plant/plant-floor.jpg'
+  sky: 'url(img/levels/spaceship/spaceship-bg.png)',
+  clouds: 'url(img/levels/spaceship/space-sky.jpg)',
+  decor: 'transparent',
+  ground: 'transparent'
 }
 
 let vulkano = {
   name: 'vulkano',
-  sky: 'img/levels/vulkano/vulkano-bg.png'
+  sky: 'url(img/levels/vulkano/vulkano-bg.png)',
+  clouds: 'transparent',
+  decor: 'transparent',
+  ground: 'transparent'
 }
 
 let bunker = {
   name: 'bunker',
-  sky: 'img/levels/bunker/bunker-bg.jpg'
+  sky: 'url(img/levels/bunker/bunker-bg.jpg)',
+  clouds: 'transparent',
+  decor: 'transparent',
+  ground: 'transparent'
 }
 
 let mars = {
   name: 'mars',
-  sky: 'img/levels/mars/mars-bg.png',
-  clouds: 'img/levels/desert/clouds3.png',
-  decor: 'img/levels/mars/2.jpg'
+  sky: 'url(img/levels/mars/mars-bg.png)',
+  clouds: 'url(img/levels/desert/clouds3.png)',
+  decor: 'url(img/levels/mars/2.jpg)',
+  ground: 'transparent'
 }
 
 let desert = {
   name: 'desert',
-  sky: 'img/levels/desert/8.jpg',
-  clouds: 'img/levels/desert/clouds3.png',
-  decor: 'img/levels/desert/p_2.png',
-  ground: 'img/levels/desert/p_1.gif'
+  sky: 'url(img/levels/desert/8.jpg)',
+  clouds: 'url(img/levels/desert/clouds3.png)',
+  decor: 'url(img/levels/desert/p_2.png)',
+  ground: 'url(img/levels/desert/p_1.gif)'
 }
 
 
 let portal = {
   name: 'portal',
-  sky: 'img/levels/portal/sky-portal.jpg',
-  clouds: 'img/levels/portal/portal-cloud.png',
-  ground: 'img/levels/portal/p_1.png'
+  sky: 'url(img/levels/portal/sky-portal.jpg)',
+  clouds: 'url(img/levels/portal/portal-cloud.png)',
+  decor: 'url(img/levels/desert/p_2.png)',
+  ground: 'url(img/levels/portal/p_1.png)'
 }
 
 
@@ -197,27 +215,29 @@ class arena{
   setArena(index){
     this.arenaData = Object.assign({}, defaultArena, allArenas[index]);
     this.arenaData.selector.classList = allArenas[index].name;
-    this.arenaData.skySelector.setAttribute("style", "background: url(" + this.arenaData.sky + ");");
-    if(this.arenaData.decor){
-      this.arenaData.decorSelector.setAttribute("style", "background: url(" + this.arenaData.decor + ");");
-    }
-    else{
-      this.arenaData.decorSelector.removeAttribute("style");
-    }
-    if(this.arenaData.ground){
-      this.arenaData.groundSelector.setAttribute("style", "background: url(" + this.arenaData.ground + ");");
-    }
-    else{
-      this.arenaData.decorSelector.removeAttribute("style");
-    }
-    //this.setArenaDecorStyles(allArenas[index]);
+    // this.arenaData.skySelector.setAttribute("style", "background: url(" + this.arenaData.sky + ");");
+    // if(this.arenaData.decor){
+    //   this.arenaData.decorSelector.setAttribute("style", "background: url(" + this.arenaData.decor + ");");
+    // }
+    // else{
+    //   this.arenaData.decorSelector.removeAttribute("style");
+    // }
+    // if(this.arenaData.ground){
+    //   this.arenaData.groundSelector.setAttribute("style", "background: url(" + this.arenaData.ground + ");");
+    // }
+    // else{
+    //   this.arenaData.decorSelector.removeAttribute("style");
+    // }
+    this.setArenaDecorStyles(allArenas[index]);
   }
-  // setArenaDecorStyles(object){
-  //   for (var property in object) {
-  //     console.log(property)
-  //     this.arenaData.skySelector.setAttribute("style", "background: url(" + object[property] + ");");
-  //   }
-  // }
+  setArenaDecorStyles(object){
+    let objKeyIndex = 1;
+    let objKeysArray = Object.keys(object);
+    for (let property in defaultArena.decorSelectors) {
+      defaultArena.decorSelectors[property].setAttribute("style", "background:" + object[objKeysArray[objKeyIndex]] + ";");
+      objKeyIndex++;
+    }
+  }
   nextArena(){
     this.arenaCount++;
     if (this.arenaCount >= allArenasSize){
