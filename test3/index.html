@@ -7,28 +7,21 @@
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<link href="style.css" rel="stylesheet">
-	<style type="text/css">
-		html, body{
-			height: 100%;
-		}
-		#game{
-			display: flex;
-			flex: 1 1 100%;
-		}
-		.player{
-			width: 10px;
-			height: 10px;
-			position: absolute;
-			background-color: black;
-		}
-	</style>
 </head>
 
 <body>
 
-<div class="wrapper">
-
-	<div id="game">
+<div class="page-wrapper">
+	
+	<button onclick="currentArena.prevArena()">Prev arena</button>
+	<button onclick="currentArena.nextArena()">Next arena</button>
+	<button onclick="currentArena.randomArena()">Random arena</button>
+	<div id="arena">
+		<div class="arena-decor">
+			<div class="arena-decor__item arena-decor__item_sky"></div>
+			<div class="arena-decor__item arena-decor__item_decor"></div>
+			<div class="arena-decor__item arena-decor__item_ground"></div>
+		</div>
 		<div id="player-one" class="player" style="left: 100px; bottom: 100px;"></div>
 		<div id="player-two" class="player" style="left: 600px; bottom: 100px;"></div>
 	</div>

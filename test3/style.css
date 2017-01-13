@@ -54,38 +54,46 @@ body {
 	font: 12px/18px Arial, sans-serif;
 	height: 100%;
 }
-.wrapper {
+
+html, body{
+	height: 100%;
+}
+
+.page-wrapper {
 	width: 100%;
 	min-width: 1000px;
 	min-height: 100%;
-	height: auto !important;
+	height: 100%;
+}
+
+#arena{
+	height: 100%;
+}
+
+.arena-decor{
+	height: 100%;
+	position: relative;
+}
+.arena-decor__item{
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
 	height: 100%;
 }
 
 
-/* Header
------------------------------------------------------------------------------*/
-.header {
-	height: 150px;
-	background: #FFE680;
-}
 
-
-/* Middle
------------------------------------------------------------------------------*/
-.content {
-	padding: 0 0 100px;
+.player{
+	width: 10px;
+	height: 10px;
+	position: absolute;
+	background-color: black;
 }
 
 
 
 
-/* Footer
------------------------------------------------------------------------------*/
-.footer {
-	margin: -100px auto 0;
-	min-width: 1000px;
-	height: 100px;
-	background: #BFF08E;
-	position: relative;
-}
+
+
