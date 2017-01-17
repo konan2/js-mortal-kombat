@@ -24,7 +24,7 @@ let playerTwoKeycodes = {
   101: "makeBlock"
 }
 
-let cyrax = {
+const cyrax = {
   name: "cyrax",
   soundName: new Audio('audio/names/cyrax.mp3'),
   soundRun: new Audio('audio/syborg_run.mp3'),
@@ -40,7 +40,7 @@ let cyrax = {
   blockedDamage: 1
 }
 
-let kabal = {
+const kabal = {
   name: "kabal",
   soundName: new Audio('audio/names/kabal.mp3'),
   soundRun: new Audio('audio/syborg_run.mp3'),
@@ -75,10 +75,10 @@ const defaultControls = {
     moveForward: false,
     moveDown: false,
     moveBackward: false,
-    handkick: false,
-    footkick: false,
-    moverun: false,
-    block: false
+    kickHand: false,
+    kickFoot: false,
+    moveRunning: false,
+    makeBlock: false
   };
 
 const defautlPlayerData = {
@@ -88,188 +88,15 @@ const defautlPlayerData = {
   handKickEnd: true,
   attack: false,
   jumpEnd: true,
-  jumpHeight: 180,
+  jumpHeight: 2000,
+  handKicktime: 500,
+  footKicktime: 1000,
   isDamaged: false,
   defeated: false,
   canRun: true,
   keycodes: undefined,
   controls: {}
 };
-
-
-
-
-
-
-
-
-
-
-// Arenas
-
-const defaultArena = {
-  width: '100%',
-  height: '100%',
-  selector: document.querySelector("#arena"),
-  decorSelectors: {
-    skySelector: document.querySelector(".arena-decor__item_sky"),
-    cloudsSelector: document.querySelector(".arena-decor__item_clouds"),
-    decorSelector: document.querySelector(".arena-decor__item_decor"),
-    groundSelector: document.querySelector(".arena-decor__item_ground")
-  }
-}
-
-
-
-
-let temple = {
-  name: 'temple',
-  sky: 'url(img/levels/temple/temple-bg.jpg)',
-  clouds: 'transparent',
-  decor: 'url(img/levels/temple/temple-decor.png)',
-  ground: 'url(img/levels/temple/temple-floor.png)'
-}
-
-let church = {
-  name: 'church',
-  sky: 'url(img/levels/church/church-bg.png)',
-  clouds: 'transparent',
-  decor: 'transparent',
-  ground: 'url(img/levels/church/church-floor.png)'
-}
-
-let shaoKahnPlace = {
-  name: 'shaoKahnArena',
-  sky: 'url(img/levels/arena/arena-bg.jpg)',
-  clouds: 'transparent',
-  decor: 'transparent',
-  ground: 'transparent'
-}
-
-let plant = {
-  name: 'plant',
-  sky: 'url(img/levels/plant/plant-bg.jpg)',
-  clouds: 'transparent',
-  decor: 'url(img/levels/plant/floor-decor.png)',
-  ground: 'url(img/levels/plant/plant-floor.jpg)'
-}
-
-let spaceship = {
-  name: 'spaceship',
-  sky: 'url(img/levels/spaceship/spaceship-bg.png)',
-  clouds: 'url(img/levels/spaceship/space-sky.jpg)',
-  decor: 'transparent',
-  ground: 'transparent'
-}
-
-let vulkano = {
-  name: 'vulkano',
-  sky: 'url(img/levels/vulkano/vulkano-bg.png)',
-  clouds: 'transparent',
-  decor: 'transparent',
-  ground: 'transparent'
-}
-
-let bunker = {
-  name: 'bunker',
-  sky: 'url(img/levels/bunker/bunker-bg.jpg)',
-  clouds: 'transparent',
-  decor: 'transparent',
-  ground: 'transparent'
-}
-
-let mars = {
-  name: 'mars',
-  sky: 'url(img/levels/mars/mars-bg.png)',
-  clouds: 'url(img/levels/desert/clouds3.png)',
-  decor: 'url(img/levels/mars/2.jpg)',
-  ground: 'transparent'
-}
-
-let desert = {
-  name: 'desert',
-  sky: 'url(img/levels/desert/8.jpg)',
-  clouds: 'url(img/levels/desert/clouds3.png)',
-  decor: 'url(img/levels/desert/p_2.png)',
-  ground: 'url(img/levels/desert/p_1.gif)'
-}
-
-
-let portal = {
-  name: 'portal',
-  sky: 'url(img/levels/portal/sky-portal.jpg)',
-  clouds: 'url(img/levels/portal/portal-cloud.png)',
-  decor: 'url(img/levels/desert/p_2.png)',
-  ground: 'url(img/levels/portal/p_1.png)'
-}
-
-
-let allArenas = [temple, church, shaoKahnPlace, plant, spaceship, vulkano, bunker, mars, desert, portal];
-let allArenasSize = allArenas.length;
-
-class arena{
-  constructor(){
-    this.arenaCount = 0;
-    this.setArena(0);
-  }
-  setArena(index){
-    this.arenaData = Object.assign({}, defaultArena, allArenas[index]);
-    this.arenaData.selector.classList = allArenas[index].name;
-    // this.arenaData.skySelector.setAttribute("style", "background: url(" + this.arenaData.sky + ");");
-    // if(this.arenaData.decor){
-    //   this.arenaData.decorSelector.setAttribute("style", "background: url(" + this.arenaData.decor + ");");
-    // }
-    // else{
-    //   this.arenaData.decorSelector.removeAttribute("style");
-    // }
-    // if(this.arenaData.ground){
-    //   this.arenaData.groundSelector.setAttribute("style", "background: url(" + this.arenaData.ground + ");");
-    // }
-    // else{
-    //   this.arenaData.decorSelector.removeAttribute("style");
-    // }
-    this.setArenaDecorStyles(allArenas[index]);
-  }
-  setArenaDecorStyles(object){
-    let objKeyIndex = 1;
-    let objKeysArray = Object.keys(object);
-    for (let property in defaultArena.decorSelectors) {
-      defaultArena.decorSelectors[property].setAttribute("style", "background:" + object[objKeysArray[objKeyIndex]] + ";");
-      objKeyIndex++;
-    }
-  }
-  nextArena(){
-    this.arenaCount++;
-    if (this.arenaCount >= allArenasSize){
-      this.arenaCount = 0;
-    }
-    this.setArena(this.arenaCount);
-  }
-  prevArena(){
-    this.arenaCount--;
-    if (this.arenaCount < 0){
-      this.arenaCount = 9;
-    }
-    this.setArena(this.arenaCount);
-  }
-  randomArena(){
-    this.setArena(RandomValue(allArenasSize));
-  }
-}
-
-let currentArena = new arena();
-
-// Utility functions
-
-function RandomValue(max){
-  return Math.floor(Math.random() * max);
-}
-
-
-
-
-
-
 
 
 class player {
@@ -283,6 +110,16 @@ class player {
       });
   }
 
+  isMovementAction(event) { // Check is this key for movements
+    let movementCodes = [];
+    for (let code of Object.keys(this.playerData.keycodes)) {
+      if (["moveForward", "moveBackward", "moveDown"].includes(this.playerData.keycodes[code])) {
+        movementCodes.push(code);
+      }
+    }
+    return movementCodes.includes(event.keyCode.toString()); // returns true or false
+  }
+
   doAction(eventCode, eventType){
     var AllkeyCodes = Object.keys(this.playerData.keycodes);
     if(AllkeyCodes.includes(eventCode.toString())){
@@ -290,10 +127,36 @@ class player {
       if(eventType === "keydown") {
         if(!this.playerData.controls[actionName]){
           this.playerData.controls[actionName] = true;
+          this.playerData.playerSelector.classList.add([actionName]);
+          if(actionName == 'kickHand'){
+            setTimeout(
+              () => { // let _this = this;
+                this.playerData.controls[actionName] = false;
+                this.playerData.playerSelector.classList.remove([actionName]);
+              }, this.playerData.handKicktime
+            );
+          }
+          if(actionName == 'kickFoot'){
+            setTimeout(
+              () => { // let _this = this;
+                this.playerData.controls[actionName] = false;
+                this.playerData.playerSelector.classList.remove([actionName]);
+              }, this.playerData.footKicktime
+            );
+          }
+          if(actionName == 'moveTop'){
+            setTimeout(
+              () => { // let _this = this;
+                this.playerData.controls[actionName] = false;
+                this.playerData.playerSelector.classList.remove([actionName]);
+              }, this.playerData.jumpHeight
+            );
+          }
         }
       }
-      if(eventType === "keyup"){
+      if(eventType === "keyup" && this.isMovementAction(event)){
         this.playerData.controls[actionName] = false;
+        this.playerData.playerSelector.classList.remove([actionName]);
       }
     }
   }
@@ -307,9 +170,9 @@ class player {
       speed = -speed;
       direction = "bottom";
     }
-
     this.playerData.playerSelector.style[direction] = parseInt(this.playerData.playerSelector.style[direction]) - speed + 'px';
   }
+
   moveForward(){
     this.movePlayer("right", this.playerData.speed);
   }
@@ -317,22 +180,22 @@ class player {
     this.movePlayer("left", this.playerData.speed);
   }
   moveTop(){
-    this.movePlayer("top", this.playerData.speed);
+    //this.movePlayer("top", this.playerData.speed);
   }
   moveDown(){
-    this.movePlayer("bottom", this.playerData.speed);
+    //this.movePlayer("bottom", this.playerData.speed);
   }
   kickHand(){
-    console.log("Hand kick");
+    
   }
   kickFoot(){
-    console.log("Foot kick");
+    
   }
   moveRunning(){
-    console.log("Move running");
+    
   }
   makeBlock(){
-    console.log("Make block");
+    
   }
 }
 
@@ -380,3 +243,182 @@ function game(){
 
 
 mainInterval = setInterval(game,10);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Arenas
+
+const defaultArena = {
+  width: '100%',
+  height: '100%',
+  selector: document.querySelector("#arena"),
+  decorSelectors: {
+    skySelector: document.querySelector(".arena-decor__item_sky"),
+    cloudsSelector: document.querySelector(".arena-decor__item_clouds"),
+    decorSelector: document.querySelector(".arena-decor__item_decor"),
+    groundSelector: document.querySelector(".arena-decor__item_ground")
+  }
+}
+
+const temple = {
+  name: 'temple',
+  sky: 'url(img/levels/temple/temple-bg.jpg)',
+  clouds: 'transparent',
+  decor: 'url(img/levels/temple/temple-decor.png)',
+  ground: 'url(img/levels/temple/temple-floor.png)'
+}
+
+const church = {
+  name: 'church',
+  sky: 'url(img/levels/church/church-bg.png)',
+  clouds: 'transparent',
+  decor: 'transparent',
+  ground: 'url(img/levels/church/church-floor.png)'
+}
+
+const shaoKahnPlace = {
+  name: 'shaoKahnArena',
+  sky: 'url(img/levels/arena/arena-bg.jpg)',
+  clouds: 'transparent',
+  decor: 'transparent',
+  ground: 'transparent'
+}
+
+const plant = {
+  name: 'plant',
+  sky: 'url(img/levels/plant/plant-bg.jpg)',
+  clouds: 'transparent',
+  decor: 'url(img/levels/plant/floor-decor.png)',
+  ground: 'url(img/levels/plant/plant-floor.jpg)'
+}
+
+const spaceship = {
+  name: 'spaceship',
+  sky: 'url(img/levels/spaceship/spaceship-bg.png)',
+  clouds: 'url(img/levels/spaceship/space-sky.jpg)',
+  decor: 'transparent',
+  ground: 'transparent'
+}
+
+const vulkano = {
+  name: 'vulkano',
+  sky: 'url(img/levels/vulkano/vulkano-bg.png)',
+  clouds: 'transparent',
+  decor: 'transparent',
+  ground: 'transparent'
+}
+
+const bunker = {
+  name: 'bunker',
+  sky: 'url(img/levels/bunker/bunker-bg.jpg)',
+  clouds: 'transparent',
+  decor: 'transparent',
+  ground: 'transparent'
+}
+
+const mars = {
+  name: 'mars',
+  sky: 'url(img/levels/mars/mars-bg.png)',
+  clouds: 'url(img/levels/desert/clouds3.png)',
+  decor: 'url(img/levels/mars/2.jpg)',
+  ground: 'transparent'
+}
+
+const desert = {
+  name: 'desert',
+  sky: 'url(img/levels/desert/8.jpg)',
+  clouds: 'url(img/levels/desert/clouds3.png)',
+  decor: 'url(img/levels/desert/p_2.png)',
+  ground: 'url(img/levels/desert/p_1.gif)'
+}
+
+
+const portal = {
+  name: 'portal',
+  sky: 'url(img/levels/portal/sky-portal.jpg)',
+  clouds: 'url(img/levels/portal/portal-cloud.png)',
+  decor: 'url(img/levels/desert/p_2.png)',
+  ground: 'url(img/levels/portal/p_1.png)'
+}
+
+
+let allArenas = [temple, church, shaoKahnPlace, plant, spaceship, vulkano, bunker, mars, desert, portal];
+let allArenasSize = allArenas.length;
+
+class arena{
+  constructor(){
+    this.arenaCount = 0;
+    this.setArena(0);
+  }
+  setArena(index){
+    this.arenaData = Object.assign({}, defaultArena, allArenas[index]);
+    this.arenaData.selector.classList = allArenas[index].name;
+    this.setArenaDecorStyles(allArenas[index]);
+  }
+  setArenaDecorStyles(object){
+    let objKeyIndex = 1;
+    let objKeysArray = Object.keys(object);
+    for (let property in defaultArena.decorSelectors) {
+      defaultArena.decorSelectors[property].setAttribute("style", "background:" + object[objKeysArray[objKeyIndex]] + ";");
+      objKeyIndex++;
+    }
+  }
+  nextArena(){
+    this.arenaCount++;
+    if (this.arenaCount >= allArenasSize){
+      this.arenaCount = 0;
+    }
+    this.setArena(this.arenaCount);
+  }
+  prevArena(){
+    this.arenaCount--;
+    if (this.arenaCount < 0){
+      this.arenaCount = 9;
+    }
+    this.setArena(this.arenaCount);
+  }
+  randomArena(){
+    this.setArena(RandomValue(allArenasSize));
+  }
+}
+
+let currentArena = new arena();
+
+// Utility functions
+
+function RandomValue(max){
+  return Math.floor(Math.random() * max);
+}
+
