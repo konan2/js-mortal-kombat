@@ -126,39 +126,44 @@ class player {
       let actionName = this.playerData.keycodes[eventCode];
       if(eventType === "keydown") {
         if(!this.playerData.controls[actionName]){
-          this.playerData.controls[actionName] = true;
-          this.playerData.playerSelector.classList.add([actionName]);
+          this.setDataClass(actionName);
           if(actionName == 'kickHand'){
             setTimeout(
               () => { // let _this = this;
-                this.playerData.controls[actionName] = false;
-                this.playerData.playerSelector.classList.remove([actionName]);
+                 this.removeDataClass(actionName);
               }, this.playerData.handKicktime
             );
           }
           if(actionName == 'kickFoot'){
             setTimeout(
               () => { // let _this = this;
-                this.playerData.controls[actionName] = false;
-                this.playerData.playerSelector.classList.remove([actionName]);
+                 this.removeDataClass(actionName);
               }, this.playerData.footKicktime
             );
           }
           if(actionName == 'moveTop'){
             setTimeout(
               () => { // let _this = this;
-                this.playerData.controls[actionName] = false;
-                this.playerData.playerSelector.classList.remove([actionName]);
+                 this.removeDataClass(actionName);
               }, this.playerData.jumpHeight
             );
           }
         }
       }
       if(eventType === "keyup" && this.isMovementAction(event)){
-        this.playerData.controls[actionName] = false;
-        this.playerData.playerSelector.classList.remove([actionName]);
+        this.removeDataClass(actionName);
       }
     }
+  }
+
+  setDataClass(action){
+    this.playerData.controls[action] = true;
+    this.playerData.playerSelector.classList.add([action]);
+  }
+
+  removeDataClass(action){
+    this.playerData.controls[action] = false;
+    this.playerData.playerSelector.classList.remove([action]);
   }
 
   movePlayer(direction, speed){
