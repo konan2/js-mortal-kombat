@@ -2,6 +2,9 @@
 
 let mainInterval = null;
 
+const playerOneSelector = document.querySelector("#player-one");
+const playerTwoSelector = document.querySelector("#player-two");
+
 let playerOneKeycodes = {
   87: "moveTop",
   68: "moveForward",
@@ -24,249 +27,6 @@ let playerTwoKeycodes = {
   101: "makeBlock"
 }
 
-const cyrax = {
-  name: "cyrax",
-  soundName: new Audio('audio/names/cyrax.mp3'),
-  soundRun: new Audio('audio/syborg_run.mp3'),
-  previewImgIcon: "img/players-list/cyrax.gif",
-  previewImg: "img/players-list/versus/cyrax.png",
-  playerPosX: 0,
-  playerPosY: 0,
-  playerWidth: 150,
-  playerHeight: 262,
-  speed: 3,
-  handKickDamage: 2,
-  footKickDamage: 4,
-  blockedDamage: 1
-}
-
-const kabal = {
-  name: "kabal",
-  soundName: new Audio('audio/names/kabal.mp3'),
-  soundRun: new Audio('audio/syborg_run.mp3'),
-  previewImgIcon: "img/players-list/kabal.gif",
-  previewImg: "img/players-list/versus/kabal.png",
-  playerPosX: 0,
-  playerPosY: 0,
-  playerWidth: 150,
-  playerHeight: 262,
-  speed: 2,
-  handKickDamage: 3,
-  footKickDamage: 5,
-  blockedDamage: 2
-}
-
-const gameData = {
-  roundDuration: 20,
-  roundTime: undefined,
-  roundsMaxCount: 3,
-  currentRound: 0,
-  musicEnabled: true,
-  soundsEnabled: true,
-  playerOneChoosen: false,
-  playerTwoChoosen: false,
-  playersAreChoosen: false,
-  roundStarted: false,
-  roundEnded: false
-}
-
-const defaultControls = {
-    moveTop: false,
-    moveForward: false,
-    moveDown: false,
-    moveBackward: false,
-    kickHand: false,
-    kickFoot: false,
-    moveRunning: false,
-    makeBlock: false
-  };
-
-const defautlPlayerData = {
-  life: 100,
-  keyPressedJump: false,
-  footKickEnd: true,
-  handKickEnd: true,
-  attack: false,
-  jumpEnd: true,
-  jumpHeight: 2000,
-  handKicktime: 500,
-  footKicktime: 1000,
-  isDamaged: false,
-  defeated: false,
-  canRun: true,
-  keycodes: undefined,
-  controls: {}
-};
-
-
-class player {
-  constructor(params) {
-    this.name = params.name;
-    this.playerData = Object.assign({}, 
-      defautlPlayerData, 
-      params, 
-      {
-        controls: Object.assign({}, defaultControls)
-      });
-  }
-
-  isMovementAction(event) { // Check is this key for movements
-    let movementCodes = [];
-    for (let code of Object.keys(this.playerData.keycodes)) {
-      if (["moveForward", "moveBackward", "moveDown"].includes(this.playerData.keycodes[code])) {
-        movementCodes.push(code);
-      }
-    }
-    return movementCodes.includes(event.keyCode.toString()); // returns true or false
-  }
-
-  doAction(eventCode, eventType){
-    var AllkeyCodes = Object.keys(this.playerData.keycodes);
-    if(AllkeyCodes.includes(eventCode.toString())){
-      let actionName = this.playerData.keycodes[eventCode];
-      if(eventType === "keydown") {
-        if(!this.playerData.controls[actionName]){
-          this.setDataClass(actionName);
-          if(actionName == 'kickHand'){
-            setTimeout(
-              () => { // let _this = this;
-                 this.removeDataClass(actionName);
-              }, this.playerData.handKicktime
-            );
-          }
-          if(actionName == 'kickFoot'){
-            setTimeout(
-              () => { // let _this = this;
-                 this.removeDataClass(actionName);
-              }, this.playerData.footKicktime
-            );
-          }
-          if(actionName == 'moveTop'){
-            setTimeout(
-              () => { // let _this = this;
-                 this.removeDataClass(actionName);
-              }, this.playerData.jumpHeight
-            );
-          }
-        }
-      }
-      if(eventType === "keyup" && this.isMovementAction(event)){
-        this.removeDataClass(actionName);
-      }
-    }
-  }
-
-  setDataClass(action){
-    this.playerData.controls[action] = true;
-    this.playerData.playerSelector.classList.add([action]);
-  }
-
-  removeDataClass(action){
-    this.playerData.controls[action] = false;
-    this.playerData.playerSelector.classList.remove([action]);
-  }
-
-  movePlayer(direction, speed){
-    if(direction === "right"){
-      speed = -speed;
-      direction = "left";
-    }
-    if(direction === "top"){
-      speed = -speed;
-      direction = "bottom";
-    }
-    this.playerData.playerSelector.style[direction] = parseInt(this.playerData.playerSelector.style[direction]) - speed + 'px';
-  }
-
-  moveForward(){
-    this.movePlayer("right", this.playerData.speed);
-  }
-  moveBackward(){
-    this.movePlayer("left", this.playerData.speed);
-  }
-  moveTop(){
-    //this.movePlayer("top", this.playerData.speed);
-  }
-  moveDown(){
-    //this.movePlayer("bottom", this.playerData.speed);
-  }
-  kickHand(){
-    
-  }
-  kickFoot(){
-    
-  }
-  moveRunning(){
-    
-  }
-  makeBlock(){
-    
-  }
-}
-
-// Create player 1
-let playerOne = new player(cyrax);
-playerOne.playerData.keycodes = playerOneKeycodes;
-playerOne.playerData.playerSelector = document.querySelector("#player-one");
-
-
-// Create player 2
-let playerTwo = new player(kabal);
-playerTwo.playerData.keycodes = playerTwoKeycodes;
-playerTwo.playerData.playerSelector = document.querySelector("#player-two");
-
-
-
-
-function funcKeyDown(event){
-  playerOne.doAction(event.keyCode, event.type);
-  playerTwo.doAction(event.keyCode, event.type);
-}
-
-function funcKeyUp(event){
-  playerOne.doAction(event.keyCode, event.type);
-  playerTwo.doAction(event.keyCode, event.type);
-}
-
-
-document.addEventListener("keydown", funcKeyDown);
-document.addEventListener("keyup", funcKeyUp);
-
-function game(){
-  for(let actionName of Object.keys(playerOne.playerData.controls)){
-    if(playerOne.playerData.controls[actionName]){
-      playerOne[actionName]();
-    }
-  }
-
-  for(let actionName of Object.keys(playerTwo.playerData.controls)){
-    if(playerTwo.playerData.controls[actionName]){
-      playerTwo[actionName]();
-    }
-  }
-}
-
-
-mainInterval = setInterval(game,10);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -286,8 +46,8 @@ mainInterval = setInterval(game,10);
 // Arenas
 
 const defaultArena = {
-  width: '100%',
-  height: '100%',
+  arenaWidth: undefined,
+  arenaHeight: undefined,
   selector: document.querySelector("#arena"),
   decorSelectors: {
     skySelector: document.querySelector(".arena-decor__item_sky"),
@@ -386,6 +146,8 @@ class arena{
   constructor(){
     this.arenaCount = 0;
     this.setArena(0);
+    this.arenaData.arenaWidth = this.arenaData.selector.offsetWidth;
+    this.arenaData.arenaHeight = this.arenaData.selector.offsetHeight;
   }
   setArena(index){
     this.arenaData = Object.assign({}, defaultArena, allArenas[index]);
@@ -426,4 +188,420 @@ let currentArena = new arena();
 function RandomValue(max){
   return Math.floor(Math.random() * max);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const cyrax = {
+  name: "cyrax",
+  soundName: new Audio('audio/names/cyrax.mp3'),
+  soundRun: new Audio('audio/syborg_run.mp3'),
+  previewImgIcon: "img/players-list/cyrax.gif",
+  previewImg: "img/players-list/versus/cyrax.png",
+  playerPosX: 0,
+  playerPosY: 0,
+  playerWidth: 100,
+  playerHeight: 150,
+  speed: 3,
+  handKickDamage: 2,
+  footKickDamage: 4,
+  blockedDamage: 1
+}
+
+const kabal = {
+  name: "kabal",
+  soundName: new Audio('audio/names/kabal.mp3'),
+  soundRun: new Audio('audio/syborg_run.mp3'),
+  previewImgIcon: "img/players-list/kabal.gif",
+  previewImg: "img/players-list/versus/kabal.png",
+  playerPosX: 0,
+  playerPosY: 0,
+  playerWidth: 100,
+  playerHeight: 150,
+  speed: 2,
+  handKickDamage: 3,
+  footKickDamage: 5,
+  blockedDamage: 2
+}
+
+const gameData = {
+  roundDuration: 20,
+  roundTime: undefined,
+  roundsMaxCount: 3,
+  currentRound: 0,
+  musicEnabled: true,
+  soundsEnabled: true,
+  playerOneChoosen: false,
+  playerTwoChoosen: false,
+  playersAreChoosen: false,
+  roundStarted: false,
+  roundEnded: false,
+  playerPosDiff: undefined
+}
+
+
+
+const defaultControls = {
+  moveTop: false,
+  moveForward: false,
+  moveDown: false,
+  moveBackward: false,
+  kickHand: false,
+  kickFoot: false,
+  moveRunning: false,
+  makeBlock: false
+};
+
+const defautlPlayerData = {
+  life: 100,
+  keyPressedJump: false,
+  footKickEnd: true,
+  handKickEnd: true,
+  attack: false,
+  jumpEnd: true,
+  jumpHeight: 2000,
+  handKicktime: 500,
+  footKicktime: 1000,
+  isDamaged: false,
+  defeated: false,
+  canRun: true,
+  keycodes: undefined,
+  controls: {}
+};
+
+
+class player {
+  constructor(params) {
+    this.name = params.name;
+    this.playerData = Object.assign({}, 
+      defautlPlayerData, 
+      params, 
+      {
+        controls: Object.assign({}, defaultControls)
+      });
+  }
+  
+  isMovementAction(event) { // Check is this key for movements
+    let movementCodes = [];
+    for (let code of Object.keys(this.playerData.keycodes)) {
+      if (["moveForward", "moveBackward", "moveDown"].includes(this.playerData.keycodes[code])) {
+        movementCodes.push(code);
+      }
+    }
+    return movementCodes.includes(event.keyCode.toString()); // returns true or false
+  }
+
+  doAction(eventCode, eventType){
+    var AllkeyCodes = Object.keys(this.playerData.keycodes);
+    if(AllkeyCodes.includes(eventCode.toString())){
+      let actionName = this.playerData.keycodes[eventCode];
+      if(eventType === "keydown") {
+        if(!this.playerData.controls[actionName]){
+          this.setDataClass(actionName);
+          if(actionName == 'kickHand'){
+            setTimeout(
+              () => { // let _this = this;
+                 this.removeDataClass(actionName);
+              }, this.playerData.handKicktime
+            );
+          }
+          if(actionName == 'kickFoot'){
+            setTimeout(
+              () => { // let _this = this;
+                 this.removeDataClass(actionName);
+              }, this.playerData.footKicktime
+            );
+          }
+          if(actionName == 'moveTop'){
+            setTimeout(
+              () => { // let _this = this;
+                 this.removeDataClass(actionName);
+              }, this.playerData.jumpHeight
+            );
+          }
+        }
+      }
+      if(eventType === "keyup" && this.isMovementAction(event)){
+        this.removeDataClass(actionName);
+      }
+    }
+  }
+
+  setDataClass(action){
+    this.playerData.controls[action] = true;
+    this.playerData.playerSelector.classList.add([action]);
+  }
+
+  removeDataClass(action){
+    this.playerData.controls[action] = false;
+    this.playerData.playerSelector.classList.remove([action]);
+  }
+
+  movePlayer(direction, speed){
+    if(direction === "right"){
+      speed = -speed;
+      direction = "left";
+    }
+    if(this.playerData.playerPosX >= 0 && this.playerData.playerPosX <= currentArena.arenaData.arenaWidth){
+      let newPosition = parseInt(this.playerData.playerSelector.style[direction]) - speed
+      if (newPosition < 0) {
+        newPosition = 0;
+      }
+      if (newPosition > currentArena.arenaData.arenaWidth - this.playerData.playerWidth) {
+        newPosition = currentArena.arenaData.arenaWidth - this.playerData.playerWidth;
+      }
+      this.playerData.playerSelector.style[direction] = newPosition + 'px';
+      this.playerData.playerPosX = newPosition;
+    }
+  }
+
+  moveForward(){
+    this.movePlayer("right", this.playerData.speed);
+  }
+  moveBackward(){
+    this.movePlayer("left", this.playerData.speed);
+  }
+  moveTop(){
+    
+  }
+  moveDown(){
+
+  }
+  kickHand(){
+    
+  }
+  kickFoot(){
+    
+  }
+  moveRunning(){
+    
+  }
+  makeBlock(){
+    
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Create player 1
+let playerOne = new player(cyrax);
+playerOne.playerData.keycodes = playerOneKeycodes;
+playerOne.playerData.selector = playerOneSelector;
+playerOne.playerData.playerSelector = playerOneSelector;
+
+playerOne.playerData.playerPosX = parseInt((currentArena.arenaData.arenaWidth / 2) - playerOne.playerData.playerWidth * 2);
+playerOne.playerData.playerPosY = 20;
+playerOneSelector.style.left = playerOne.playerData.playerPosX +'px';
+playerOneSelector.style.bottom = playerOne.playerData.playerPosY + 'px';
+
+playerOneSelector.style.width = playerOne.playerData.playerWidth + 'px';
+playerOneSelector.style.height = playerOne.playerData.playerHeight + 'px';
+
+
+
+// Create player 2
+let playerTwo = new player(kabal);
+playerTwo.playerData.keycodes = playerTwoKeycodes;
+playerTwo.playerData.selector = playerTwoSelector;
+playerTwo.playerData.playerSelector = playerTwoSelector;
+
+
+playerTwo.playerData.playerPosX = parseInt((currentArena.arenaData.arenaWidth / 2) + playerTwo.playerData.playerWidth * 2);
+playerTwo.playerData.playerPosY = 20;
+playerTwoSelector.style.left = playerTwo.playerData.playerPosX +'px';
+playerTwoSelector.style.bottom = playerTwo.playerData.playerPosY + 'px';
+
+playerTwoSelector.style.width = playerTwo.playerData.playerWidth + 'px';
+playerTwoSelector.style.height = playerTwo.playerData.playerHeight + 'px';
+
+
+
+
+
+function funcKeyDown(event){
+  playerOne.doAction(event.keyCode, event.type);
+  playerTwo.doAction(event.keyCode, event.type);
+}
+
+function funcKeyUp(event){
+  playerOne.doAction(event.keyCode, event.type);
+  playerTwo.doAction(event.keyCode, event.type);
+}
+
+
+document.addEventListener("keydown", funcKeyDown);
+document.addEventListener("keyup", funcKeyUp);
+
+function game(){
+  for(let actionName of Object.keys(playerOne.playerData.controls)){
+    if(playerOne.playerData.controls[actionName]){
+      playerOne[actionName]();
+    }
+  }
+
+  for(let actionName of Object.keys(playerTwo.playerData.controls)){
+    if(playerTwo.playerData.controls[actionName]){
+      playerTwo[actionName]();
+    }
+  }
+}
+
+
+mainInterval = setInterval(game,10);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function funcKeyDown(event){
+  playerOne.doAction(event.keyCode, event.type);
+  playerTwo.doAction(event.keyCode, event.type);
+}
+
+function funcKeyUp(event){
+  playerOne.doAction(event.keyCode, event.type);
+  playerTwo.doAction(event.keyCode, event.type);
+}
+
+
+document.addEventListener("keydown", funcKeyDown);
+document.addEventListener("keyup", funcKeyUp);
+
+function game(){
+  for(let actionName of Object.keys(playerOne.playerData.controls)){
+    if(playerOne.playerData.controls[actionName]){
+      playerOne[actionName]();
+    }
+  }
+
+  for(let actionName of Object.keys(playerTwo.playerData.controls)){
+    if(playerTwo.playerData.controls[actionName]){
+      playerTwo[actionName]();
+    }
+  }
+
+  console.log(playerOne.playerData.playerPosX - playerTwo.playerData.playerPosX);
+}
+
+
+mainInterval = setInterval(game,10);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
