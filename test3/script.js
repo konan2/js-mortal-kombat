@@ -282,6 +282,7 @@ const defautlPlayerData = {
   isDamaged: false,
   defeated: false,
   canRun: true,
+  pushing: false,
   keycodes: undefined,
   controls: {}
 };
@@ -483,18 +484,17 @@ function game(){
       }
     }
   }
+  playerPosDiff()
 }
 
 function funcKeyDown(event){
   playerOne.doAction(event.keyCode, event.type);
   playerTwo.doAction(event.keyCode, event.type);
-  console.log(playerOne.playerData.controls.moveTop);
 }
 
 function funcKeyUp(event){
   playerOne.doAction(event.keyCode, event.type);
   playerTwo.doAction(event.keyCode, event.type);
-  console.log(playerOne.playerData.controls.moveTop);
 }
 
 
@@ -542,3 +542,10 @@ function jump(player){
 
 
 
+function playerPosDiff(){
+  let posDiff = playerOne.playerData.playerPosX - playerTwo.playerData.playerPosX;
+ // console.log(posDiff);
+  if(posDiff + playerOne.playerData.playerWidth > 0){
+    playerTwo.playerData.playerPosX += 1;
+  }
+}
