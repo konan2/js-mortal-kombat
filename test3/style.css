@@ -73,6 +73,7 @@ html, body{
 	height: 100%;
 	position: relative;
 }
+
 .arena-decor__item{
 	position: absolute;
 	left: 0;
@@ -85,12 +86,19 @@ html, body{
 
 
 .player{
-	width: 10px;
-	height: 10px;
 	position: absolute;
 	outline: 1px solid white;
 }
 
+.flipped{
+	-moz-transform: scaleX(-1);
+	-o-transform: scaleX(-1);
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
+	filter: FlipH;
+	-ms-filter: "FlipH";
+	text-align: right;
+}
 
 
 
