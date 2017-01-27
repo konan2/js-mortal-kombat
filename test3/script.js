@@ -1,6 +1,8 @@
 'use strict';
 
 let mainInterval = null;
+let posDiff = undefined;
+
 
 const playerOneSelector = document.querySelector("#player-one");
 const playerTwoSelector = document.querySelector("#player-two");
@@ -26,10 +28,6 @@ let playerTwoKeycodes = {
   100: "moveRunning",
   101: "makeBlock"
 }
-
-
-
-
 
 
 
@@ -142,7 +140,7 @@ const portal = {
 let allArenas = [temple, church, shaoKahnPlace, plant, spaceship, vulkano, bunker, mars, desert, portal];
 let allArenasSize = allArenas.length;
 
-class arena{
+class Arena{
   constructor(){
     this.arenaCount = 0;
     this.setArena(0);
@@ -181,7 +179,7 @@ class arena{
   }
 }
 
-let currentArena = new arena();
+let currentArena = new Arena();
 
 // Utility functions
 
@@ -220,7 +218,7 @@ const cyrax = {
   playerPosY: 0,
   playerWidth: 100,
   playerHeight: 150,
-  speed: 3,
+  speed: 4,
   handKickDamage: 2,
   footKickDamage: 4,
   blockedDamage: 1
@@ -276,7 +274,8 @@ const defautlPlayerData = {
   handKickEnd: true,
   attack: false,
   jumpEnd: true,
-  jumpHeight: 200,
+  jumpHeight: 300,
+  jumpTime: 10,
   handKicktime: 500,
   footKicktime: 1000,
   isDamaged: false,
@@ -284,19 +283,17 @@ const defautlPlayerData = {
   canRun: true,
   pushing: false,
   keycodes: undefined,
+  opponent: undefined,
   controls: {}
 };
 
 
-class player {
+class Player {
   constructor(params) {
     this.name = params.name;
-    this.playerData = Object.assign({}, 
-      defautlPlayerData, 
-      params, 
-      {
-        controls: Object.assign({}, defaultControls)
-      });
+    this.playerData = Object.assign({}, defautlPlayerData, params, {
+      controls: Object.assign({}, defaultControls)
+    });
   }
   
   isMovementAction(event) { // Check is this key for movements
@@ -310,6 +307,7 @@ class player {
   }
 
   doAction(eventCode, eventType){
+
     var AllkeyCodes = Object.keys(this.playerData.keycodes);
     if(AllkeyCodes.includes(eventCode.toString())){
       let actionName = this.playerData.keycodes[eventCode];
@@ -364,10 +362,10 @@ class player {
       this.playerData.playerSelector.style[direction] = newPosition + 'px';
       this.playerData.playerPosX = newPosition;
     }
-    
   }
 
-  setStartData(){
+
+  setPlayerData(){
     this.playerData.playerSelector.style.width = this.playerData.playerWidth + 'px';
     this.playerData.playerSelector.style.height = this.playerData.playerHeight + 'px';
   }
@@ -379,8 +377,47 @@ class player {
     this.movePlayer("left", this.playerData.speed);
   }
   moveTop(){
-    jump(this);
+    this.playerData.playerPosY = parseInt(this.playerData.playerSelector.style.bottom);
+    //console.log(this.playerData.playerPosY);
+    if (this.playerData.jumpEnd) {
+      this.playerData.keyPressedJump = true;
+      this.playerData.jumpEnd = false;
+      this.setDataClass("moveTop");
+      this.toTop( () => {
+        this.toBottom( () =>{
+          this.jumpEnd();
+        });
+      });
+    }
   }
+  toTop(callbackFn){
+    setTimeout(() => {
+      this.playerData.playerSelector.style.bottom = parseInt(this.playerData.playerSelector.style.bottom) + 6 + 'px';
+      if (parseInt(this.playerData.playerSelector.style.bottom) > this.playerData.jumpHeight){
+        callbackFn();
+      } 
+      else {
+        this.toTop(callbackFn);
+      }
+    }, this.playerData.jumpTime);
+  }
+  toBottom(callbackFn){
+    setTimeout(() => {
+      this.playerData.playerSelector.style.bottom = parseInt(this.playerData.playerSelector.style.bottom) - 6 + 'px';
+      if (parseInt(this.playerData.playerSelector.style.bottom) > 0){
+        this.toBottom(callbackFn);
+      } 
+      else {
+        callbackFn();
+      }
+    }, this.playerData.jumpTime);
+  }
+  jumpEnd(){
+    this.playerData.jumpEnd = true;
+    this.removeDataClass("moveTop");
+    
+  }
+
   moveDown(){
    
   }
@@ -396,27 +433,49 @@ class player {
   makeBlock(){
     
   }
+  playerPosDiff(){
+    posDiff = Math.abs(this.playerData.playerPosX - this.opponent.playerData.playerPosX);
+    if(posDiff < this.opponent.playerData.playerWidth && 
+       this.playerData.playerPosY < this.opponent.playerData.playerHeight / 2 && 
+       this.playerData.playerPosY >= this.opponent.playerData.playerPosY/ 2 || 
+       posDiff < this.opponent.playerData.playerWidth && 
+       this.playerData.playerPosY > 10 && this.opponent.playerData.playerPosY > 10
+       ){
+      if(this.playerData.playerPosX <= this.opponent.playerData.playerPosX){
+        this.movePlayer("left", this.playerData.speed);
+        this.opponent.movePlayer("right", this.opponent.playerData.speed);
+      }
+      if(this.playerData.playerPosX > this.opponent.playerData.playerPosX){
+        this.movePlayer("right", this.playerData.speed);
+        this.opponent.movePlayer("left", this.opponent.playerData.speed);
+      }
+    }
+  }
 }
 
 
 // Create player 1
-let playerOne = new player(cyrax);
+let playerOne = new Player(cyrax);
 playerOne.playerData.keycodes = playerOneKeycodes;
 playerOne.playerData.playerSelector = playerOneSelector;
-playerOne.setStartData();
+playerOne.setPlayerData();
 setPlayerStartPos(playerOne);
 
 
 
+
+
 // Create player 2
-let playerTwo = new player(kabal);
+let playerTwo = new Player(kabal);
 playerTwo.playerData.keycodes = playerTwoKeycodes;
 playerTwo.playerData.playerSelector = playerTwoSelector;
-playerTwo.setStartData();
+playerTwo.setPlayerData();
 setPlayerStartPos(playerTwo);
 
 
 
+playerOne.opponent = playerTwo;
+playerTwo.opponent = playerOne;
 
 
 document.addEventListener("keydown", funcKeyDown);
@@ -433,6 +492,13 @@ mainInterval = setInterval(game,10);
 
 
 
+// class Game{
+//    constructor(player1, player2, arena){
+    
+//   }
+// }
+
+// let game = new Game(playerOne, playerTwo, currentArena);
 
 
 
@@ -440,7 +506,7 @@ mainInterval = setInterval(game,10);
 
 
 
-//let playerPosDiff;
+
 
 
 
@@ -468,23 +534,11 @@ function game(){
       playerTwo[actionName]();
     }
   }
-  if(playerTwo.playerData.playerPosX > playerOne.playerData.playerPosX){
-    if(!playerTwo.playerData.playerSelector.classList.contains("flipped")){
-      playerTwo.playerData.playerSelector.classList.add("flipped")
-      if(playerOne.playerData.playerSelector.classList.contains("flipped")){
-        playerOne.playerData.playerSelector.classList.remove("flipped")
-      }
-    }
-  }
-  else{
-    if(playerTwo.playerData.playerSelector.classList.contains("flipped")){
-      playerTwo.playerData.playerSelector.classList.remove("flipped")
-      if(!playerOne.playerData.playerSelector.classList.contains("flipped")){
-        playerOne.playerData.playerSelector.classList.add("flipped")
-      }
-    }
-  }
-  playerPosDiff()
+
+  // Pushing feature, player position fix
+  playerOne.playerPosDiff();
+  playerTwo.playerPosDiff();
+
 }
 
 function funcKeyDown(event){
@@ -500,52 +554,38 @@ function funcKeyUp(event){
 
 
 
-function jump(player){
-  if (player.playerData.jumpEnd) {
-    player.playerData.keyPressedJump = true;
-    player.playerData.jumpEnd = false;
-    player.setDataClass("moveTop");
-    toTop(function(){
-      toBottom(function(){
-        jumpEnd(player);
-      });
-    });
-  }
-  function toTop(callbackFn){
-    setTimeout(function() {
-      player.playerData.playerSelector.style.bottom = parseInt(player.playerData.playerSelector.style.bottom) + 6 + 'px';
-      if (parseInt(player.playerData.playerSelector.style.bottom) > player.playerData.jumpHeight){
-        callbackFn();
-      } 
-      else {
-        toTop(callbackFn);
-      }
-    }, 10);
-  }
-  function toBottom(callbackFn){
-    setTimeout(function() {
-      player.playerData.playerSelector.style.bottom = parseInt(player.playerData.playerSelector.style.bottom) - 6 + 'px';
-      if (parseInt(player.playerData.playerSelector.style.bottom) > 0){
-        toBottom(callbackFn);
-      } 
-      else {
-        callbackFn();
-      }
-    }, 10);
-  }
-  function jumpEnd(player){
-    player.playerData.jumpEnd = true;
-    player.removeDataClass("moveTop");
-  }
-}
 
 
 
 
-function playerPosDiff(){
-  let posDiff = playerOne.playerData.playerPosX - playerTwo.playerData.playerPosX;
- // console.log(posDiff);
-  if(posDiff + playerOne.playerData.playerWidth > 0){
-    playerTwo.playerData.playerPosX += 1;
-  }
-}
+
+// function playerPosDiff(){
+//   posDiff = Math.abs(playerOne.playerData.playerPosX - playerTwo.playerData.playerPosX);
+
+
+//   if(playerTwo.playerData.playerPosX > playerOne.playerData.playerPosX){
+//     console.log(playerOne.playerData.playerPosY)
+//     if(posDiff < 100 && playerOne.playerData.playerPosY == 0 || posDiff < 100 && playerTwo.playerData.playerPosY == 0){
+//       playerOne.moveBackward();
+//       playerTwo.moveForward();
+//     }
+//     if(!playerTwo.playerData.playerSelector.classList.contains("flipped")){
+//       playerTwo.playerData.playerSelector.classList.add("flipped")
+//       if(playerOne.playerData.playerSelector.classList.contains("flipped")){
+//         playerOne.playerData.playerSelector.classList.remove("flipped")
+//       }
+//     }
+//   }
+//   else{
+//     if(posDiff < 100 && playerOne.playerData.playerPosY == 0 || posDiff < 100 && playerTwo.playerData.playerPosY == 0){
+//       playerOne.moveForward();
+//       playerTwo.moveBackward();
+//     }
+//     if(playerTwo.playerData.playerSelector.classList.contains("flipped")){
+//       playerTwo.playerData.playerSelector.classList.remove("flipped")
+//       if(!playerOne.playerData.playerSelector.classList.contains("flipped")){
+//         playerOne.playerData.playerSelector.classList.add("flipped")
+//       }
+//     }
+//   }
+// }

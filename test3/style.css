@@ -87,7 +87,7 @@ html, body{
 
 .player{
 	position: absolute;
-	outline: 1px solid white;
+	border: 1px solid white;
 }
 
 .flipped{
