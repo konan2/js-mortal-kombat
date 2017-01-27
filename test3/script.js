@@ -276,8 +276,8 @@ const defautlPlayerData = {
   jumpEnd: true,
   jumpHeight: 300,
   jumpTime: 10,
-  handKicktime: 500,
-  footKicktime: 1000,
+  kickHandTime: 500,
+  kickFootTime: 1000,
   isDamaged: false,
   defeated: false,
   canRun: true,
@@ -307,28 +307,13 @@ class Player {
   }
 
   doAction(eventCode, eventType){
-
     var AllkeyCodes = Object.keys(this.playerData.keycodes);
     if(AllkeyCodes.includes(eventCode.toString())){
       let actionName = this.playerData.keycodes[eventCode];
-      if(eventType === "keydown") {
-        if(!this.playerData.controls[actionName]){
+      if(eventType === "keydown" && !(actionName === "kickHand") && !(actionName === "kickFoot")) {
+        //if(!this.playerData.controls[actionName]){
           this.setDataClass(actionName);
-          if(actionName == 'kickHand'){
-            setTimeout(
-              () => { // let _this = this;
-                 this.removeDataClass(actionName);
-              }, this.playerData.handKicktime
-            );
-          }
-          if(actionName == 'kickFoot'){
-            setTimeout(
-              () => { // let _this = this;
-                 this.removeDataClass(actionName);
-              }, this.playerData.footKicktime
-            );
-          }
-        }
+        //}
       }
       if(eventType === "keyup" && this.isMovementAction(event)){
         this.removeDataClass(actionName);
@@ -337,13 +322,15 @@ class Player {
   }
 
   setDataClass(action){
-    this.playerData.controls[action] = true;
-    this.playerData.playerSelector.classList.add([action]);
+
+      this.playerData.controls[action] = true;
+      this.playerData.playerSelector.classList.add([action]);
+
   }
 
   removeDataClass(action){
-    this.playerData.controls[action] = false;
-    this.playerData.playerSelector.classList.remove([action]);
+      this.playerData.controls[action] = false;
+      this.playerData.playerSelector.classList.remove([action]);
   }
 
   movePlayer(direction, speed){
@@ -378,7 +365,6 @@ class Player {
   }
   moveTop(){
     this.playerData.playerPosY = parseInt(this.playerData.playerSelector.style.bottom);
-    //console.log(this.playerData.playerPosY);
     if (this.playerData.jumpEnd) {
       this.playerData.keyPressedJump = true;
       this.playerData.jumpEnd = false;
@@ -418,26 +404,65 @@ class Player {
     
   }
 
-  moveDown(){
-   
+  makeDamage(){
+    if(posDiff < this.opponent.playerData.playerWidth){
+
+    }
   }
+
   kickHand(){
-    
+    this.playerData.playerSelector.classList.add("kickHand");
+    console.log(this.playerData.controls.kickHand);
+    setTimeout(() => { 
+      this.playerData.controls.kickHand = true;
+      //console.log(this.playerData.controls.kickHand);
+      setTimeout(() => { 
+        this.playerData.controls.kickHand = false;
+        this.playerData.playerSelector.classList.remove("kickHand");
+        //console.log(this.playerData.controls.kickHand);
+      }, 1000);
+    }, 1000);
+
+    if(this.playerData.controls.kickHand){
+      this.opponent.playerData.playerSelector.style.borderColor = "red";
+    }
+    else{
+      this.opponent.playerData.playerSelector.style.borderColor = "white";
+    }
   }
+  
   kickFoot(){
-    
+        
+          
   }
+
   moveRunning(){
     
   }
+
+  moveDown(){
+    
+  }
+
   makeBlock(){
     
   }
+  
   playerPosDiff(){
     posDiff = Math.abs(this.playerData.playerPosX - this.opponent.playerData.playerPosX);
+
+
+    // Set flipped class
+    if(this.playerData.playerPosX > this.opponent.playerData.playerPosX){
+      this.playerData.playerSelector.classList.add("flipped");
+      this.opponent.playerData.playerSelector.classList.remove("flipped");
+    }
+
+    // Pushing
     if(posDiff < this.opponent.playerData.playerWidth && 
-       this.playerData.playerPosY < this.opponent.playerData.playerHeight / 2 && 
-       this.playerData.playerPosY >= this.opponent.playerData.playerPosY/ 2 || 
+       this.playerData.playerPosY < this.opponent.playerData.playerHeight * 0.8 && 
+       this.playerData.playerPosY >= this.opponent.playerData.playerPosY * 0.8 || 
+       // Jump collision
        posDiff < this.opponent.playerData.playerWidth && 
        this.playerData.playerPosY > 10 && this.opponent.playerData.playerPosY > 10
        ){
@@ -535,57 +560,26 @@ function game(){
     }
   }
 
-  // Pushing feature, player position fix
+  // Pushing feature, flipped class setting
   playerOne.playerPosDiff();
   playerTwo.playerPosDiff();
 
 }
 
+
+
 function funcKeyDown(event){
   playerOne.doAction(event.keyCode, event.type);
   playerTwo.doAction(event.keyCode, event.type);
+  // console.log(playerOne.playerData.controls.kickHand)
 }
 
 function funcKeyUp(event){
   playerOne.doAction(event.keyCode, event.type);
   playerTwo.doAction(event.keyCode, event.type);
+  // console.log(playerOne.playerData.controls.kickHand)
 }
 
 
 
 
-
-
-
-
-
-// function playerPosDiff(){
-//   posDiff = Math.abs(playerOne.playerData.playerPosX - playerTwo.playerData.playerPosX);
-
-
-//   if(playerTwo.playerData.playerPosX > playerOne.playerData.playerPosX){
-//     console.log(playerOne.playerData.playerPosY)
-//     if(posDiff < 100 && playerOne.playerData.playerPosY == 0 || posDiff < 100 && playerTwo.playerData.playerPosY == 0){
-//       playerOne.moveBackward();
-//       playerTwo.moveForward();
-//     }
-//     if(!playerTwo.playerData.playerSelector.classList.contains("flipped")){
-//       playerTwo.playerData.playerSelector.classList.add("flipped")
-//       if(playerOne.playerData.playerSelector.classList.contains("flipped")){
-//         playerOne.playerData.playerSelector.classList.remove("flipped")
-//       }
-//     }
-//   }
-//   else{
-//     if(posDiff < 100 && playerOne.playerData.playerPosY == 0 || posDiff < 100 && playerTwo.playerData.playerPosY == 0){
-//       playerOne.moveForward();
-//       playerTwo.moveBackward();
-//     }
-//     if(playerTwo.playerData.playerSelector.classList.contains("flipped")){
-//       playerTwo.playerData.playerSelector.classList.remove("flipped")
-//       if(!playerOne.playerData.playerSelector.classList.contains("flipped")){
-//         playerOne.playerData.playerSelector.classList.add("flipped")
-//       }
-//     }
-//   }
-// }
