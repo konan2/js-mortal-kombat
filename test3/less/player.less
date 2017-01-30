@@ -26,3 +26,32 @@
 .player.moveForward, .player.moveForward .shadow {
   background: url(sprites/cyrax-move-forward.gif) center 0 no-repeat;
 }
+
+.player.kickHand, .player.kickHand .shadow {
+  background: url(sprites/spritesheet_hand-kick.png) repeat-x;
+  animation: handkick .45s steps(4) infinite;
+}
+
+.player.kickFoot, .player.kickFoot .shadow {
+  background: url('sprites/spritesheet_kick_foot.png') repeat-x;
+  animation: footkick .31s steps(6) forwards infinite;
+  animation-direction: alternate;
+}
+
+.player.kickHandDamaged, .player.kickHandDamaged .shadow {
+  background: url(sprites/cyraxbeaten/cyrax-hand-damaged.png) -5px -2px no-repeat;
+}
+
+.player.kickFootDamaged, .player.kickFootDamaged .shadow {
+  background: url(sprites/cyraxbeaten/cyrax-foot-damaged.png) -5px -2px no-repeat;
+}
+
+@keyframes handkick {
+  from { background-position:  0px 5px; }
+  to { background-position: -600px 5px; }
+}
+
+@keyframes footkick {
+  from { background-position:  0 0; }
+  to { background-position: -900px 0; }
+}

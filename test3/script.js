@@ -218,8 +218,8 @@ const cyrax = {
   previewImg: "img/players-list/versus/cyrax.png",
   playerPosX: 0,
   playerPosY: 0,
-  playerWidth: 100,
-  playerHeight: 150,
+  playerWidth: 150,
+  playerHeight: 138,
   speed: 4,
   kickHandDamage: 2,
   kickFootDamage: 4,
@@ -234,8 +234,8 @@ const kabal = {
   previewImg: "img/players-list/versus/kabal.png",
   playerPosX: 0,
   playerPosY: 0,
-  playerWidth: 100,
-  playerHeight: 150,
+  playerWidth: 150,
+  playerHeight: 138,
   speed: 2,
   kickHandDamage: 3,
   kickFootDamage: 5,
@@ -278,9 +278,9 @@ const defautlPlayerData = {
   jumpEnd: true,
   jumpHeight: 300,
   jumpTime: 10,
-  kickTime: 100, // time while opponent is damaged
-  kickHandTime: 500, // time before kick
-  kickFootTime: 1000, // time before kick
+  kickTime: 200, // time while opponent is damaged
+  kickHandTime: 200, // time before kick
+  kickFootTime: 500, // time before kick
   isDamaged: false,
   defeated: false,
   canRun: true,
@@ -425,7 +425,7 @@ class Player {
   }
 
   makeDamage(kicktype){
-    this.opponent.playerData.playerSelector.classList.add("damaged");
+    this.opponent.playerData.playerSelector.classList.add(kicktype + "Damaged");
     this.opponent.playerData.isDamaged = true;
     this.opponent.playerData.life = this.opponent.playerData.life - this.playerData[kicktype + "Damage"];
     if(this.opponent.playerData.life < 0){
@@ -433,7 +433,7 @@ class Player {
     }
     console.log(this.opponent.name + " life level is:" + this.opponent.playerData.life);
     setTimeout(() => {
-      this.opponent.playerData.playerSelector.classList.remove("damaged");
+      this.opponent.playerData.playerSelector.classList.remove(kicktype + "Damaged");
       this.opponent.playerData.isDamaged = false;
     }, this.playerData.kickTime); // time while opponent is damaged
   }
