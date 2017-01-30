@@ -5,6 +5,8 @@ let posDiff = undefined;
 
 
 const playerOneSelector = document.querySelector("#player-one");
+const playerOneSelectorShadow = document.querySelector("#player-one .shadow");
+const playerTwoSelectorShadow = document.querySelector("#player-two .shadow");
 const playerTwoSelector = document.querySelector("#player-two");
 
 let playerOneKeycodes = {
@@ -57,10 +59,10 @@ const defaultArena = {
 
 const temple = {
   name: 'temple',
-  sky: 'url(img/levels/temple/temple-bg.jpg)',
+  sky: 'url(img/levels/temple/temple-bg.jpg) no-repeat center 70%',
   clouds: 'transparent',
   decor: 'url(img/levels/temple/temple-decor.png)',
-  ground: 'url(img/levels/temple/temple-floor.png)'
+  ground: 'url(img/levels/temple/temple-floor.png) repeat-x center/100% 100%'
 }
 
 const church = {
@@ -219,8 +221,8 @@ const cyrax = {
   playerWidth: 100,
   playerHeight: 150,
   speed: 4,
-  handKickDamage: 2,
-  footKickDamage: 4,
+  kickHandDamage: 2,
+  kickFootDamage: 4,
   blockedDamage: 1
 }
 
@@ -235,8 +237,8 @@ const kabal = {
   playerWidth: 100,
   playerHeight: 150,
   speed: 2,
-  handKickDamage: 3,
-  footKickDamage: 5,
+  kickHandDamage: 3,
+  kickFootDamage: 5,
   blockedDamage: 2
 }
 
@@ -276,8 +278,9 @@ const defautlPlayerData = {
   jumpEnd: true,
   jumpHeight: 300,
   jumpTime: 10,
-  kickHandTime: 500,
-  kickFootTime: 1000,
+  kickTime: 100, // time while opponent is damaged
+  kickHandTime: 500, // time before kick
+  kickFootTime: 1000, // time before kick
   isDamaged: false,
   defeated: false,
   canRun: true,
@@ -310,10 +313,26 @@ class Player {
     var AllkeyCodes = Object.keys(this.playerData.keycodes);
     if(AllkeyCodes.includes(eventCode.toString())){
       let actionName = this.playerData.keycodes[eventCode];
-      if(eventType === "keydown" && !(actionName === "kickHand") && !(actionName === "kickFoot")) {
-        //if(!this.playerData.controls[actionName]){
+      if(eventType === "keydown" && !this.playerData.controls[actionName]) {// if control action is false
+        if(this.isMovementAction(event) || actionName == "moveTop"){
           this.setDataClass(actionName);
-        //}
+        }
+        else{
+          this.playerData.playerSelector.classList.add(actionName);
+          setTimeout(() => { 
+            this.playerData.controls.kickHand = true;
+            console.log(this.playerData.controls.kickHand);
+            console.log(posDiff);
+            if(posDiff <= this.opponent.playerData.playerWidth + this.opponent.playerData.playerWidth / 10){ // if kick zone == opponent width + 10
+              this.makeDamage(actionName);
+            }
+            setTimeout(() => { 
+              this.playerData.controls.kickHand = false;
+              this.playerData.playerSelector.classList.remove(actionName);
+              console.log(this.playerData.controls.kickHand);
+            }, this.playerData.kickTime); // time while opponent is damaged
+          }, this.playerData[actionName + "Time"]); // time before kick
+        }
       }
       if(eventType === "keyup" && this.isMovementAction(event)){
         this.removeDataClass(actionName);
@@ -322,15 +341,13 @@ class Player {
   }
 
   setDataClass(action){
-
-      this.playerData.controls[action] = true;
-      this.playerData.playerSelector.classList.add([action]);
-
+    this.playerData.controls[action] = true;
+    this.playerData.playerSelector.classList.add([action]);
   }
 
   removeDataClass(action){
-      this.playerData.controls[action] = false;
-      this.playerData.playerSelector.classList.remove([action]);
+    this.playerData.controls[action] = false;
+    this.playerData.playerSelector.classList.remove([action]);
   }
 
   movePlayer(direction, speed){
@@ -379,6 +396,8 @@ class Player {
   toTop(callbackFn){
     setTimeout(() => {
       this.playerData.playerSelector.style.bottom = parseInt(this.playerData.playerSelector.style.bottom) + 6 + 'px';
+      this.playerData.playerSelectorShadow.style.left = parseInt(this.playerData.playerSelectorShadow.style.left) - 3 + 'px';
+      this.playerData.playerSelectorShadow.style.bottom = parseInt(this.playerData.playerSelectorShadow.style.bottom) - 5 + 'px';
       if (parseInt(this.playerData.playerSelector.style.bottom) > this.playerData.jumpHeight){
         callbackFn();
       } 
@@ -390,6 +409,8 @@ class Player {
   toBottom(callbackFn){
     setTimeout(() => {
       this.playerData.playerSelector.style.bottom = parseInt(this.playerData.playerSelector.style.bottom) - 6 + 'px';
+      this.playerData.playerSelectorShadow.style.left = parseInt(this.playerData.playerSelectorShadow.style.left) + 3 + 'px';
+      this.playerData.playerSelectorShadow.style.bottom = parseInt(this.playerData.playerSelectorShadow.style.bottom) + 5 + 'px';
       if (parseInt(this.playerData.playerSelector.style.bottom) > 0){
         this.toBottom(callbackFn);
       } 
@@ -401,40 +422,25 @@ class Player {
   jumpEnd(){
     this.playerData.jumpEnd = true;
     this.removeDataClass("moveTop");
-    
   }
 
-  makeDamage(){
-    if(posDiff < this.opponent.playerData.playerWidth){
-
+  makeDamage(kicktype){
+    this.opponent.playerData.playerSelector.classList.add("damaged");
+    this.opponent.playerData.isDamaged = true;
+    this.opponent.playerData.life = this.opponent.playerData.life - this.playerData[kicktype + "Damage"];
+    if(this.opponent.playerData.life < 0){
+      this.opponent.playerData.life = 0;
     }
+    console.log(this.opponent.name + " life level is:" + this.opponent.playerData.life);
+    setTimeout(() => {
+      this.opponent.playerData.playerSelector.classList.remove("damaged");
+      this.opponent.playerData.isDamaged = false;
+    }, this.playerData.kickTime); // time while opponent is damaged
   }
 
-  kickHand(){
-    this.playerData.playerSelector.classList.add("kickHand");
-    console.log(this.playerData.controls.kickHand);
-    setTimeout(() => { 
-      this.playerData.controls.kickHand = true;
-      //console.log(this.playerData.controls.kickHand);
-      setTimeout(() => { 
-        this.playerData.controls.kickHand = false;
-        this.playerData.playerSelector.classList.remove("kickHand");
-        //console.log(this.playerData.controls.kickHand);
-      }, 1000);
-    }, 1000);
-
-    if(this.playerData.controls.kickHand){
-      this.opponent.playerData.playerSelector.style.borderColor = "red";
-    }
-    else{
-      this.opponent.playerData.playerSelector.style.borderColor = "white";
-    }
-  }
+  kickHand(){}
   
-  kickFoot(){
-        
-          
-  }
+  kickFoot(){}
 
   moveRunning(){
     
@@ -451,7 +457,6 @@ class Player {
   playerPosDiff(){
     posDiff = Math.abs(this.playerData.playerPosX - this.opponent.playerData.playerPosX);
 
-
     // Set flipped class
     if(this.playerData.playerPosX > this.opponent.playerData.playerPosX){
       this.playerData.playerSelector.classList.add("flipped");
@@ -459,7 +464,7 @@ class Player {
     }
 
     // Pushing
-    if(posDiff < this.opponent.playerData.playerWidth && 
+    if(posDiff <= this.opponent.playerData.playerWidth && 
        this.playerData.playerPosY < this.opponent.playerData.playerHeight * 0.8 && 
        this.playerData.playerPosY >= this.opponent.playerData.playerPosY * 0.8 || 
        // Jump collision
@@ -483,6 +488,7 @@ class Player {
 let playerOne = new Player(cyrax);
 playerOne.playerData.keycodes = playerOneKeycodes;
 playerOne.playerData.playerSelector = playerOneSelector;
+playerOne.playerData.playerSelectorShadow = playerOneSelectorShadow;
 playerOne.setPlayerData();
 setPlayerStartPos(playerOne);
 
@@ -494,6 +500,7 @@ setPlayerStartPos(playerOne);
 let playerTwo = new Player(kabal);
 playerTwo.playerData.keycodes = playerTwoKeycodes;
 playerTwo.playerData.playerSelector = playerTwoSelector;
+playerTwo.playerData.playerSelectorShadow = playerTwoSelectorShadow;
 playerTwo.setPlayerData();
 setPlayerStartPos(playerTwo);
 

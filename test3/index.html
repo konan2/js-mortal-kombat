@@ -2,29 +2,55 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script><![endif]-->
 	<title></title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<link href="style.css" rel="stylesheet">
 </head>
-
 <body>
-
-<div class="page-wrapper">
-	
-	<button onclick="currentArena.prevArena()">Prev arena</button>
-	<button onclick="currentArena.nextArena()">Next arena</button>
-	<button onclick="currentArena.randomArena()">Random arena</button>
+<div class="page-wrapper flex-column flex-align_center_stretch">
+	<div>
+		<button onclick="currentArena.prevArena()">Prev arena</button>
+		<button onclick="currentArena.nextArena()">Next arena</button>
+		<button onclick="currentArena.randomArena()">Random arena</button>
+	</div>
 	<div id="arena">
+		<header id="header-bar" class="header-bar flex-row flex-wrap slide-top">
+			<div class="blood-level flex-40">
+				<div id="player1-level" class="blood-level__bar"></div>
+				<div id="player1-blood-level" class="blood-level__name"></div>
+			</div>
+			<div id="round-time-block" class="time-counter flex-20 flex-align_center_center title">
+				<span id="round-time"></span>
+			</div>
+			<div class="blood-level flex-40" flipped>
+				<div id="player2-level" class="blood-level__bar"></div>
+				<div id="player2-blood-level" class="blood-level__name text-right" flipped></div>
+			</div>
+			<div class="victory-count flex-100">
+				<div class="victory-count__item flex-50 flex-align_start_center">
+					<div class="victory-count-medal"></div>
+					<div class="victory-count-medal"></div>
+				</div>
+				<div class="victory-count__item flex-50  flex-align_end_center">
+					<div class="victory-count-medal"></div>
+				</div>
+			</div>
+		</header>
 		<div class="arena-decor">
 			<div class="arena-decor__item arena-decor__item_sky"></div>
 			<div class="arena-decor__item arena-decor__item_clouds"></div>
 			<div class="arena-decor__item arena-decor__item_decor"></div>
 			<div class="arena-decor__item arena-decor__item_ground"></div>
 		</div>
-		<div id="player-one" class="player" style="left: 100px; bottom: 100px;"></div>
-		<div id="player-two" class="player" style="left: 600px; bottom: 100px;"></div>
+		<div class="players-area">
+			<div id="player-one" class="player" data-model="cyrax">
+				<div class="shadow" style="left: 0px; bottom:0px;"></div>
+			</div>
+			<div id="player-two" class="player" data-model="cyrax">
+				<div class="shadow" style="left: 0px; bottom:0px;"></div>
+			</div>
+		</div>
 	</div>
 <script src="script.js"></script>
 </body>

@@ -1,0 +1,28 @@
+.player{
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: url(sprites/cyrax-stay.gif) center no-repeat;
+  .shadow{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 100px;
+    height: 100%;
+    background: url(sprites/cyrax-stay.gif) center no-repeat;
+    filter: drop-shadow(412px -463px 2px rgba(0, 0, 0, 0.51));
+    transform: translate(-135px,166px) rotate(-21deg) skewX(60deg) skewY(38deg) scale(0.6);
+  }
+}
+
+.player.damaged{
+  border-color: red;
+}
+
+
+.player.moveTop, .player.moveTop .shadow {
+  background: url('sprites/spritesheet_jump.png') center 0 no-repeat;
+}
+
+.player.moveForward, .player.moveForward .shadow {
+  background: url(sprites/cyrax-move-forward.gif) center 0 no-repeat;
+}
