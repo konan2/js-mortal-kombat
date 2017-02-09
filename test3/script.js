@@ -3,6 +3,19 @@
 let mainInterval = null;
 let posDiff = undefined;
 
+const gameData = {
+  roundDuration: 20,
+  roundTime: undefined,
+  roundsMaxCount: 3,
+  currentRound: 0,
+  musicEnabled: true,
+  soundsEnabled: true,
+  playerOneChoosen: false,
+  playerTwoChoosen: false,
+  playersAreChoosen: false,
+  roundStarted: false,
+  roundEnded: false
+}
 
 const playerOneSelector = document.querySelector("#player-one");
 const playerOneSelectorShadow = document.querySelector("#player-one .shadow");
@@ -36,152 +49,139 @@ let playerTwoKeycodes = {
 
 
 
-
-
-
-
-
-
-
 // Arenas
 
 const defaultArena = {
+  selector: document.querySelector("#arena"),
   arenaWidth: undefined,
   arenaHeight: undefined,
-  selector: document.querySelector("#arena"),
   decorSelectors: {
-    skySelector: document.querySelector(".arena-decor__item_sky"),
-    cloudsSelector: document.querySelector(".arena-decor__item_clouds"),
-    decorSelector: document.querySelector(".arena-decor__item_decor"),
-    groundSelector: document.querySelector(".arena-decor__item_ground")
+    sky: document.querySelector(".arena-decor__item_sky"),
+    clouds: document.querySelector(".arena-decor__item_clouds"),
+    decor: document.querySelector(".arena-decor__item_decor"),
+    ground: document.querySelector(".arena-decor__item_ground")
+  },
+  arenaDecorations: {}
+}
+
+const arenaList = {
+
+  temple: {
+    sky: 'url(img/levels/temple/temple-bg.jpg) no-repeat center 70%',
+    clouds: 'transparent',
+    decor: 'url(img/levels/temple/temple-decor.png)',
+    ground: 'url(img/levels/temple/temple-floor.png) repeat-x center/100% 100%'
+  },
+
+  church: {
+    sky: 'url(img/levels/church/church-bg.png)',
+    clouds: 'transparent',
+    decor: 'transparent',
+    ground: 'url(img/levels/church/church-floor.png)'
+  },
+
+  shaoKahnPlace: {
+    sky: 'url(img/levels/arena/arena-bg.jpg)',
+    clouds: 'transparent',
+    decor: 'transparent',
+    ground: 'transparent'
+  },
+
+  plant: {
+    sky: 'url(img/levels/plant/plant-bg.jpg)',
+    clouds: 'transparent',
+    decor: 'url(img/levels/plant/floor-decor.png)',
+    ground: 'url(img/levels/plant/plant-floor.jpg)'
+  },
+
+  spaceship: {
+    sky: 'url(img/levels/spaceship/spaceship-bg.png)',
+    clouds: 'url(img/levels/spaceship/space-sky.jpg)',
+    decor: 'transparent',
+    ground: 'transparent'
+  },
+
+  vulkano: {
+    sky: 'url(img/levels/vulkano/vulkano-bg.png)',
+    clouds: 'transparent',
+    decor: 'transparent',
+    ground: 'transparent'
+  },
+
+  bunker: {
+    sky: 'url(img/levels/bunker/bunker-bg.jpg)',
+    clouds: 'transparent',
+    decor: 'transparent',
+    ground: 'transparent'
+  },
+
+  mars: {
+    sky: 'url(img/levels/mars/mars-bg.png)',
+    clouds: 'url(img/levels/desert/clouds3.png)',
+    decor: 'url(img/levels/mars/2.jpg)',
+    ground: 'transparent'
+  },
+
+  desert: {
+    sky: 'url(img/levels/desert/8.jpg)',
+    clouds: 'url(img/levels/desert/clouds3.png)',
+    decor: 'url(img/levels/desert/p_2.png)',
+    ground: 'url(img/levels/desert/p_1.gif)'
+  },
+
+  portal: {
+    sky: 'url(img/levels/portal/sky-portal.jpg)',
+    clouds: 'url(img/levels/portal/portal-cloud.png)',
+    decor: 'url(img/levels/desert/p_2.png)',
+    ground: 'url(img/levels/portal/p_1.png)'
   }
 }
 
-const temple = {
-  name: 'temple',
-  sky: 'url(img/levels/temple/temple-bg.jpg) no-repeat center 70%',
-  clouds: 'transparent',
-  decor: 'url(img/levels/temple/temple-decor.png)',
-  ground: 'url(img/levels/temple/temple-floor.png) repeat-x center/100% 100%'
-}
 
-const church = {
-  name: 'church',
-  sky: 'url(img/levels/church/church-bg.png)',
-  clouds: 'transparent',
-  decor: 'transparent',
-  ground: 'url(img/levels/church/church-floor.png)'
-}
-
-const shaoKahnPlace = {
-  name: 'shaoKahnArena',
-  sky: 'url(img/levels/arena/arena-bg.jpg)',
-  clouds: 'transparent',
-  decor: 'transparent',
-  ground: 'transparent'
-}
-
-const plant = {
-  name: 'plant',
-  sky: 'url(img/levels/plant/plant-bg.jpg)',
-  clouds: 'transparent',
-  decor: 'url(img/levels/plant/floor-decor.png)',
-  ground: 'url(img/levels/plant/plant-floor.jpg)'
-}
-
-const spaceship = {
-  name: 'spaceship',
-  sky: 'url(img/levels/spaceship/spaceship-bg.png)',
-  clouds: 'url(img/levels/spaceship/space-sky.jpg)',
-  decor: 'transparent',
-  ground: 'transparent'
-}
-
-const vulkano = {
-  name: 'vulkano',
-  sky: 'url(img/levels/vulkano/vulkano-bg.png)',
-  clouds: 'transparent',
-  decor: 'transparent',
-  ground: 'transparent'
-}
-
-const bunker = {
-  name: 'bunker',
-  sky: 'url(img/levels/bunker/bunker-bg.jpg)',
-  clouds: 'transparent',
-  decor: 'transparent',
-  ground: 'transparent'
-}
-
-const mars = {
-  name: 'mars',
-  sky: 'url(img/levels/mars/mars-bg.png)',
-  clouds: 'url(img/levels/desert/clouds3.png)',
-  decor: 'url(img/levels/mars/2.jpg)',
-  ground: 'transparent'
-}
-
-const desert = {
-  name: 'desert',
-  sky: 'url(img/levels/desert/8.jpg)',
-  clouds: 'url(img/levels/desert/clouds3.png)',
-  decor: 'url(img/levels/desert/p_2.png)',
-  ground: 'url(img/levels/desert/p_1.gif)'
-}
-
-
-const portal = {
-  name: 'portal',
-  sky: 'url(img/levels/portal/sky-portal.jpg)',
-  clouds: 'url(img/levels/portal/portal-cloud.png)',
-  decor: 'url(img/levels/desert/p_2.png)',
-  ground: 'url(img/levels/portal/p_1.png)'
-}
-
-
-let allArenas = [temple, church, shaoKahnPlace, plant, spaceship, vulkano, bunker, mars, desert, portal];
-let allArenasSize = allArenas.length;
 
 class Arena{
-  constructor(){
+  constructor(params) {
     this.arenaCount = 0;
-    this.setArena(0);
+    this.arenaListArray = Object.keys(arenaList);
+    this.arenaListArraySize = this.arenaListArray.length;
+
+    this.arenaData = Object.assign({}, defaultArena);
+    this.setArena(params);
     this.arenaData.arenaWidth = this.arenaData.selector.offsetWidth;
     this.arenaData.arenaHeight = this.arenaData.selector.offsetHeight;
   }
-  setArena(index){
-    this.arenaData = Object.assign({}, defaultArena, allArenas[index]);
-    this.arenaData.selector.classList = allArenas[index].name;
-    this.setArenaDecorStyles(allArenas[index]);
-  }
-  setArenaDecorStyles(object){
-    let objKeyIndex = 1;
-    let objKeysArray = Object.keys(object);
-    for (let property in defaultArena.decorSelectors) {
-      defaultArena.decorSelectors[property].setAttribute("style", "background:" + object[objKeysArray[objKeyIndex]] + ";");
-      objKeyIndex++;
+
+  setArena(name){
+    let currentArenaName = arenaList[name];
+    this.arenaData.selector.classList.add(name);
+    this.arenaData.arenaDecorations = Object.assign({}, currentArenaName);
+    for (let prop in this.arenaData.decorSelectors) {
+      if(this.arenaData.decorSelectors.hasOwnProperty(prop) ) {
+        this.arenaData.decorSelectors[prop].setAttribute("style", "background:" + this.arenaData.arenaDecorations[prop] + ";");
+      }
     }
   }
+
   nextArena(){
     this.arenaCount++;
-    if (this.arenaCount >= allArenasSize){
+    if (this.arenaCount >= this.arenaListArraySize){
       this.arenaCount = 0;
     }
-    this.setArena(this.arenaCount);
+    this.setArena(this.arenaListArray[this.arenaCount]);
   }
   prevArena(){
     this.arenaCount--;
     if (this.arenaCount < 0){
-      this.arenaCount = 9;
+      this.arenaCount = this.arenaListArraySize;
     }
-    this.setArena(this.arenaCount);
+    this.setArena(this.arenaListArray[this.arenaCount]);
   }
   randomArena(){
-    this.setArena(RandomValue(allArenasSize));
+    this.setArena(this.arenaListArray[RandomValue(this.arenaListArraySize)]);
   }
 }
 
-let currentArena = new Arena();
+let currentArena = new Arena('temple');
 
 // Utility functions
 
@@ -199,75 +199,6 @@ function RandomValue(max){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-const cyrax = {
-  name: "cyrax",
-  soundName: new Audio('audio/names/cyrax.mp3'),
-  soundRun: new Audio('audio/syborg_run.mp3'),
-  previewImgIcon: "img/players-list/cyrax.gif",
-  previewImg: "img/players-list/versus/cyrax.png",
-  playerPosX: 0,
-  playerPosY: 0,
-  playerWidth: 150,
-  playerHeight: 138,
-  speed: 4,
-  kickHandDamage: 2,
-  kickFootDamage: 4,
-  blockedDamage: 1
-}
-
-const kabal = {
-  name: "kabal",
-  soundName: new Audio('audio/names/kabal.mp3'),
-  soundRun: new Audio('audio/syborg_run.mp3'),
-  previewImgIcon: "img/players-list/kabal.gif",
-  previewImg: "img/players-list/versus/kabal.png",
-  playerPosX: 0,
-  playerPosY: 0,
-  playerWidth: 150,
-  playerHeight: 138,
-  speed: 2,
-  kickHandDamage: 3,
-  kickFootDamage: 5,
-  blockedDamage: 2
-}
-
-const gameData = {
-  roundDuration: 20,
-  roundTime: undefined,
-  roundsMaxCount: 3,
-  currentRound: 0,
-  musicEnabled: true,
-  soundsEnabled: true,
-  playerOneChoosen: false,
-  playerTwoChoosen: false,
-  playersAreChoosen: false,
-  roundStarted: false,
-  roundEnded: false
-}
-
-
-
-const defaultControls = {
-  moveTop: false,
-  moveForward: false,
-  moveDown: false,
-  moveBackward: false,
-  kickHand: false,
-  kickFoot: false,
-  moveRunning: false,
-  makeBlock: false
-};
 
 const defautlPlayerData = {
   life: 100,
@@ -290,6 +221,63 @@ const defautlPlayerData = {
   controls: {}
 };
 
+const defaultControls = {
+  moveTop: false,
+  moveForward: false,
+  moveDown: false,
+  moveBackward: false,
+  kickHand: false,
+  kickFoot: false,
+  moveRunning: false,
+  makeBlock: false
+};
+
+
+const playerList = {
+  cyrax: {
+    soundName: new Audio('audio/names/cyrax.mp3'),
+    soundRun: new Audio('audio/syborg_run.mp3'),
+    previewImgIcon: "img/players-list/cyrax.gif",
+    previewImg: "img/players-list/versus/cyrax.png",
+    playerPosX: 0,
+    playerPosY: 0,
+    playerWidth: 150,
+    playerHeight: 138,
+    speed: 4,
+    kickHandDamage: 2,
+    kickFootDamage: 4,
+    blockedDamage: 1
+  },
+
+  kabal: {
+    soundName: new Audio('audio/names/kabal.mp3'),
+    soundRun: new Audio('audio/syborg_run.mp3'),
+    previewImgIcon: "img/players-list/kabal.gif",
+    previewImg: "img/players-list/versus/kabal.png",
+    playerPosX: 0,
+    playerPosY: 0,
+    playerWidth: 150,
+    playerHeight: 138,
+    speed: 2,
+    kickHandDamage: 3,
+    kickFootDamage: 5,
+    blockedDamage: 2
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class Player {
   constructor(params) {
@@ -298,7 +286,7 @@ class Player {
       controls: Object.assign({}, defaultControls)
     });
   }
-  
+
   isMovementAction(event) { // Check is this key for movements
     let movementCodes = [];
     for (let code of Object.keys(this.playerData.keycodes)) {
@@ -313,21 +301,25 @@ class Player {
     var AllkeyCodes = Object.keys(this.playerData.keycodes);
     if(AllkeyCodes.includes(eventCode.toString())){
       let actionName = this.playerData.keycodes[eventCode];
-      if(eventType === "keydown" && !this.playerData.controls[actionName]) {// if control action is false
+      //debugger;
+      if (this.playerData.keycodes[eventCode].removeClassOnKeyUp) {
+
+      }
+      if(eventType === "keydown") {// if control action is false
         if(this.isMovementAction(event) || actionName == "moveTop"){
           this.setDataClass(actionName);
         }
         else{
           this.playerData.playerSelector.classList.add(actionName);
-          setTimeout(() => { 
-            this.playerData.controls.kickHand = true;
+          setTimeout(() => {
+            //this.playerData.controls.kickHand = true;
             console.log(this.playerData.controls.kickHand);
             console.log(posDiff);
             if(posDiff <= this.opponent.playerData.playerWidth + this.opponent.playerData.playerWidth / 10){ // if kick zone == opponent width + 10
               this.makeDamage(actionName);
             }
-            setTimeout(() => { 
-              this.playerData.controls.kickHand = false;
+            setTimeout(() => {
+              //this.playerData.controls.kickHand = false;
               this.playerData.playerSelector.classList.remove(actionName);
               console.log(this.playerData.controls.kickHand);
             }, this.playerData.kickTime); // time while opponent is damaged
@@ -400,7 +392,7 @@ class Player {
       this.playerData.playerSelectorShadow.style.bottom = parseInt(this.playerData.playerSelectorShadow.style.bottom) - 5 + 'px';
       if (parseInt(this.playerData.playerSelector.style.bottom) > this.playerData.jumpHeight){
         callbackFn();
-      } 
+      }
       else {
         this.toTop(callbackFn);
       }
@@ -413,7 +405,7 @@ class Player {
       this.playerData.playerSelectorShadow.style.bottom = parseInt(this.playerData.playerSelectorShadow.style.bottom) + 5 + 'px';
       if (parseInt(this.playerData.playerSelector.style.bottom) > 0){
         this.toBottom(callbackFn);
-      } 
+      }
       else {
         callbackFn();
       }
@@ -438,22 +430,22 @@ class Player {
     }, this.playerData.kickTime); // time while opponent is damaged
   }
 
-  kickHand(){}
-  
-  kickFoot(){}
+  // kickHand(){}
 
-  moveRunning(){
-    
-  }
+  // kickFoot(){}
 
-  moveDown(){
-    
-  }
+  // moveRunning(){
 
-  makeBlock(){
-    
-  }
-  
+  // }
+
+  // moveDown(){
+
+  // }
+
+  // makeBlock(){
+
+  // }
+
   playerPosDiff(){
     posDiff = Math.abs(this.playerData.playerPosX - this.opponent.playerData.playerPosX);
 
@@ -464,11 +456,11 @@ class Player {
     }
 
     // Pushing
-    if(posDiff <= this.opponent.playerData.playerWidth && 
-       this.playerData.playerPosY < this.opponent.playerData.playerHeight * 0.8 && 
-       this.playerData.playerPosY >= this.opponent.playerData.playerPosY * 0.8 || 
+    if(posDiff <= this.opponent.playerData.playerWidth &&
+       this.playerData.playerPosY < this.opponent.playerData.playerHeight * 0.8 &&
+       this.playerData.playerPosY >= this.opponent.playerData.playerPosY * 0.8 ||
        // Jump collision
-       posDiff < this.opponent.playerData.playerWidth && 
+       posDiff < this.opponent.playerData.playerWidth &&
        this.playerData.playerPosY > 10 && this.opponent.playerData.playerPosY > 10
        ){
       if(this.playerData.playerPosX <= this.opponent.playerData.playerPosX){
@@ -485,7 +477,7 @@ class Player {
 
 
 // Create player 1
-let playerOne = new Player(cyrax);
+let playerOne = new Player(playerList.cyrax);
 playerOne.playerData.keycodes = playerOneKeycodes;
 playerOne.playerData.playerSelector = playerOneSelector;
 playerOne.playerData.playerSelectorShadow = playerOneSelectorShadow;
@@ -497,7 +489,7 @@ setPlayerStartPos(playerOne);
 
 
 // Create player 2
-let playerTwo = new Player(kabal);
+let playerTwo = new Player(playerList.kabal);
 playerTwo.playerData.keycodes = playerTwoKeycodes;
 playerTwo.playerData.playerSelector = playerTwoSelector;
 playerTwo.playerData.playerSelectorShadow = playerTwoSelectorShadow;
@@ -526,7 +518,7 @@ mainInterval = setInterval(game,10);
 
 // class Game{
 //    constructor(player1, player2, arena){
-    
+
 //   }
 // }
 
@@ -556,7 +548,7 @@ function setPlayerStartPos(player){
 
 function game(){
   for(let actionName of Object.keys(playerOne.playerData.controls)){
-    if(playerOne.playerData.controls[actionName]){
+    if(playerOne.playerData.controls[actionName] && typeof playerOne[actionName] !== 'undefined'){
       playerOne[actionName]();
     }
   }
@@ -586,7 +578,3 @@ function funcKeyUp(event){
   playerTwo.doAction(event.keyCode, event.type);
   // console.log(playerOne.playerData.controls.kickHand)
 }
-
-
-
-
