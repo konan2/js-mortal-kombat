@@ -54,13 +54,24 @@
 .start-screen-menu{
   position: relative;
   z-index: 2;
-  margin-top: 2%;
   &__item{
     .title;
-    margin: 10px;
+    background: url(img/ui/buttons.png) 0px -7px no-repeat;
+    display: block;
+    height: 96px;
+    width: 257px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 2px;
+    justify-content: center;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.81);
     &:hover{
-      cursor: pointer;
-      font-size: 22px;
+      background-position: 0px -152px;
+    }
+    &:active{
+      background-position: 0px -297px;
+      color: rgba(255, 255, 255, 0.53);
     }
     &:last-child{
       animation-delay: 1s;
@@ -90,7 +101,7 @@
   }
 }
 
-@keyframes logo-animate-effect { 
+@keyframes logo-animate-effect {
   0%{
     background-color: rgba(255,255,255,0.4);
     transition: none;
@@ -102,7 +113,7 @@
   }
 }
 
-@keyframes logo-animate { 
+@keyframes logo-animate {
   0%{
     filter: invert(1);
     transform: scale(.5);
@@ -113,7 +124,7 @@
   }
 }
 
-@keyframes start-screen-bg { 
+@keyframes start-screen-bg {
   0%{
     transform: translateY(0%);
   }
